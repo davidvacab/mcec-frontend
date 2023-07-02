@@ -1,27 +1,8 @@
-import { useEffect, useState } from "react";
-import apiClient from "../../services/api-client";
 import { Text } from "@chakra-ui/react";
-
-interface Hymn {
-  id: number;
-  title: string;
-}
-
-interface FetchHymnResponse {
-  count: number;
-  results: Hymn[];
-}
+import useHymns from "../../hooks/useHymns";
 
 const HymnGrid = () => {
-  const [hymns, setHymns] = useState<Hymn[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    apiClient
-      .get<FetchHymnResponse>("/hymnbook/hymns")
-      .then((res) => setHymns(res.data.results))
-      .catch((err) => setError(err.message));
-  }, []);
+  const {hymns, error} = useHymns();
 
   return (
     <>
