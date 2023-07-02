@@ -1,5 +1,6 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
+import HymnGrid from "./Hymnbook/components/HymnGrid";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area={"main"} bg={"blue.700"}>
-        Main
+        <HymnGrid />
       </GridItem>
     </Grid>
   );
