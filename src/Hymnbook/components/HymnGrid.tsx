@@ -5,7 +5,7 @@ import HymnCardSkeleton from "./HymnCardSkeleton";
 import HymnCardContainer from "./HymnCardContainer";
 
 const HymnGrid = () => {
-  const { hymns, error, isLoading } = useHymns();
+  const { data, error, isLoading } = useHymns();
   const skeletons = [1, 2, 3, 4, 5];
 
   return (
@@ -22,7 +22,7 @@ const HymnGrid = () => {
               <HymnCardSkeleton key={skeleton} />
             </HymnCardContainer>
           ))}
-        {hymns.map((hymn) => (
+        {data.map((hymn) => (
           <HymnCardContainer>
             <HymnCard key={hymn.id} hymn={hymn} />
           </HymnCardContainer>

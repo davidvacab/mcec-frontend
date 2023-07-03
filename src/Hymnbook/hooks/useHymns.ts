@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import apiClient from "../../services/api-client";
-import { CanceledError } from "axios";
+import useData from "../../hooks/useData";
 
 interface Topic {
     id: number;
@@ -35,33 +33,7 @@ export interface Hymn {
     pdf_file: string;
     audio_set: Audio[];
   }
-  
-  interface FetchHymnResponse {
-    count: number;
-    results: Hymn[];
-  }
 
-const useHymns = () => {
-    const [hymns, setHymns] = useState<Hymn[]>([]);
-    const [error, setError] = useState("");
-    const [isLoading, setLoading] = useState(false)
-  
-    useEffect(() => {
-        const controller = new AbortController();
-
-        setLoading(true);
-        apiClient
-            .get<FetchHymnResponse>("/hymnbook/hymns", {signal: controller.signal})
-            .then((res) => setHymns(res.data.results))
-            .catch((err) => {
-                if (err instanceof CanceledError) return;
-                setError(err.message)
-            }).finally(() => setLoading(false));
-
-        return () => controller.abort();
-    }, []);
-
-    return {hymns, error, isLoading}
-}
+const useHymns = () => useData<Hymn>("/hymnbook/hymns");
 
 export default useHymns;
