@@ -1,9 +1,5 @@
 import useData from "../../hooks/useData";
-
-interface Topic {
-    id: number;
-    title: string;
-}
+import { Topic } from "./useTopics";
 
 interface Author {
     id: number;
@@ -34,6 +30,9 @@ export interface Hymn {
     audio_set: Audio[];
   }
 
-const useHymns = () => useData<Hymn>("/hymnbook/hymns");
+const useHymns = (
+    selectedTopic: Topic | null) => useData<Hymn>("/hymnbook/hymns", 
+    {params: {topic: selectedTopic?.id}}, 
+    [selectedTopic?.id]);
 
 export default useHymns;

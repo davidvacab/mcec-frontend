@@ -1,7 +1,11 @@
-import { List, ListItem, Spinner, Text } from "@chakra-ui/react";
-import useTopics from "../hooks/useTopics";
+import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
+import useTopics, { Topic } from "../hooks/useTopics";
 
-const TopicList = () => {
+interface Props {
+    onSelectTopic: (topic: Topic) => void;
+}
+
+const TopicList = ({onSelectTopic}: Props) => {
   const { data, error, isLoading } = useTopics();
 
   {
@@ -12,7 +16,7 @@ const TopicList = () => {
     <List>
       {data.map((topic) => (
         <ListItem key={topic.id} paddingY={1} fontSize={"lg"}>
-          {topic.title}
+          <Button variant={"link"} onClick={() => onSelectTopic(topic)}>{topic.title}</Button>
         </ListItem>
       ))}
     </List>
