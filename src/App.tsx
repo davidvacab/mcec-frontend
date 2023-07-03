@@ -1,6 +1,7 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import HymnGrid from "./Hymnbook/components/HymnGrid";
+import TopicList from "./Hymnbook/components/TopicList";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       </GridItem>
       <Show above="lg">
         <GridItem area={"aside"}>
-          Aside
+          <TopicList />
         </GridItem>
       </Show>
       <GridItem area={"main"}>

@@ -1,7 +1,8 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import useHymns from "../../hooks/useHymns";
+import useHymns from "../hooks/useHymns";
 import HymnCard from "./HymnCard";
-import HymnCardSkeleton from "../HymnCardSkeleton";
+import HymnCardSkeleton from "./HymnCardSkeleton";
+import HymnCardContainer from "./HymnCardContainer";
 
 const HymnGrid = () => {
   const { hymns, error, isLoading } = useHymns();
@@ -16,9 +17,15 @@ const HymnGrid = () => {
         padding={"10px"}
       >
         {isLoading &&
-          skeletons.map((skeleton) => <HymnCardSkeleton key={skeleton} />)}
+          skeletons.map((skeleton) => (
+            <HymnCardContainer>
+              <HymnCardSkeleton key={skeleton} />
+            </HymnCardContainer>
+          ))}
         {hymns.map((hymn) => (
-          <HymnCard key={hymn.id} hymn={hymn} />
+          <HymnCardContainer>
+            <HymnCard key={hymn.id} hymn={hymn} />
+          </HymnCardContainer>
         ))}
       </SimpleGrid>
     </>

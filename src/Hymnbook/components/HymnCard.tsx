@@ -16,7 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { RiFileMusicFill } from "react-icons/ri";
 import { FaFilePdf } from "react-icons/fa";
-import { Hymn } from "../../hooks/useHymns";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import { Hymn } from "../hooks/useHymns";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 
@@ -30,13 +31,8 @@ const HymnCard = ({ hymn }: Props) => {
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
 
   return (
-    <Card
-      maxWidth={"350px"}
-      borderRadius={10}
-      overflow={"hidden"}
-      bg={useColorModeValue("gray.100", "gray.700")}
-    >
-      <CardHeader>
+    <Card bg={useColorModeValue("gray.100", "gray.700")} h={"100%"}>
+      <CardHeader textAlign={"center"}>
         <Heading size={"md"}>{hymn.title}</Heading>
       </CardHeader>
       <Divider />
@@ -83,7 +79,11 @@ const HymnCard = ({ hymn }: Props) => {
       <Divider />
       <CardFooter justifyContent={"space-between"}>
         <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
+          <Button
+            variant="solid"
+            colorScheme="teal"
+            rightIcon={<AiOutlineArrowRight />}
+          >
             Abrir
           </Button>
         </ButtonGroup>
