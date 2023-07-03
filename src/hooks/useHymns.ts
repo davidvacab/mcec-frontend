@@ -19,6 +19,12 @@ interface Arranger {
     last_name: string;
 }
 
+interface Audio {
+    id: number;
+    voice: string;
+    audio: string;
+}
+
 export interface Hymn {
     id: number;
     title: string;
@@ -26,6 +32,8 @@ export interface Hymn {
     author: Author;
     arranger: Arranger;
     release_date: string;
+    pdf_file: string;
+    audio_set: Audio[];
   }
   
   interface FetchHymnResponse {
@@ -36,22 +44,24 @@ export interface Hymn {
 const useHymns = () => {
     const [hymns, setHymns] = useState<Hymn[]>([]);
     const [error, setError] = useState("");
+    const [isLoading, setLoading] = useState(false)
   
     useEffect(() => {
         const controller = new AbortController();
 
-      apiClient
-        .get<FetchHymnResponse>("/hymnbook/hymns", {signal: controller.signal})
-        .then((res) => setHymns(res.data.results))
-        .catch((err) => {
-            if (err instanceof CanceledError) return;
-            setError(err.message)
-        });
+        setLoading(true);
+        apiClient
+            .get<FetchHymnResponse>("/hymnbook/hymns", {signal: controller.signal})
+            .then((res) => setHymns(res.data.results))
+            .catch((err) => {
+                if (err instanceof CanceledError) return;
+                setError(err.message)
+            }).finally(() => setLoading(false));
 
         return () => controller.abort();
     }, []);
 
-    return {hymns, error}
+    return {hymns, error, isLoading}
 }
 
 export default useHymns;

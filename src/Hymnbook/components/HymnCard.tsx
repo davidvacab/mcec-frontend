@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   ButtonGroup,
   Card,
@@ -7,12 +6,16 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  HStack,
   Heading,
+  Icon,
   Stack,
   StackDivider,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { RiFileMusicFill } from "react-icons/ri";
+import { FaFilePdf } from "react-icons/fa";
 import { Hymn } from "../../hooks/useHymns";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
@@ -27,58 +30,71 @@ const HymnCard = ({ hymn }: Props) => {
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
 
   return (
-    <Card borderRadius={10} overflow={"hidden"} bg={useColorModeValue("gray.100", "gray.700")}>
+    <Card
+      maxWidth={"350px"}
+      borderRadius={10}
+      overflow={"hidden"}
+      bg={useColorModeValue("gray.100", "gray.700")}
+    >
       <CardHeader>
         <Heading size={"md"}>{hymn.title}</Heading>
       </CardHeader>
       <Divider />
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
-          <Box>
+          <HStack>
             <Heading size="xs" textTransform="uppercase">
-              Tema
+              Tema:
             </Heading>
-            <Text pt="2" fontSize="sm">
+            <Text pt="1" fontSize="sm">
               {hymn.topic.title}
             </Text>
-          </Box>
+          </HStack>
           {hymn.author && (
-            <Box>
+            <HStack>
               <Heading size="xs" textTransform="uppercase">
-                Autor
+                Autor:
               </Heading>
-              <Text pt="2" fontSize="sm">
+              <Text pt="1" fontSize="sm">
                 {hymn.author.first_name + " " + hymn.author.last_name}
               </Text>
-            </Box>
+            </HStack>
           )}
           {hymn.arranger && (
-            <Box>
+            <HStack>
               <Heading size="xs" textTransform="uppercase">
-                Arreglista
+                Arreglista:
               </Heading>
-              <Text pt="2" fontSize="sm">
+              <Text pt="1" fontSize="sm">
                 {hymn.arranger.first_name + " " + hymn.arranger.last_name}
               </Text>
-            </Box>
+            </HStack>
           )}
-          <Box>
+          <HStack>
             <Heading size="xs" textTransform="uppercase">
-              Fecha de publicacion
+              Fecha de publicacion:
             </Heading>
-            <Text pt="2" fontSize="sm">
+            <Text pt="1" fontSize="sm">
               {formattedDate}
             </Text>
-          </Box>
+          </HStack>
         </Stack>
       </CardBody>
       <Divider />
-      <CardFooter>
+      <CardFooter justifyContent={"space-between"}>
         <ButtonGroup spacing="2">
           <Button variant="solid" colorScheme="blue">
             Abrir
           </Button>
         </ButtonGroup>
+        <HStack justifyContent={"right"}>
+          {hymn.pdf_file && (
+            <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
+          )}
+          {hymn.audio_set.length !== 0 && (
+            <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
+          )}
+        </HStack>
       </CardFooter>
     </Card>
   );
