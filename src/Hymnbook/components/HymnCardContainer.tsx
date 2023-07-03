@@ -8,7 +8,6 @@ interface Props {
 const HymnCardContainer = ({ children }: Props) => {
   return (
     <Box
-      maxWidth={"350px"}
       borderRadius={10}
       overflow={"hidden"}
       boxShadow={useColorModeValue("2xl", "outline")}

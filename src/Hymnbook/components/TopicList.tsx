@@ -1,13 +1,16 @@
+import { List, ListItem } from "@chakra-ui/react";
 import useTopics from "../hooks/useTopics";
 
 const TopicList = () => {
-const {data, error, isLoading} = useTopics();
+  const { data, error, isLoading } = useTopics();
 
   return (
-    <ul>
-        {data.map(topic => <li key={topic.id}>{topic.title}</li>)}
-    </ul>
-  )
-}
+    <List>
+      {data.map((topic) => (
+        <ListItem key={topic.id} paddingY={1} fontSize={'lg'}>{topic.title}</ListItem>
+      ))}
+    </List>
+  );
+};
 
-export default TopicList
+export default TopicList;
