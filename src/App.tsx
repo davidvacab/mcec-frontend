@@ -24,7 +24,7 @@ function App() {
       </GridItem>
       <Show above="lg">
         <GridItem area={"aside"} paddingX={5}>
-          <TopicList onSelectTopic={(topic) => setSelectedTopic(topic)} />
+          <TopicList selectedTopic={selectedTopic} onSelectTopic={(topic) => setSelectedTopic(topic)} />
         </GridItem>
       </Show>
       <GridItem area={"main"}>
