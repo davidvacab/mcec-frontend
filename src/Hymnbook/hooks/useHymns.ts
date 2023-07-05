@@ -1,3 +1,4 @@
+import { HymnQuery } from "../../App";
 import useData from "../../hooks/useData";
 import { Topic } from "./useTopics";
 
@@ -31,8 +32,8 @@ export interface Hymn {
   }
 
 const useHymns = (
-    selectedTopic: Topic | null) => useData<Hymn>("/hymnbook/hymns", 
-    {params: {topic: selectedTopic?.id}}, 
-    [selectedTopic?.id]);
+    hymnQuery: HymnQuery) => useData<Hymn>("/hymnbook/hymns", 
+    {params: {topic: hymnQuery.topic?.id}}, 
+    [hymnQuery]);
 
 export default useHymns;

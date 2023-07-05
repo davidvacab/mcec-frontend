@@ -5,8 +5,12 @@ import TopicList from "./Hymnbook/components/TopicList";
 import { useState } from "react";
 import { Topic } from "./Hymnbook/hooks/useTopics";
 
+export interface HymnQuery {
+  topic: Topic | null;
+}
+
 function App() {
-  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+  const [hymnQuery, setHymnQuery] = useState<HymnQuery>({} as HymnQuery);
 
   return (
     <Grid
@@ -24,11 +28,11 @@ function App() {
       </GridItem>
       <Show above="lg">
         <GridItem area={"aside"} paddingX={5}>
-          <TopicList selectedTopic={selectedTopic} onSelectTopic={(topic) => setSelectedTopic(topic)} />
+          <TopicList selectedTopic={hymnQuery.topic} onSelectTopic={(topic) => setHymnQuery({...hymnQuery, topic})} />
         </GridItem>
       </Show>
       <GridItem area={"main"}>
-        <HymnGrid selectedTopic={selectedTopic} />
+        <HymnGrid hymnQuery={hymnQuery} />
       </GridItem>
     </Grid>
   );

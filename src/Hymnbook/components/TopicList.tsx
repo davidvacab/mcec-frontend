@@ -1,6 +1,5 @@
 import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
 import useTopics, { Topic } from "../hooks/useTopics";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 interface Props {
   onSelectTopic: (topic: Topic) => void;
