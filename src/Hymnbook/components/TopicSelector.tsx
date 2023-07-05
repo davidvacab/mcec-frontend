@@ -2,8 +2,9 @@ import {
   Button,
   Menu,
   MenuButton,
-  MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
   Text,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
@@ -21,22 +22,36 @@ const topicSelector = ({ onSelectTopic, selectedTopic }: Props) => {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<BsChevronDown />} h={12} w={"-moz-fit-content"}>
+      <MenuButton
+        as={Button}
+        rightIcon={<BsChevronDown />}
+        h={12}
+        w={"-moz-fit-content"}
+      >
         <Text>
           Tema:
-          <br/>
+          <br />
           {selectedTopic?.title || "Todos"}
         </Text>
       </MenuButton>
       <MenuList>
-        <MenuItem onClick={() => onSelectTopic({ id: "", title: "Todos" })}>
-          Todos los cantos
-        </MenuItem>
-        {data.map((topic) => (
-          <MenuItem key={topic.id} onClick={() => onSelectTopic(topic)}>
-            {topic.title}
-          </MenuItem>
-        ))}
+        <MenuOptionGroup defaultValue={"Todos"} title="Temas" type="radio">
+          <MenuItemOption
+            value="Todos"
+            onClick={() => onSelectTopic({ id: "", title: "Todos" })}
+          >
+            Todos los cantos
+          </MenuItemOption>
+          {data.map((topic) => (
+            <MenuItemOption
+              key={topic.id}
+              value={topic.title}
+              onClick={() => onSelectTopic(topic)}
+            >
+              {topic.title}
+            </MenuItemOption>
+          ))}
+        </MenuOptionGroup>
       </MenuList>
     </Menu>
   );

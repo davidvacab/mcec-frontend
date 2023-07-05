@@ -2,8 +2,9 @@ import {
   Button,
   Menu,
   MenuButton,
-  MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
   Text,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
@@ -27,7 +28,12 @@ const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<BsChevronDown />} h={12} w={"fit-content"}>
+      <MenuButton
+        as={Button}
+        rightIcon={<BsChevronDown />}
+        h={12}
+        w={"fit-content"}
+      >
         <Text>
           Orden:
           <br />
@@ -35,15 +41,21 @@ const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
         </Text>
       </MenuButton>
       <MenuList>
-        {sortOrders.map((order) => (
-          <MenuItem
-            key={order.value}
-            value={order.value}
-            onClick={() => onSelectSortOrder(order.value)}
-          >
-            {order.label}
-          </MenuItem>
-        ))}
+        <MenuOptionGroup
+          defaultValue={"release_date"}
+          title="Orden"
+          type="radio"
+        >
+          {sortOrders.map((order) => (
+            <MenuItemOption
+              key={order.value}
+              value={order.value}
+              onClick={() => onSelectSortOrder(order.value)}
+            >
+              {order.label}
+            </MenuItemOption>
+          ))}
+        </MenuOptionGroup>
       </MenuList>
     </Menu>
   );

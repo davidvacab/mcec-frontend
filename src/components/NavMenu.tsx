@@ -16,15 +16,15 @@ const NavMenu = () => {
         as={IconButton}
         aria-label="Options"
         icon={<GiHamburgerMenu />}
-        variant="outline"
+        variant={"outline"}
       />
       <MenuList>
-        <MenuGroup title="Cuenta">
+        <MenuGroup title="CUENTA">
           <MenuItem>Iniciar Sesion</MenuItem>
           <MenuItem>Registrarse</MenuItem>
         </MenuGroup>
         <MenuDivider />
-        <MenuGroup title="Repertorio" >
+        <MenuGroup title="REPERTORIO">
           <MenuItem>Repertorio</MenuItem>
           <MenuItem>Enviar Canto</MenuItem>
         </MenuGroup>
