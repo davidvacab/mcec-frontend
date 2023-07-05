@@ -33,7 +33,12 @@ export interface Hymn {
 
 const useHymns = (
     hymnQuery: HymnQuery) => useData<Hymn>("/hymnbook/hymns", 
-    {params: {topic: hymnQuery.topic?.id}}, 
+    {
+        params: {
+            topic: hymnQuery.topic?.id,
+            ordering: hymnQuery.sortOrder
+        }
+    }, 
     [hymnQuery]);
 
 export default useHymns;

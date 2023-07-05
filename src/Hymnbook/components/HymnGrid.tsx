@@ -3,7 +3,6 @@ import useHymns from "../hooks/useHymns";
 import HymnCard from "./HymnCard";
 import HymnCardSkeleton from "./HymnCardSkeleton";
 import HymnCardContainer from "./HymnCardContainer";
-import { Topic } from "../hooks/useTopics";
 import { HymnQuery } from "../../App";
 
 interface Props {
