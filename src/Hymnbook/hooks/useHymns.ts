@@ -36,7 +36,8 @@ const useHymns = (
     {
         params: {
             topic: hymnQuery.topic?.id,
-            ordering: hymnQuery.sortOrder
+            ordering: hymnQuery.sortOrder,
+            search: hymnQuery.searchText,
         }
     }, 
     [hymnQuery]);

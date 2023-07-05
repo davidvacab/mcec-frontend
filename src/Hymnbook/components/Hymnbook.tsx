@@ -5,10 +5,12 @@ import TopicList from "./TopicList";
 import TopicSelector from "./TopicSelector";
 import SortSelector from "./SortSelector";
 import HymnGrid from "./HymnGrid";
+import SearchInput from "./SearchInput";
 
 export interface HymnQuery {
   topic: Topic | null;
   sortOrder: string;
+  searchText: string;
 }
 
 const Hymnbook = () => {
@@ -25,6 +27,7 @@ const Hymnbook = () => {
         </GridItem>
       </Show>
       <GridItem area={"main"} paddingX={3}>
+        <SearchInput onSearch={searchText => setHymnQuery({...hymnQuery, searchText})} />
         <HStack spacing={5} marginY={5}>
           <Show below="lg">
             <TopicSelector
