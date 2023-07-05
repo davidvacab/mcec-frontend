@@ -2,8 +2,8 @@ import { Card, CardBody, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 const HymnCardSkeleton = () => {
   return (
-    <Card>
-      <Skeleton height={"200px"} />
+    <Card direction={"row"}>
+      <Skeleton height={"50px"}/>
       <CardBody>
         <SkeletonText />
       </CardBody>

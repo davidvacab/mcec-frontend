@@ -1,7 +1,7 @@
 import useData from "../../hooks/useData";
 
 export interface Topic {
-    id: number;
+    id: number | string;
     title: string;
 }
 

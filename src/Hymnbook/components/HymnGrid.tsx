@@ -3,7 +3,7 @@ import useHymns from "../hooks/useHymns";
 import HymnCard from "./HymnCard";
 import HymnCardSkeleton from "./HymnCardSkeleton";
 import HymnCardContainer from "./HymnCardContainer";
-import { HymnQuery } from "../../App";
+import { HymnQuery } from "./Hymnbook";
 
 interface Props {
   hymnQuery: HymnQuery;
@@ -17,9 +17,8 @@ const HymnGrid = ({ hymnQuery }: Props) => {
     <>
       {error && <Text>{error}</Text>}
       <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+        //columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
         spacing={5}
-        padding={"10px"}
       >
         {isLoading &&
           skeletons.map((skeleton) => (

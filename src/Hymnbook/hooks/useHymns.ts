@@ -1,5 +1,5 @@
-import { HymnQuery } from "../../App";
 import useData from "../../hooks/useData";
+import { HymnQuery } from "../components/Hymnbook";
 import { Topic } from "./useTopics";
 
 interface Author {
