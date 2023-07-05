@@ -36,7 +36,9 @@ const HymnCard = ({ hymn }: Props) => {
       onClick={() => console.log(hymn.title)}
     >
       <CardHeader textAlign={"center"}>
-        <Heading size={"md"}>{hymn.title}</Heading>
+        <Heading size={"md"}>
+          {hymn.title}
+        </Heading>
       </CardHeader>
       <Show above="md">
         <CardBody>
