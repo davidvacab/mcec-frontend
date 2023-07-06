@@ -1,6 +1,7 @@
 import {
   Button,
   Divider,
+  Box,
   Heading,
   List,
   ListItem,
@@ -23,7 +24,19 @@ const TopicList = ({ selectedTopic, onSelectTopic }: Props) => {
   if (isLoading) return <Spinner />;
   const plainTopic = { id: "", title: "Todos los cantos" };
   return (
-    <>
+    <Box
+      as={"nav"}
+      position={"sticky"}
+      height={"calc(100vh - 8.125rem)"}
+      overflowY={"auto"}
+      overscrollBehavior={"contain"}
+      flexShrink={0}
+      top={"4rem"}
+      left={"0rem"}
+      paddingX={5}
+      flexDirection={"column"}
+      w={"300px"}
+    >
       <Heading size={"md"} marginY={5}>
         Temas:
       </Heading>
@@ -56,7 +69,7 @@ const TopicList = ({ selectedTopic, onSelectTopic }: Props) => {
           </ListItem>
         ))}
       </List>
-    </>
+    </Box>
   );
 };
 

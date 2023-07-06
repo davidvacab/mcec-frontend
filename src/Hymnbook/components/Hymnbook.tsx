@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Topic } from "../hooks/useTopics";
-import { GridItem, HStack, Show } from "@chakra-ui/react";
+import { Flex, HStack, Show, Box } from "@chakra-ui/react";
 import TopicList from "./TopicList";
 import TopicSelector from "./TopicSelector";
 import SortSelector from "./SortSelector";
@@ -17,17 +17,17 @@ const Hymnbook = () => {
   const [hymnQuery, setHymnQuery] = useState<HymnQuery>({} as HymnQuery);
 
   return (
-    <>
+    <Flex marginBottom={"5"} as={"main"}>
       <Show above="lg">
-        <GridItem area={"aside"} paddingX={5}>
-          <TopicList
-            selectedTopic={hymnQuery.topic}
-            onSelectTopic={(topic) => setHymnQuery({ ...hymnQuery, topic })}
-          />
-        </GridItem>
+        <TopicList
+          selectedTopic={hymnQuery.topic}
+          onSelectTopic={(topic) => setHymnQuery({ ...hymnQuery, topic })}
+        />
       </Show>
-      <GridItem area={"main"} paddingX={3}>
-        <SearchInput onSearch={searchText => setHymnQuery({...hymnQuery, searchText})} />
+      <Box paddingX={5} flex={1} overflowWrap={"normal"}>
+        <SearchInput
+          onSearch={(searchText) => setHymnQuery({ ...hymnQuery, searchText })}
+        />
         <HStack spacing={5} marginY={5}>
           <Show below="lg">
             <TopicSelector
@@ -45,8 +45,8 @@ const Hymnbook = () => {
           />
         </HStack>
         <HymnGrid hymnQuery={hymnQuery} />
-      </GridItem>
-    </>
+      </Box>
+    </Flex>
   );
 };
 

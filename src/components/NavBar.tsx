@@ -1,21 +1,36 @@
-import { HStack, Image, useColorModeValue } from "@chakra-ui/react";
+import {
+  ButtonGroup,
+  Flex,
+  Image,
+  Spacer,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import logo from "../assets/card.jpg";
 import ColorModeSwitch from "./ColorModeButton";
 import NavMenu from "./NavMenu";
 
 const NavBar = () => {
   return (
-    <HStack
-      justifyContent={"space-between"}
-      padding={"10px"}
-      bg={useColorModeValue("gray.100", "gray.800")}
+    <Flex
+      as={"header"}
+      alignItems={"center"}
+      gap={"2"}
+      position={"sticky"}
+      zIndex={3}
+      top={0}
+      borderBottom={"1px"}
+      height="4.5rem"
+      minH={"4.5rem"}
+      bg={useColorModeValue("white", "gray.800")}
+      px={5}
     >
-      <Image src={logo} boxSize={"60px"} />
-      <HStack justifyContent={"end"}>
+      <Image src={logo} boxSize={"3rem"} borderRadius={"2xl"} />
+      <Spacer />
+      <ButtonGroup gap="2">
         <ColorModeSwitch />
         <NavMenu />
-      </HStack>
-    </HStack>
+      </ButtonGroup>
+    </Flex>
   );
 };
 

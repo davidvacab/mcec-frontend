@@ -10,7 +10,7 @@ const HymnCardContainer = ({ children }: Props) => {
     <Box
       borderRadius={10}
       overflow={"hidden"}
-      boxShadow={useColorModeValue("2xl", "outline")}
+      boxShadow={useColorModeValue("2xl", "dark-lg")}
     >
       {children}
     </Box>

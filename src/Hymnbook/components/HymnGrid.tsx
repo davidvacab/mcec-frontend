@@ -1,4 +1,4 @@
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import useHymns from "../hooks/useHymns";
 import HymnCard from "./HymnCard";
 import HymnCardSkeleton from "./HymnCardSkeleton";
@@ -14,11 +14,12 @@ const HymnGrid = ({ hymnQuery }: Props) => {
   const skeletons = [1, 2, 3, 4, 5];
 
   return (
-    <>
+    <Flex>
       {error && <Text>{error}</Text>}
       <SimpleGrid
         //columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
         spacing={5}
+        w={"100%"}
       >
         {isLoading &&
           skeletons.map((skeleton) => (
@@ -32,7 +33,7 @@ const HymnGrid = ({ hymnQuery }: Props) => {
           </HymnCardContainer>
         ))}
       </SimpleGrid>
-    </>
+    </Flex>
   );
 };
 
