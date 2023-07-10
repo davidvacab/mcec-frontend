@@ -1,38 +1,60 @@
-import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import React from "react";
+import { Flex, SimpleGrid, Spinner, Text } from "@chakra-ui/react";
 import useHymns from "../hooks/useHymns";
 import HymnCard from "./HymnCard";
 import HymnCardSkeleton from "./HymnCardSkeleton";
 import HymnCardContainer from "./HymnCardContainer";
 import { HymnQuery } from "../../App";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
   hymnQuery: HymnQuery;
 }
 
 const HymnGrid = ({ hymnQuery }: Props) => {
-  const { data, error, isLoading } = useHymns(hymnQuery);
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useHymns(hymnQuery);
   const skeletons = [1, 2, 3, 4, 5];
+
+  const fetchHymnsCount =
+    data?.pages.reduce((total, page) => total + page.results.length, 0) || 0;
 
   return (
     <Flex>
       {error && <Text>{error.message}</Text>}
-      <SimpleGrid
-        //columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-        spacing={5}
-        w={"100%"}
+      <InfiniteScroll
+        dataLength={fetchHymnsCount}
+        hasMore={!!hasNextPage}
+        next={() => fetchNextPage()}
+        loader={<Spinner />}
       >
-        {isLoading &&
-          skeletons.map((skeleton) => (
-            <HymnCardContainer key={skeleton}>
-              <HymnCardSkeleton />
-            </HymnCardContainer>
+        <SimpleGrid
+          //columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+          spacing={5}
+          w={"100%"}
+        >
+          {isLoading &&
+            skeletons.map((skeleton) => (
+              <HymnCardContainer key={skeleton}>
+                <HymnCardSkeleton />
+              </HymnCardContainer>
+            ))}
+          {data?.pages.map((page, index) => (
+            <React.Fragment key={index}>
+              {page.results.map((hymn) => (
+                <HymnCardContainer key={hymn.id}>
+                  <HymnCard hymn={hymn} />
+                </HymnCardContainer>
+              ))}
+            </React.Fragment>
           ))}
-        {data?.results.map((hymn) => (
-          <HymnCardContainer key={hymn.id}>
-            <HymnCard hymn={hymn} />
-          </HymnCardContainer>
-        ))}
-      </SimpleGrid>
+        </SimpleGrid>
+      </InfiniteScroll>
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { HymnQuery } from "../../App";
 
 import { Topic } from "./useTopics";
@@ -36,16 +36,21 @@ export interface Hymn {
 }
 
 const useHymns = (hymnQuery: HymnQuery) =>
-  useQuery<FetchResponse<Hymn>, Error>({
+  useInfiniteQuery<FetchResponse<Hymn>, Error>({
     queryKey: ["hymns", hymnQuery],
-    queryFn: () =>
+    queryFn: ({ pageParam = 1 }) =>
       apiClient.getAll({
         params: {
           topic: hymnQuery.topic?.id,
           ordering: hymnQuery.sortOrder,
           search: hymnQuery.searchText,
+          page: pageParam,
         },
       }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    staleTime: 24 * 60 * 60 * 1000, //24 hours
   });
 
 export default useHymns;
