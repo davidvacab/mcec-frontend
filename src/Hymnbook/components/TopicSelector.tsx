@@ -12,7 +12,7 @@ const TopicSelector = ({ selectedTopic, onSelectTopic }: Props) => {
   const { data, error, isLoading } = useTopics();
 
   {
-    error && <Text>{error}</Text>;
+    error && <Text>{error.message}</Text>;
   }
   if (isLoading) return <Spinner />;
 
@@ -20,7 +20,7 @@ const TopicSelector = ({ selectedTopic, onSelectTopic }: Props) => {
     <NavItemGroup
       label={"Tema" + (selectedTopic ? ": " + selectedTopic.title : "s")}
     >
-      {data.map((topic) => (
+      {data?.results.map((topic) => (
         <NavItem
           key={topic.id}
           onClick={() => onSelectTopic(topic)}

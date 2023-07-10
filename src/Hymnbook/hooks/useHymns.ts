@@ -1,7 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { HymnQuery } from "../../App";
-import useData from "../../hooks/useData";
 
 import { Topic } from "./useTopics";
+import apiClient, { FetchResponse } from "../../services/api-client";
 
 interface Author {
   id: number;
@@ -33,16 +34,18 @@ export interface Hymn {
 }
 
 const useHymns = (hymnQuery: HymnQuery) =>
-  useData<Hymn>(
-    "/hymnbook/hymns",
-    {
-      params: {
-        topic: hymnQuery.topic?.id,
-        ordering: hymnQuery.sortOrder,
-        search: hymnQuery.searchText,
-      },
-    },
-    [hymnQuery]
-  );
+  useQuery<FetchResponse<Hymn>, Error>({
+    queryKey: ["hymns", hymnQuery],
+    queryFn: () =>
+      apiClient
+        .get<FetchResponse<Hymn>>("/hymnbook/hymns", {
+          params: {
+            topic: hymnQuery.topic?.id,
+            ordering: hymnQuery.sortOrder,
+            search: hymnQuery.searchText,
+          },
+        })
+        .then((res) => res.data),
+  });
 
 export default useHymns;

@@ -12,7 +12,15 @@ const HymnHeading = ({ hymnQuery }: Props) => {
     hymnQuery.searchText ? "con el titulo '" + hymnQuery.searchText + "'" : ""
   }`;
   return (
-    <Heading as={"h1"} my={heading && "5"} size={"md"}>
+    <Heading
+      as={"h1"}
+      my={heading && "6"}
+      size={{
+        sm: "md",
+        lg: "lg",
+      }}
+      textAlign={"center"}
+    >
       {heading}
     </Heading>
   );

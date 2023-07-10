@@ -15,7 +15,7 @@ const HymnGrid = ({ hymnQuery }: Props) => {
 
   return (
     <Flex>
-      {error && <Text>{error}</Text>}
+      {error && <Text>{error.message}</Text>}
       <SimpleGrid
         //columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
         spacing={5}
@@ -27,7 +27,7 @@ const HymnGrid = ({ hymnQuery }: Props) => {
               <HymnCardSkeleton />
             </HymnCardContainer>
           ))}
-        {data.map((hymn) => (
+        {data?.results.map((hymn) => (
           <HymnCardContainer key={hymn.id}>
             <HymnCard hymn={hymn} />
           </HymnCardContainer>
