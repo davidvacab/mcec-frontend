@@ -6,7 +6,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import logo from "../assets/card.jpg";
-import ColorModeSwitch from "./ColorModeButton";
+import ColorModeButton from "./ColorModeButton";
 import NavMenu from "./NavMenu";
 
 const NavBar = () => {
@@ -27,7 +27,7 @@ const NavBar = () => {
       <Image src={logo} boxSize={"3rem"} borderRadius={"2xl"} />
       <Spacer />
       <ButtonGroup gap="2">
-        <ColorModeSwitch />
+        <ColorModeButton />
         <NavMenu />
       </ButtonGroup>
     </Flex>

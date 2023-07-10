@@ -34,13 +34,20 @@ const HymnCard = ({ hymn }: Props) => {
       bg={useColorModeValue("gray.100", "gray.700")}
       h={"100%"}
       onClick={() => console.log(hymn.title)}
+      justifyContent={"space-between"}
     >
       <CardHeader textAlign={"center"}>
-        <Heading size={"md"}>
+        <Heading
+          size={{
+            sm: "sm",
+            md: "md",
+            lg: "md",
+          }}
+        >
           {hymn.title}
         </Heading>
       </CardHeader>
-      <Show above="md">
+      <Show above="lg">
         <CardBody>
           <Stack
             divider={<StackDivider />}

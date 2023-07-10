@@ -1,60 +1,36 @@
-import {
-  Button,
-  Menu,
-  MenuButton,
-  MenuItemOption,
-  MenuList,
-  MenuOptionGroup,
-  Text,
-} from "@chakra-ui/react";
-import { BsChevronDown } from "react-icons/bs";
+import { Spinner, Text } from "@chakra-ui/react";
 import useTopics, { Topic } from "../hooks/useTopics";
+import NavItem from "../../components/NavItem";
+import NavItemGroup from "../../components/NavItemGroup";
 
 interface Props {
   onSelectTopic: (topic: Topic) => void;
   selectedTopic: Topic | null;
 }
 
-const topicSelector = ({ onSelectTopic, selectedTopic }: Props) => {
-  const { data, error } = useTopics();
+const TopicSelector = ({ selectedTopic, onSelectTopic }: Props) => {
+  const { data, error, isLoading } = useTopics();
 
-  if (error) return null;
+  {
+    error && <Text>{error}</Text>;
+  }
+  if (isLoading) return <Spinner />;
 
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rightIcon={<BsChevronDown />}
-        h={12}
-        w={"-moz-fit-content"}
-      >
-        <Text>
-          Tema:
-          <br />
-          {selectedTopic?.title || "Todos"}
-        </Text>
-      </MenuButton>
-      <MenuList>
-        <MenuOptionGroup defaultValue={"Todos"} title="Temas" type="radio">
-          <MenuItemOption
-            value="Todos"
-            onClick={() => onSelectTopic({ id: "", title: "Todos" })}
-          >
-            Todos los cantos
-          </MenuItemOption>
-          {data.map((topic) => (
-            <MenuItemOption
-              key={topic.id}
-              value={topic.title}
-              onClick={() => onSelectTopic(topic)}
-            >
-              {topic.title}
-            </MenuItemOption>
-          ))}
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <NavItemGroup
+      label={"Tema" + (selectedTopic ? ": " + selectedTopic.title : "s")}
+    >
+      {data.map((topic) => (
+        <NavItem
+          key={topic.id}
+          onClick={() => onSelectTopic(topic)}
+          selected={selectedTopic?.id === topic.id}
+        >
+          {topic.title}
+        </NavItem>
+      ))}
+    </NavItemGroup>
   );
 };
 
-export default topicSelector;
+export default TopicSelector;

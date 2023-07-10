@@ -1,7 +1,7 @@
 import { IconButton, useColorMode } from "@chakra-ui/react";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 
-const ColorModeSwitch = () => {
+const ColorModeButton = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   return (
@@ -15,4 +15,4 @@ const ColorModeSwitch = () => {
   );
 };
 
-export default ColorModeSwitch;
+export default ColorModeButton;
