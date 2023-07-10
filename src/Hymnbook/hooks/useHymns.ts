@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { HymnQuery } from "../../App";
 
 import { Topic } from "./useTopics";
-import apiClient, { FetchResponse } from "../../services/api-client";
+import APIClient, { FetchResponse } from "../../services/api-client";
+
+const apiClient = new APIClient<Hymn>("/hymnbook/hymns");
 
 interface Author {
   id: number;
@@ -37,15 +39,13 @@ const useHymns = (hymnQuery: HymnQuery) =>
   useQuery<FetchResponse<Hymn>, Error>({
     queryKey: ["hymns", hymnQuery],
     queryFn: () =>
-      apiClient
-        .get<FetchResponse<Hymn>>("/hymnbook/hymns", {
-          params: {
-            topic: hymnQuery.topic?.id,
-            ordering: hymnQuery.sortOrder,
-            search: hymnQuery.searchText,
-          },
-        })
-        .then((res) => res.data),
+      apiClient.getAll({
+        params: {
+          topic: hymnQuery.topic?.id,
+          ordering: hymnQuery.sortOrder,
+          search: hymnQuery.searchText,
+        },
+      }),
   });
 
 export default useHymns;

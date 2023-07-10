@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient, { FetchResponse } from "../../services/api-client";
+import APIClient, { FetchResponse } from "../../services/api-client";
+
+const apiClient = new APIClient<Topic>("/hymnbook/topics");
 
 export interface Topic {
   id: number | string;
@@ -9,10 +11,7 @@ export interface Topic {
 const useTopics = () =>
   useQuery<FetchResponse<Topic>, Error>({
     queryKey: ["topics"],
-    queryFn: () =>
-      apiClient
-        .get<FetchResponse<Topic>>("/hymnbook/topics")
-        .then((res) => res.data),
+    queryFn: apiClient.getAll,
     staleTime: 24 * 60 * 60 * 1000, //24 hours
   });
 
