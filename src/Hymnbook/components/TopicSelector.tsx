@@ -1,16 +1,14 @@
 import { Spinner, Text } from "@chakra-ui/react";
-import useTopics, { Topic } from "../hooks/useTopics";
 import NavItem from "../../components/NavItem";
 import NavItemGroup from "../../components/NavItemGroup";
 import useTopic from "../hooks/useTopic";
+import useHymnQueryStore from "../../store";
+import useTopics from "../hooks/useTopics";
 
-interface Props {
-  onSelectTopic: (topic: Topic) => void;
-  selectedTopicId: number;
-}
-
-const TopicSelector = ({ selectedTopicId, onSelectTopic }: Props) => {
+const TopicSelector = () => {
   const { data, error, isLoading } = useTopics();
+  const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicId);
+  const setSelectedTopicId = useHymnQueryStore((s) => s.setTopicId);
   const selectedTopic = useTopic(selectedTopicId);
 
   {
@@ -25,7 +23,7 @@ const TopicSelector = ({ selectedTopicId, onSelectTopic }: Props) => {
       {data?.results.map((topic) => (
         <NavItem
           key={topic.id}
-          onClick={() => onSelectTopic(topic)}
+          onClick={() => setSelectedTopicId(topic.id)}
           selected={selectedTopic?.id === topic.id}
         >
           {topic.title}

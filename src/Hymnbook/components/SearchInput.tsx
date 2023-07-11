@@ -1,13 +1,11 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
+import useHymnQueryStore from "../../store";
 
-interface Props {
-  onSearch: (search: string) => void;
-}
-
-const SearchInput = ({ onSearch }: Props) => {
+const SearchInput = () => {
   const ref = useRef<HTMLInputElement>(null);
+  const setSearchText = useHymnQueryStore((s) => s.setSearchText);
 
   return (
     <form
@@ -15,7 +13,7 @@ const SearchInput = ({ onSearch }: Props) => {
       onSubmit={(event) => {
         event.preventDefault();
         if (ref.current) {
-          onSearch(ref.current.value);
+          setSearchText(ref.current.value);
           ref.current.value = "";
         }
       }}

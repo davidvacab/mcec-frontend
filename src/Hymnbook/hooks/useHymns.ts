@@ -1,8 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ms from "ms";
-import { HymnQuery } from "../../App";
 import APIClient, { FetchResponse } from "../../services/api-client";
-import { Topic } from "./useTopics";
+import useHymnQueryStore from "../../store";
 
 const apiClient = new APIClient<Hymn>("/hymnbook/hymns");
 
@@ -27,7 +26,7 @@ interface Audio {
 export interface Hymn {
   id: number;
   title: string;
-  topic: Topic;
+  topic: number;
   author?: Author;
   arranger?: Arranger;
   release_date: string;
@@ -35,8 +34,9 @@ export interface Hymn {
   audio_set?: Audio[];
 }
 
-const useHymns = (hymnQuery: HymnQuery) =>
-  useInfiniteQuery<FetchResponse<Hymn>, Error>({
+const useHymns = () => {
+  const hymnQuery = useHymnQueryStore((s) => s.hymnQuery);
+  return useInfiniteQuery<FetchResponse<Hymn>, Error>({
     queryKey: ["hymns", hymnQuery],
     queryFn: ({ pageParam = 1 }) =>
       apiClient.getAll({
@@ -52,5 +52,6 @@ const useHymns = (hymnQuery: HymnQuery) =>
     },
     staleTime: ms("24h"),
   });
+};
 
 export default useHymns;

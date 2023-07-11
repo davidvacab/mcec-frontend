@@ -1,12 +1,11 @@
 import NavItemGroup from "../../components/NavItemGroup";
 import NavItem from "../../components/NavItem";
+import useHymnQueryStore from "../../store";
 
-interface Props {
-  onSelectSortOrder: (sortOrder: string) => void;
-  sortOrder: string;
-}
+const SortSelector = () => {
+  const sortOrder = useHymnQueryStore(s => s.hymnQuery.sortOrder);
+  const setSortOrder = useHymnQueryStore(s => s.setSortOrder);
 
-const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
   const sortOrders = [
     { value: "", label: "Anadido Recientemente" },
     { value: "release_date", label: "Publicacion Reciente" },
@@ -25,7 +24,7 @@ const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
         <NavItem
           selected={order.value === sortOrder}
           key={order.value}
-          onClick={() => onSelectSortOrder(order.value)}
+          onClick={() => setSortOrder(order.value)}
         >
           {order.label}
         </NavItem>

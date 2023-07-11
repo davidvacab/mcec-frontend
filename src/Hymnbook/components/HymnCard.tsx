@@ -18,6 +18,7 @@ import { FaFilePdf } from "react-icons/fa";
 import { Hymn } from "../hooks/useHymns";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
+import useTopic from "../hooks/useTopic";
 
 interface Props {
   hymn: Hymn;
@@ -25,8 +26,8 @@ interface Props {
 
 const HymnCard = ({ hymn }: Props) => {
   const date = new Date(hymn.release_date);
-
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
+  const topic = useTopic(hymn.topic);
 
   return (
     <Card
@@ -60,7 +61,7 @@ const HymnCard = ({ hymn }: Props) => {
                 Tema:
               </Heading>
               <Text pt="1" fontSize="md">
-                {hymn.topic.title}
+                {topic?.title}
               </Text>
             </VStack>
             {/*
@@ -101,7 +102,7 @@ const HymnCard = ({ hymn }: Props) => {
             {hymn.pdf_file && (
               <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
             )}
-            {hymn.audio_set.length !== 0 && (
+            {hymn.audio_set?.length !== 0 && (
               <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
             )}
           </HStack>

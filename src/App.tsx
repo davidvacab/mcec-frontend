@@ -5,7 +5,6 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import SidebarContent from "./components/SidebarContent";
 import HymnGrid from "./Hymnbook/components/HymnGrid";
@@ -14,48 +13,38 @@ import SortSelector from "./Hymnbook/components/SortSelector";
 import SearchInput from "./Hymnbook/components/SearchInput";
 import NavItem from "./components/NavItem";
 import HymnHeading from "./Hymnbook/components/HymnHeading";
-
-export interface HymnQuery {
-  topicId: number;
-  sortOrder: string;
-  searchText: string;
-}
+import useHymnQueryStore from "./store";
 
 function App() {
-  const [hymnQuery, setHymnQuery] = useState<HymnQuery>({} as HymnQuery);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const filters = (
     <>
       <SearchInput
-        onSearch={(searchText) => {
-          setHymnQuery({ ...hymnQuery, searchText });
-          onClose();
-        }}
+      // onSearch={() => {
+      //   onClose();
+      // }}
       />
       <NavItem
         selected={false}
         borderWidth={"1px"}
         borderColor={"cyan.300"}
         onClick={() => {
-          setHymnQuery({} as HymnQuery);
+          setSearchText("");
           onClose();
         }}
       >
         Todos los Cantos
       </NavItem>
       <SortSelector
-        sortOrder={hymnQuery.sortOrder}
-        onSelectSortOrder={(sortOrder) => {
-          setHymnQuery({ ...hymnQuery, sortOrder });
-          onClose();
-        }}
+      // onSelectSortOrder={() => {
+      //   onClose();
+      // }}
       />
       <TopicSelector
-        selectedTopicId={hymnQuery.topicId}
-        onSelectTopic={(topic) => {
-          setHymnQuery({ ...hymnQuery, topicId: topic.id });
-          onClose();
-        }}
+      // onSelectTopic={(topic) => {
+      //   onClose();
+      // }}
       />
     </>
   );
@@ -86,8 +75,8 @@ function App() {
         </DrawerContent>
       </Drawer>
       <Box ml={{ base: 0, md: 80 }} p="4">
-        <HymnHeading hymnQuery={hymnQuery} />
-        <HymnGrid hymnQuery={hymnQuery} />
+        <HymnHeading />
+        <HymnGrid />
       </Box>
     </Box>
   );
