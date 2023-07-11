@@ -4,7 +4,7 @@ import APIClient, { FetchResponse } from "../../services/api-client";
 const apiClient = new APIClient<Topic>("/hymnbook/topics");
 
 export interface Topic {
-  id: number | string;
+  id: number;
   title: string;
 }
 

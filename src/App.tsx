@@ -9,7 +9,6 @@ import { useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import SidebarContent from "./components/SidebarContent";
 import HymnGrid from "./Hymnbook/components/HymnGrid";
-import { Topic } from "./Hymnbook/hooks/useTopics";
 import TopicSelector from "./Hymnbook/components/TopicSelector";
 import SortSelector from "./Hymnbook/components/SortSelector";
 import SearchInput from "./Hymnbook/components/SearchInput";
@@ -17,7 +16,7 @@ import NavItem from "./components/NavItem";
 import HymnHeading from "./Hymnbook/components/HymnHeading";
 
 export interface HymnQuery {
-  topic: Topic | null;
+  topicId: number;
   sortOrder: string;
   searchText: string;
 }
@@ -27,6 +26,12 @@ function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const filters = (
     <>
+      <SearchInput
+        onSearch={(searchText) => {
+          setHymnQuery({ ...hymnQuery, searchText });
+          onClose();
+        }}
+      />
       <NavItem
         selected={false}
         borderWidth={"1px"}
@@ -38,12 +43,6 @@ function App() {
       >
         Todos los Cantos
       </NavItem>
-      <SearchInput
-        onSearch={(searchText) => {
-          setHymnQuery({ ...hymnQuery, searchText });
-          onClose();
-        }}
-      />
       <SortSelector
         sortOrder={hymnQuery.sortOrder}
         onSelectSortOrder={(sortOrder) => {
@@ -52,9 +51,9 @@ function App() {
         }}
       />
       <TopicSelector
-        selectedTopic={hymnQuery.topic}
+        selectedTopicId={hymnQuery.topicId}
         onSelectTopic={(topic) => {
-          setHymnQuery({ ...hymnQuery, topic });
+          setHymnQuery({ ...hymnQuery, topicId: topic.id });
           onClose();
         }}
       />

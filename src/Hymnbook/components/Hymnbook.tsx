@@ -13,7 +13,7 @@ const Hymnbook = () => {
     <Box as={"main"}>
       <Show above="lg">
         <TopicSelector
-          selectedTopic={hymnQuery.topic}
+          selectedTopicId={hymnQuery.topic}
           onSelectTopic={(topic) => setHymnQuery({ ...hymnQuery, topic })}
         />
       </Show>
@@ -24,7 +24,7 @@ const Hymnbook = () => {
         <HStack spacing={{ base: "0", md: "6" }} marginY={5}>
           <Show below="lg">
             <TopicSelector
-              selectedTopic={hymnQuery.topic}
+              selectedTopicId={hymnQuery.topic}
               onSelectTopic={(topic: Topic) =>
                 setHymnQuery({ ...hymnQuery, topic })
               }

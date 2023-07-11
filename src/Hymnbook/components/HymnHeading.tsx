@@ -1,14 +1,17 @@
 import { Heading } from "@chakra-ui/react";
 import { HymnQuery } from "../../App";
+import useTopics from "../hooks/useTopics";
 
 interface Props {
   hymnQuery: HymnQuery;
 }
 
 const HymnHeading = ({ hymnQuery }: Props) => {
+  const { data: topics } = useTopics();
+  const topic = topics?.results.find((t) => t.id === hymnQuery.topicId);
   const heading = `${
-    hymnQuery.topic || hymnQuery.searchText ? "Cantos " : ""
-  } ${hymnQuery.topic ? "de " + hymnQuery.topic.title : ""} ${
+    hymnQuery.topicId || hymnQuery.searchText ? "Cantos " : ""
+  } ${hymnQuery.topicId ? "de " + topic?.title : ""} ${
     hymnQuery.searchText ? "con el titulo '" + hymnQuery.searchText + "'" : ""
   }`;
   return (

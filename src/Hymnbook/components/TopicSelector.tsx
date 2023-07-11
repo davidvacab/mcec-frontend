@@ -5,11 +5,12 @@ import NavItemGroup from "../../components/NavItemGroup";
 
 interface Props {
   onSelectTopic: (topic: Topic) => void;
-  selectedTopic: Topic | null;
+  selectedTopicId: number;
 }
 
-const TopicSelector = ({ selectedTopic, onSelectTopic }: Props) => {
+const TopicSelector = ({ selectedTopicId, onSelectTopic }: Props) => {
   const { data, error, isLoading } = useTopics();
+  const selectedTopic = data?.results.find((t) => t.id === selectedTopicId);
 
   {
     error && <Text>{error.message}</Text>;

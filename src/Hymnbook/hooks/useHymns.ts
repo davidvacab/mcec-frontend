@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { HymnQuery } from "../../App";
 
 import { Topic } from "./useTopics";
@@ -28,11 +28,11 @@ export interface Hymn {
   id: number;
   title: string;
   topic: Topic;
-  author: Author;
-  arranger: Arranger;
+  author?: Author;
+  arranger?: Arranger;
   release_date: string;
   pdf_file: string;
-  audio_set: Audio[];
+  audio_set?: Audio[];
 }
 
 const useHymns = (hymnQuery: HymnQuery) =>
@@ -41,7 +41,7 @@ const useHymns = (hymnQuery: HymnQuery) =>
     queryFn: ({ pageParam = 1 }) =>
       apiClient.getAll({
         params: {
-          topic: hymnQuery.topic?.id,
+          topic: hymnQuery.topicId,
           ordering: hymnQuery.sortOrder,
           search: hymnQuery.searchText,
           page: pageParam,
