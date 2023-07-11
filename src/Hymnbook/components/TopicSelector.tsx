@@ -2,6 +2,7 @@ import { Spinner, Text } from "@chakra-ui/react";
 import useTopics, { Topic } from "../hooks/useTopics";
 import NavItem from "../../components/NavItem";
 import NavItemGroup from "../../components/NavItemGroup";
+import useTopic from "../hooks/useTopic";
 
 interface Props {
   onSelectTopic: (topic: Topic) => void;
@@ -10,7 +11,7 @@ interface Props {
 
 const TopicSelector = ({ selectedTopicId, onSelectTopic }: Props) => {
   const { data, error, isLoading } = useTopics();
-  const selectedTopic = data?.results.find((t) => t.id === selectedTopicId);
+  const selectedTopic = useTopic(selectedTopicId);
 
   {
     error && <Text>{error.message}</Text>;
