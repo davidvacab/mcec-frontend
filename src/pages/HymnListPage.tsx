@@ -16,7 +16,7 @@ import HymnGrid from "../Hymnbook/components/HymnGrid";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const HymnListPage = () => {
-  useDocumentTitle("Repertorio")
+  useDocumentTitle("Repertorio");
   const { isOpen, onClose } = useDisclosure();
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const filters = (

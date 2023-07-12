@@ -33,8 +33,9 @@ const Carousel = () => {
 
   // These are the breakpoints which changes the position of the
   // buttons as the screen size changes
-  const top = useBreakpointValue({ base: "90%", md: "50%" });
+  const top = useBreakpointValue({ base: "90%", md: "80%" });
   const side = useBreakpointValue({ base: "30%", md: "40px" });
+  const height = "750px";
 
   // This list contains all the data for carousels
   // This can be static or loaded from a server
@@ -59,10 +60,9 @@ const Carousel = () => {
   return (
     <Box
       position={"relative"}
-      height={"750px"}
+      height={height}
       width={"full"}
       overflow={"hidden"}
-
     >
       {/* CSS files for react-slick */}
       <link
@@ -78,6 +78,9 @@ const Carousel = () => {
       />
       {/* Left Icon */}
       <IconButton
+        borderRadius={20}
+        backdropFilter="auto"
+        backdropContrast="10%"
         aria-label="left-arrow"
         variant="ghost"
         position="absolute"
@@ -91,6 +94,9 @@ const Carousel = () => {
       </IconButton>
       {/* Right Icon */}
       <IconButton
+        borderRadius={20}
+        backdropFilter="auto"
+        backdropContrast="10%"
         aria-label="right-arrow"
         variant="ghost"
         position="absolute"
@@ -113,25 +119,28 @@ const Carousel = () => {
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
-            backgroundImage={`url(${card.image})`
-          }
+            backgroundImage={`url(${card.image})`}
           >
             {/* This is the block you need to change, to customize the caption */}
-            <Container size="container.lg" height="600px" position="relative" m={"auto"}>
+            <Container size="container.lg" height={height} position="relative">
               <Stack
+                borderRadius={20}
                 backdropFilter="auto"
-                backdropContrast="30%"
+                backdropContrast="10%"
                 spacing={6}
                 p={5}
                 maxW={"lg"}
                 position="relative"
-                top="50%"
+                top={{ base: "70%", md: "80%" }}
                 transform="translate(0, -50%)"
               >
                 <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
                   {card.title}
                 </Heading>
-                <Text fontSize={{ base: "sm",md: "md", lg: "lg" }} color="white">
+                <Text
+                  fontSize={{ base: "sm", md: "md", lg: "lg" }}
+                  color="white"
+                >
                   {card.text}
                 </Text>
               </Stack>
