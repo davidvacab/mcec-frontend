@@ -1,13 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import ms from "ms";
 import APIClient, { FetchResponse } from "../../services/api-client";
+import { Topic } from "../entities/Topic";
 
 const apiClient = new APIClient<Topic>("/hymnbook/topics");
-
-export interface Topic {
-  id: number;
-  title: string;
-}
 
 const useTopics = () =>
   useQuery<FetchResponse<Topic>, Error>({

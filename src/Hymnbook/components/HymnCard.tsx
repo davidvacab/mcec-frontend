@@ -15,14 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { RiFileMusicFill } from "react-icons/ri";
 import { FaFilePdf } from "react-icons/fa";
-import { Hymn } from "../hooks/useHymns";
+import { HymnListItem } from "../entities/HymnListItem";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import useTopic from "../hooks/useTopic";
 import { Link } from "react-router-dom";
 
 interface Props {
-  hymn: Hymn;
+  hymn: HymnListItem;
 }
 
 const HymnCard = ({ hymn }: Props) => {

@@ -15,7 +15,7 @@ import HymnHeading from "../Hymnbook/components/HymnHeading";
 import HymnGrid from "../Hymnbook/components/HymnGrid";
 
 const HymnListPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const filters = (
     <>

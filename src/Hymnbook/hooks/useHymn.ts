@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../../services/api-client";
-import { Hymn } from "./useHymns";
+import { Hymn } from "../entities/Hymn";
 
 const apiClient = new APIClient<Hymn>("/hymnbook/hymns");
 
