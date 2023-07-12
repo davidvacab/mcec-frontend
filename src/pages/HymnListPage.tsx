@@ -72,7 +72,7 @@ const HymnListPage = () => {
           </SidebarContent>
         </DrawerContent>
       </Drawer>
-      <Box ml={{ base: 0, md: 80 }} p="4">
+      <Box ml={{ base: 0, md: 80 }}>
         <HymnHeading />
         <HymnGrid />
       </Box>

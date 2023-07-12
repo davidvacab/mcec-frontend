@@ -19,6 +19,7 @@ import { Hymn } from "../hooks/useHymns";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import useTopic from "../hooks/useTopic";
+import { Link } from "react-router-dom";
 
 interface Props {
   hymn: Hymn;
@@ -30,41 +31,41 @@ const HymnCard = ({ hymn }: Props) => {
   const topic = useTopic(hymn.topic);
 
   return (
-    <Card
-      direction={"row"}
-      bg={useColorModeValue("gray.100", "gray.700")}
-      h={"100%"}
-      onClick={() => console.log(hymn.title)}
-      justifyContent={"space-between"}
-    >
-      <CardHeader textAlign={"center"}>
-        <Heading
-          size={{
-            sm: "sm",
-            md: "md",
-            lg: "md",
-          }}
-        >
-          {hymn.title}
-        </Heading>
-      </CardHeader>
-      <Show above="lg">
-        <CardBody>
-          <Stack
-            divider={<StackDivider />}
-            spacing="4"
-            direction={"row"}
-            justifyContent={"right"}
+    <Link to={"/hymns/" + hymn.id}>
+      <Card
+        direction={"row"}
+        bg={useColorModeValue("gray.100", "gray.700")}
+        h={"100%"}
+        justifyContent={"space-between"}
+      >
+        <CardHeader textAlign={"center"}>
+          <Heading
+            size={{
+              sm: "sm",
+              md: "md",
+              lg: "md",
+            }}
           >
-            <VStack>
-              <Heading size="sm" textTransform="uppercase">
-                Tema:
-              </Heading>
-              <Text pt="1" fontSize="md">
-                {topic?.title}
-              </Text>
-            </VStack>
-            {/*
+            {hymn.title}
+          </Heading>
+        </CardHeader>
+        <Show above="lg">
+          <CardBody>
+            <Stack
+              divider={<StackDivider />}
+              spacing="4"
+              direction={"row"}
+              justifyContent={"right"}
+            >
+              <VStack>
+                <Heading size="sm" textTransform="uppercase">
+                  Tema:
+                </Heading>
+                <Text pt="1" fontSize="md">
+                  {topic?.title}
+                </Text>
+              </VStack>
+              {/*
             {hymn.author && (
               <VStack>
                 <Heading size="xs" textTransform="uppercase">
@@ -85,30 +86,31 @@ const HymnCard = ({ hymn }: Props) => {
                 </Text>
               </VStack>
             )}*/}
-            <VStack>
-              <Heading size="xs" textTransform="uppercase">
-                Publicacion:
-              </Heading>
-              <Text pt="1" fontSize="md">
-                {formattedDate}
-              </Text>
-            </VStack>
-          </Stack>
-        </CardBody>
-      </Show>
-      <Show above="md">
-        <CardFooter justifyContent={"space-between"} minWidth={28}>
-          <HStack justifyContent={"right"}>
-            {hymn.pdf_file && (
-              <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
-            )}
-            {hymn.audio_set?.length !== 0 && (
-              <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
-            )}
-          </HStack>
-        </CardFooter>
-      </Show>
-    </Card>
+              <VStack>
+                <Heading size="xs" textTransform="uppercase">
+                  Publicacion:
+                </Heading>
+                <Text pt="1" fontSize="md">
+                  {formattedDate}
+                </Text>
+              </VStack>
+            </Stack>
+          </CardBody>
+        </Show>
+        <Show above="md">
+          <CardFooter justifyContent={"space-between"} minWidth={28}>
+            <HStack justifyContent={"right"}>
+              {hymn.pdf_file && (
+                <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
+              )}
+              {hymn.audio_set?.length !== 0 && (
+                <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
+              )}
+            </HStack>
+          </CardFooter>
+        </Show>
+      </Card>
+    </Link>
   );
 };
 
