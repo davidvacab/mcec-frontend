@@ -1,35 +1,56 @@
 import {
-  ButtonGroup,
   Flex,
-  Image,
-  Spacer,
+  FlexProps,
+  HStack,
+  IconButton,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import logo from "../assets/card.jpg";
+import { FiSearch } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
-import NavMenu from "./NavMenu";
+import NavBarMenu from "./NavBarMenu";
 
-const NavBar = () => {
+interface Props extends FlexProps {
+  onOpen: () => void;
+}
+const NavBar = ({ onOpen, ...rest }: Props) => {
   return (
     <Flex
       as={"header"}
-      alignItems={"center"}
-      gap={"2"}
+      px={{ base: 4, md: 4 }}
+      height="20"
+      alignItems="center"
+      bg={useColorModeValue("white", "gray.900")}
+      borderBottomWidth="1px"
+      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+      justifyContent={"space-between"}
       position={"sticky"}
       zIndex={3}
       top={0}
-      borderBottom={"1px"}
-      height="4.5rem"
-      minH={"4.5rem"}
-      bg={useColorModeValue("white", "gray.800")}
-      px={5}
+      {...rest}
     >
-      <Image src={logo} boxSize={"3rem"} borderRadius={"2xl"} />
-      <Spacer />
-      <ButtonGroup gap="2">
+      <IconButton
+        display={{ base: "flex", md: "none" }}
+        onClick={onOpen}
+        variant="outline"
+        aria-label="open menu"
+        icon={<FiSearch />}
+      />
+      <Link to={"/"}>
+        <Text
+          display={"flex"}
+          fontSize="2xl"
+          fontFamily="monospace"
+          fontWeight="bold"
+        >
+          MCEC
+        </Text>
+      </Link>
+      <HStack spacing={{ base: "2", md: "6" }}>
         <ColorModeButton />
-        <NavMenu />
-      </ButtonGroup>
+        <NavBarMenu />
+      </HStack>
     </Flex>
   );
 };

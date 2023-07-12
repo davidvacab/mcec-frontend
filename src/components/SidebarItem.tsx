@@ -7,7 +7,7 @@ interface Props extends FlexProps {
   selected: boolean;
 }
 
-const NavItem = ({ children, selected, ...rest }: Props) => {
+const SidebarItem = ({ children, selected, ...rest }: Props) => {
   return (
     <Link
       width={"100%"}
@@ -35,4 +35,4 @@ const NavItem = ({ children, selected, ...rest }: Props) => {
   );
 };
 
-export default NavItem;
+export default SidebarItem;

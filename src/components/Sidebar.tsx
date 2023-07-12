@@ -14,7 +14,7 @@ interface Props extends BoxProps {
   onClose: () => void;
 }
 
-const SidebarContent = ({ label, children, onClose, ...rest }: Props) => {
+const Sidebar = ({ label, children, onClose, ...rest }: Props) => {
   return (
     <Box
       as={"nav"}
@@ -42,4 +42,4 @@ const SidebarContent = ({ label, children, onClose, ...rest }: Props) => {
   );
 };
 
-export default SidebarContent;
+export default Sidebar;

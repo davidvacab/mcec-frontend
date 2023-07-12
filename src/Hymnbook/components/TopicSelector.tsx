@@ -1,6 +1,6 @@
 import { Spinner, Text } from "@chakra-ui/react";
-import NavItem from "../../components/NavItem";
-import NavItemGroup from "../../components/NavItemGroup";
+import SidebarItem from "../../components/SidebarItem";
+import SidebarItemGroup from "../../components/SidebarItemGroup";
 import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
 import useTopics from "../hooks/useTopics";
@@ -17,19 +17,19 @@ const TopicSelector = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <NavItemGroup
+    <SidebarItemGroup
       label={"Tema" + (selectedTopic ? ": " + selectedTopic.title : "s")}
     >
       {data?.results.map((topic) => (
-        <NavItem
+        <SidebarItem
           key={topic.id}
           onClick={() => setSelectedTopicId(topic.id)}
           selected={selectedTopic?.id === topic.id}
         >
           {topic.title}
-        </NavItem>
+        </SidebarItem>
       ))}
-    </NavItemGroup>
+    </SidebarItemGroup>
   );
 };
 

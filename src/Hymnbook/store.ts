@@ -8,7 +8,7 @@ interface HymnQuery {
 
 interface HymnQueryStore {
   hymnQuery: HymnQuery;
-  setSearchText: (searchTExt: string) => void;
+  setSearchText: (searchText: string) => void;
   setTopicId: (topicId: number) => void;
   setSortOrder: (sortOrder: string) => void;
 }

@@ -7,14 +7,16 @@ import {
 } from "@chakra-ui/react";
 import useHymnQueryStore from "../Hymnbook/store";
 import SearchInput from "../Hymnbook/components/SearchInput";
-import NavItem from "../components/NavItem";
+import SidebarItem from "../components/SidebarItem";
 import SortSelector from "../Hymnbook/components/SortSelector";
 import TopicSelector from "../Hymnbook/components/TopicSelector";
-import SidebarContent from "../components/SidebarContent";
+import Sidebar from "../components/Sidebar";
 import HymnHeading from "../Hymnbook/components/HymnHeading";
 import HymnGrid from "../Hymnbook/components/HymnGrid";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const HymnListPage = () => {
+  useDocumentTitle("Repertorio")
   const { isOpen, onClose } = useDisclosure();
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const filters = (
@@ -24,7 +26,7 @@ const HymnListPage = () => {
       //   onClose();
       // }}
       />
-      <NavItem
+      <SidebarItem
         selected={false}
         borderWidth={"1px"}
         borderColor={"cyan.300"}
@@ -34,7 +36,7 @@ const HymnListPage = () => {
         }}
       >
         Todos los Cantos
-      </NavItem>
+      </SidebarItem>
       <SortSelector
       // onSelectSortOrder={() => {
       //   onClose();
@@ -50,13 +52,13 @@ const HymnListPage = () => {
 
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
+      <Sidebar
         label={"Filtros"}
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       >
         {filters}
-      </SidebarContent>
+      </Sidebar>
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -67,9 +69,9 @@ const HymnListPage = () => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent label={"Filtros"} onClose={onClose}>
+          <Sidebar label={"Filtros"} onClose={onClose}>
             {filters}
-          </SidebarContent>
+          </Sidebar>
         </DrawerContent>
       </Drawer>
       <Box ml={{ base: 0, md: 80 }}>
