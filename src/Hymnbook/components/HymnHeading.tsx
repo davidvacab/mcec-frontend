@@ -1,6 +1,6 @@
 import { Heading } from "@chakra-ui/react";
 import useTopic from "../hooks/useTopic";
-import useHymnQueryStore from "../../store";
+import useHymnQueryStore from "../store";
 
 const HymnHeading = () => {
   const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicId);

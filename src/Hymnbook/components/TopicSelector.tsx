@@ -2,7 +2,7 @@ import { Spinner, Text } from "@chakra-ui/react";
 import NavItem from "../../components/NavItem";
 import NavItemGroup from "../../components/NavItemGroup";
 import useTopic from "../hooks/useTopic";
-import useHymnQueryStore from "../../store";
+import useHymnQueryStore from "../store";
 import useTopics from "../hooks/useTopics";
 
 const TopicSelector = () => {

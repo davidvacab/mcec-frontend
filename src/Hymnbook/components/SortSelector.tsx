@@ -1,10 +1,10 @@
 import NavItemGroup from "../../components/NavItemGroup";
 import NavItem from "../../components/NavItem";
-import useHymnQueryStore from "../../store";
+import useHymnQueryStore from "../store";
 
 const SortSelector = () => {
-  const sortOrder = useHymnQueryStore(s => s.hymnQuery.sortOrder);
-  const setSortOrder = useHymnQueryStore(s => s.setSortOrder);
+  const sortOrder = useHymnQueryStore((s) => s.hymnQuery.sortOrder);
+  const setSortOrder = useHymnQueryStore((s) => s.setSortOrder);
 
   const sortOrders = [
     { value: "", label: "Anadido Recientemente" },

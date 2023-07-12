@@ -1,21 +1,20 @@
 import {
   Box,
+  useDisclosure,
+  useColorModeValue,
   Drawer,
   DrawerContent,
-  useColorModeValue,
-  useDisclosure,
 } from "@chakra-ui/react";
-import NavigationBar from "./components/NavigationBar";
-import SidebarContent from "./components/SidebarContent";
-import HymnGrid from "./Hymnbook/components/HymnGrid";
-import TopicSelector from "./Hymnbook/components/TopicSelector";
-import SortSelector from "./Hymnbook/components/SortSelector";
-import SearchInput from "./Hymnbook/components/SearchInput";
-import NavItem from "./components/NavItem";
-import HymnHeading from "./Hymnbook/components/HymnHeading";
-import useHymnQueryStore from "./store";
+import useHymnQueryStore from "../Hymnbook/store";
+import SearchInput from "../Hymnbook/components/SearchInput";
+import NavItem from "../components/NavItem";
+import SortSelector from "../Hymnbook/components/SortSelector";
+import TopicSelector from "../Hymnbook/components/TopicSelector";
+import SidebarContent from "../components/SidebarContent";
+import HymnHeading from "../Hymnbook/components/HymnHeading";
+import HymnGrid from "../Hymnbook/components/HymnGrid";
 
-function App() {
+const HymnListPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const filters = (
@@ -51,7 +50,6 @@ function App() {
 
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <NavigationBar onOpen={onOpen} />
       <SidebarContent
         label={"Filtros"}
         onClose={() => onClose}
@@ -80,6 +78,6 @@ function App() {
       </Box>
     </Box>
   );
-}
+};
 
-export default App;
+export default HymnListPage;
