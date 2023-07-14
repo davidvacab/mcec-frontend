@@ -1,10 +1,12 @@
 import NavCollapseGroup from "../../components/NavCollapseGroup";
 import NavItem from "../../components/NavItem";
+import useMainStore from "../../store";
 import useHymnQueryStore from "../store";
 
 const SortSelector = () => {
   const sortOrder = useHymnQueryStore((s) => s.hymnQuery.sortOrder);
   const setSortOrder = useHymnQueryStore((s) => s.setSortOrder);
+  const closeDrawer = useMainStore((s) => s.closeSideDrawer);
 
   const sortOrders = [
     { value: "", label: "Anadido Recientemente" },
@@ -24,7 +26,10 @@ const SortSelector = () => {
         <NavItem
           selected={order.value === sortOrder}
           key={order.value}
-          onClick={() => setSortOrder(order.value)}
+          onClick={() => {
+            setSortOrder(order.value);
+            closeDrawer();
+          }}
         >
           {order.label}
         </NavItem>

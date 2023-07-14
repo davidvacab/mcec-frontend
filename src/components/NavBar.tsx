@@ -1,6 +1,5 @@
 import {
   Flex,
-  FlexProps,
   HStack,
   IconButton,
   Text,
@@ -10,29 +9,27 @@ import { FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
 import NavBarMenu from "./NavBarMenu";
+import useMainStore from "../store";
 
-interface Props extends FlexProps {
-  onOpen: () => void;
-}
-const NavBar = ({ onOpen, ...rest }: Props) => {
+const NavBar = () => {
+  const openDrawer = useMainStore((s) => s.openSideDrawer);
   return (
     <Flex
       as={"header"}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+      bg={useColorModeValue("gray.100", "gray.900")}
+      borderBottomWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
       justifyContent={"space-between"}
       position={"sticky"}
       zIndex={3}
       top={0}
-      {...rest}
     >
       <IconButton
         display={{ base: "flex", md: "none" }}
-        onClick={onOpen}
+        onClick={openDrawer}
         variant="outline"
         aria-label="open menu"
         icon={<FiSearch />}

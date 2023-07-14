@@ -1,13 +1,11 @@
-import { Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 const Layout = () => {
-  const { onOpen } = useDisclosure();
-
   return (
     <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
-      <NavBar onOpen={onOpen} />
+      <NavBar />
       <Outlet />
     </Box>
   );

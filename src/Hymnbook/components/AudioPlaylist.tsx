@@ -42,9 +42,9 @@ const AudioPlaylist = ({ audios }: Props) => {
     <Card
       w={"100%"}
       h={"100%"}
-      bg={useColorModeValue("gray.200", "gray.700")}
-      borderRadius={10}
-      boxShadow={useColorModeValue("2xl", "dark-lg")}
+      bg={useColorModeValue("gray.100", "gray.700")}
+      borderWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
     >
       <CardBody
         p={2}

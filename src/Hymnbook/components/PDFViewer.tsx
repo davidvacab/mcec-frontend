@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   HStack,
   IconButton,
   Text,
@@ -53,7 +52,12 @@ const PDFViewer = ({ pdfURL }: Props) => {
   };
 
   return (
-    <Box boxShadow={useColorModeValue("2xl", "dark-lg")} borderRadius={10}>
+    <Box
+      boxShadow={useColorModeValue("2xl", "dark-lg")}
+      borderRadius={10}
+      borderWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
+    >
       <HStack spacing={5} justifyContent={"center"} my={3}>
         <IconButton
           icon={<BsFillArrowLeftSquareFill />}

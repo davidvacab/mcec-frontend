@@ -4,7 +4,7 @@ const useDocumentTitle = (title: string, prevailOnUnmount = false) => {
   const defaultTitle = useRef(document.title);
 
   useEffect(() => {
-    document.title = title + " | MCEC";
+    document.title = title;
   }, [title]);
 
   useEffect(

@@ -14,7 +14,8 @@ const HymnCardRowContainer = ({ children }: Props) => {
         transition: "transform .15s ease-in",
       }}
       overflow={"hidden"}
-      boxShadow={useColorModeValue("2xl", "dark-lg")}
+      borderWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
     >
       {children}
     </Box>

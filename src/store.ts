@@ -1,23 +1,24 @@
 import { create } from "zustand";
 
 interface MainElements {
-  title?: string;
-  openNav?: boolean;
+  isDrawerOpen: boolean;
 }
 
 interface MainStore {
   mainElements: MainElements;
-  setTitle: (title: string) => void;
-  setOpenNav: (openNav: boolean) => void;
+  openSideDrawer: () => void;
+  closeSideDrawer: () => void;
 }
 
 const useMainStore = create<MainStore>((set) => ({
-  mainElements: {},
-  setTitle: (title: string) =>
-    set((store) => ({ mainElements: { ...store.mainElements, title: title } })),
-  setOpenNav: (openNav: boolean) =>
+  mainElements: {isDrawerOpen: false},
+  openSideDrawer: () =>
     set((store) => ({
-      mainElements: { ...store.mainElements, openNav: openNav },
+      mainElements: { ...store.mainElements, isDrawerOpen: true },
+    })),
+  closeSideDrawer: () =>
+    set((store) => ({
+      mainElements: { ...store.mainElements, isDrawerOpen: false },
     })),
 }));
 

@@ -1,75 +1,58 @@
 import {
   Box,
-  useDisclosure,
-  useColorModeValue,
   Drawer,
   DrawerContent,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import useHymnQueryStore from "../Hymnbook/store";
+import HymnGrid from "../Hymnbook/components/HymnGrid";
+import HymnHeading from "../Hymnbook/components/HymnHeading";
 import SearchInput from "../Hymnbook/components/SearchInput";
-import NavItem from "../components/NavItem";
 import SortSelector from "../Hymnbook/components/SortSelector";
 import TopicSelector from "../Hymnbook/components/TopicSelector";
+import useHymnQueryStore from "../Hymnbook/store";
+import NavItem from "../components/NavItem";
 import Sidebar from "../components/Sidebar";
-import HymnHeading from "../Hymnbook/components/HymnHeading";
-import HymnGrid from "../Hymnbook/components/HymnGrid";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import useMainStore from "../store";
 
 const HymnListPage = () => {
-  useDocumentTitle("Repertorio");
-  const { isOpen, onClose } = useDisclosure();
+  useDocumentTitle("Repertorio | MCEC");
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
+  const closeDrawer = useMainStore((s) => s.closeSideDrawer);
+  const isDrawerOpen = useMainStore((s) => s.mainElements.isDrawerOpen);
   const filters = (
     <>
-      <SearchInput
-      // onSearch={() => {
-      //   onClose();
-      // }}
-      />
+      <SearchInput />
       <NavItem
         selected={false}
         onClick={() => {
           setSearchText("");
-          onClose();
+          closeDrawer();
         }}
       >
         Todos los Cantos
       </NavItem>
-      <SortSelector
-      // onSelectSortOrder={() => {
-      //   onClose();
-      // }}
-      />
-      <TopicSelector
-      // onSelectTopic={(topic) => {
-      //   onClose();
-      // }}
-      />
+      <SortSelector />
+      <TopicSelector />
     </>
   );
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <Sidebar
-        label={"Filtros"}
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      >
+    <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
+      <Sidebar label={"Filtros"} display={{ base: "none", md: "block" }}>
         {filters}
       </Sidebar>
       <Drawer
         autoFocus={false}
-        isOpen={isOpen}
+        isOpen={isDrawerOpen}
         placement="left"
-        onClose={onClose}
+        onClose={closeDrawer}
         returnFocusOnClose={true}
-        onOverlayClick={onClose}
+        onOverlayClick={closeDrawer}
         size="full"
       >
         <DrawerContent>
-          <Sidebar label={"Filtros"} onClose={onClose}>
-            {filters}
-          </Sidebar>
+          <Sidebar label={"Filtros"}>{filters}</Sidebar>
         </DrawerContent>
       </Drawer>
       <Box ml={{ base: 0, md: 72 }}>

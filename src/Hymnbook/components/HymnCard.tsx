@@ -25,9 +25,10 @@ const HymnCard = ({ hymn }: Props) => {
     <Card
       w={"100%"}
       h={"100%"}
-      bg={useColorModeValue("gray.200", "gray.700")}
+      bg={useColorModeValue("gray.100", "gray.700")}
       borderRadius={10}
-      boxShadow={useColorModeValue("2xl", "dark-lg")}
+      borderWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
     >
       <CardHeader textAlign={"center"}>
         <Heading
@@ -41,8 +42,16 @@ const HymnCard = ({ hymn }: Props) => {
         </Heading>
       </CardHeader>
       <CardBody>
-        <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
-          <HStack>
+        <Stack
+          divider={
+            <StackDivider
+              borderColor={useColorModeValue("blue.700", "blue.900")}
+            />
+          }
+          spacing="4"
+          justifyContent={"right"}
+        >
+          <HStack align={"center"}>
             <Heading size="sm" textTransform="uppercase">
               Tema:
             </Heading>

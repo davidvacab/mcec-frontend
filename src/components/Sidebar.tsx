@@ -1,33 +1,34 @@
 import {
   Box,
-  BoxProps,
   Flex,
   useColorModeValue,
   Text,
   CloseButton,
+  BoxProps,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import useMainStore from "../store";
 
 interface Props extends BoxProps {
   label: string;
   children: ReactNode;
-  onClose: () => void;
 }
 
-const Sidebar = ({ label, children, onClose, ...rest }: Props) => {
+const Sidebar = ({ label, children, ...rest }: Props) => {
+  const closeDrawer = useMainStore((s) => s.closeSideDrawer);
   return (
     <Box
       as={"nav"}
       transition="3s ease"
-      bg={useColorModeValue("white", "gray.900")}
-      borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
+      bg={useColorModeValue("gray.100", "gray.900")}
+      borderRightWidth={2}
+      borderColor={useColorModeValue("blue.700", "blue.900")}
       w={{ base: "full", md: "72" }}
       pos="fixed"
       top={{ base: 0, md: "5rem" }}
       h={{ base: "full", md: "calc(100vh - 5rem)" }}
       overflowY={"auto"}
-      overscrollBehavior={"contain"}
+      overscrollBehavior={"auto"}
       padding={4}
       {...rest}
     >
@@ -35,7 +36,10 @@ const Sidebar = ({ label, children, onClose, ...rest }: Props) => {
         <Text fontSize="2xl" fontWeight="bold" textAlign={"center"}>
           {label}
         </Text>
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <CloseButton
+          display={{ base: "flex", md: "none" }}
+          onClick={closeDrawer}
+        />
       </Flex>
       <Box>{children}</Box>
     </Box>

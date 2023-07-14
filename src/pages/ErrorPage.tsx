@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Button, Flex, Icon } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";

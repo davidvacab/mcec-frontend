@@ -34,7 +34,7 @@ const HymnCardRow = ({ hymn }: Props) => {
     <Link to={"/hymns/" + hymn.id}>
       <Card
         direction={"row"}
-        bg={useColorModeValue("gray.200", "gray.700")}
+        bg={useColorModeValue("gray.100", "gray.700")}
         h={"100%"}
         justifyContent={"space-between"}
       >
