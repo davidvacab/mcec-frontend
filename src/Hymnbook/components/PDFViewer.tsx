@@ -60,7 +60,8 @@ const PDFViewer = ({ pdfURL }: Props) => {
     >
       <HStack spacing={5} justifyContent={"center"} my={3}>
         <IconButton
-          icon={<BsFillArrowLeftSquareFill />}
+          variant="ghost"
+          icon={<BsFillArrowLeftSquareFill size={"30px"} />}
           size={"md"}
           onClick={onPreviousPage}
           aria-label="Previous Page"
@@ -69,7 +70,8 @@ const PDFViewer = ({ pdfURL }: Props) => {
           Page {pageNumber} of {numPages}
         </Text>
         <IconButton
-          icon={<BsFillArrowRightSquareFill />}
+          variant="ghost"
+          icon={<BsFillArrowRightSquareFill size={"30px"} />}
           size={"md"}
           onClick={onNextPage}
           aria-label={"Next Page"}

@@ -19,6 +19,7 @@ interface Props {
 
 const AudioPlaylist = ({ audios }: Props) => {
   const [currentTrack, setTrackIndex] = useState(0);
+
   const baseURL = "http://127.0.0.1:8000";
   const handleClickNext = () => {
     setTrackIndex((currentTrack) =>

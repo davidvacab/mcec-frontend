@@ -18,6 +18,8 @@ interface Props {
 }
 
 const HymnCard = ({ hymn }: Props) => {
+  const bgColor = useColorModeValue("gray.100", "gray.700");
+  const borderColor = useColorModeValue("blue.700", "blue.900");
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
 
@@ -25,10 +27,10 @@ const HymnCard = ({ hymn }: Props) => {
     <Card
       w={"100%"}
       h={"100%"}
-      bg={useColorModeValue("gray.100", "gray.700")}
+      bg={bgColor}
       borderRadius={10}
       borderWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      borderColor={borderColor}
     >
       <CardHeader textAlign={"center"}>
         <Heading
@@ -43,11 +45,7 @@ const HymnCard = ({ hymn }: Props) => {
       </CardHeader>
       <CardBody>
         <Stack
-          divider={
-            <StackDivider
-              borderColor={useColorModeValue("blue.700", "blue.900")}
-            />
-          }
+          divider={<StackDivider borderColor={borderColor} />}
           spacing="4"
           justifyContent={"right"}
         >

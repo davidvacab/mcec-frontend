@@ -6,12 +6,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
 import NavBarMenu from "./NavBarMenu";
 import useMainStore from "../store";
 
 const NavBar = () => {
+  const location = useLocation();
   const openDrawer = useMainStore((s) => s.openSideDrawer);
   return (
     <Flex
@@ -27,13 +28,15 @@ const NavBar = () => {
       zIndex={3}
       top={0}
     >
-      <IconButton
-        display={{ base: "flex", md: "none" }}
-        onClick={openDrawer}
-        variant="outline"
-        aria-label="open menu"
-        icon={<FiSearch />}
-      />
+      {location.pathname !== "/" && (
+        <IconButton
+          display={{ base: "flex", md: "none" }}
+          onClick={openDrawer}
+          variant="outline"
+          aria-label="open menu"
+          icon={<FiSearch />}
+        />
+      )}
       <Link to={"/"}>
         <Text
           display={"flex"}

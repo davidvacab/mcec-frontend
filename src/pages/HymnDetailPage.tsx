@@ -10,6 +10,7 @@ const HymnDetailPage = () => {
   const { id } = useParams();
   const { data: hymn, isLoading, error } = useHymn(id!);
   useDocumentTitle(hymn?.title!);
+  const bgColor = useColorModeValue("white", "gray.900");
 
   if (isLoading) return <Spinner />;
 
@@ -23,7 +24,7 @@ const HymnDetailPage = () => {
       align={"center"}
       width={"100%"}
       minH={"100vh"}
-      bg={useColorModeValue("white", "gray.900")}
+      bg={bgColor}
     >
       <VStack maxWidth={"400px"} w={"100%"} alignContent={"center"}>
         <HymnCard hymn={hymn} />
