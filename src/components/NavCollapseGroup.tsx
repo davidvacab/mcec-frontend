@@ -17,7 +17,7 @@ interface Props {
   children: ReactNode;
 }
 
-const SidebarItemGroup = ({ label, children }: Props) => {
+const NavCollapseGroup = ({ label, children }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -66,4 +66,4 @@ const SidebarItemGroup = ({ label, children }: Props) => {
   );
 };
 
-export default SidebarItemGroup;
+export default NavCollapseGroup;

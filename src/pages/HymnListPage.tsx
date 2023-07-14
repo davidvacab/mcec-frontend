@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import useHymnQueryStore from "../Hymnbook/store";
 import SearchInput from "../Hymnbook/components/SearchInput";
-import SidebarItem from "../components/SidebarItem";
+import NavItem from "../components/NavItem";
 import SortSelector from "../Hymnbook/components/SortSelector";
 import TopicSelector from "../Hymnbook/components/TopicSelector";
 import Sidebar from "../components/Sidebar";
@@ -26,17 +26,15 @@ const HymnListPage = () => {
       //   onClose();
       // }}
       />
-      <SidebarItem
+      <NavItem
         selected={false}
-        borderWidth={"1px"}
-        borderColor={"cyan.300"}
         onClick={() => {
           setSearchText("");
           onClose();
         }}
       >
         Todos los Cantos
-      </SidebarItem>
+      </NavItem>
       <SortSelector
       // onSelectSortOrder={() => {
       //   onClose();
@@ -74,7 +72,7 @@ const HymnListPage = () => {
           </Sidebar>
         </DrawerContent>
       </Drawer>
-      <Box ml={{ base: 0, md: 80 }}>
+      <Box ml={{ base: 0, md: 72 }}>
         <HymnHeading />
         <HymnGrid />
       </Box>

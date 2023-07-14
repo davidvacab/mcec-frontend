@@ -1,9 +1,9 @@
 import { Card, CardBody, Skeleton, SkeletonText } from "@chakra-ui/react";
 
-const HymnCardSkeleton = () => {
+const HymnCardRowSkeleton = () => {
   return (
     <Card direction={"row"}>
-      <Skeleton height={"50px"}/>
+      <Skeleton height={"50px"} />
       <CardBody>
         <SkeletonText />
       </CardBody>
@@ -11,4 +11,4 @@ const HymnCardSkeleton = () => {
   );
 };
 
-export default HymnCardSkeleton;
+export default HymnCardRowSkeleton;

@@ -1,14 +1,13 @@
 import React from "react";
 import { Box, SimpleGrid, Spinner, Text } from "@chakra-ui/react";
 import useHymns from "../hooks/useHymns";
-import HymnCard from "./HymnCard";
-import HymnCardSkeleton from "./HymnCardSkeleton";
-import HymnCardContainer from "./HymnCardContainer";
+import HymnCardRow from "./HymnCardRow";
+import HymnCardRowSkeleton from "./HymnCardRowSkeleton";
+import HymnCardRowContainer from "./HymnCardRowContainer";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const HymnGrid = () => {
-  const { data, error, isLoading, fetchNextPage, hasNextPage } =
-    useHymns();
+  const { data, error, isLoading, fetchNextPage, hasNextPage } = useHymns();
   const skeletons = [1, 2, 3, 4, 5];
 
   const fetchHymnsCount =
@@ -31,16 +30,16 @@ const HymnGrid = () => {
         >
           {isLoading &&
             skeletons.map((skeleton) => (
-              <HymnCardContainer key={skeleton}>
-                <HymnCardSkeleton />
-              </HymnCardContainer>
+              <HymnCardRowContainer key={skeleton}>
+                <HymnCardRowSkeleton />
+              </HymnCardRowContainer>
             ))}
           {data?.pages.map((page, index) => (
             <React.Fragment key={index}>
               {page.results.map((hymn) => (
-                <HymnCardContainer key={hymn.id}>
-                  <HymnCard hymn={hymn} />
-                </HymnCardContainer>
+                <HymnCardRowContainer key={hymn.id}>
+                  <HymnCardRow hymn={hymn} />
+                </HymnCardRowContainer>
               ))}
             </React.Fragment>
           ))}

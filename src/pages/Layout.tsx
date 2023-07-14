@@ -6,7 +6,7 @@ const Layout = () => {
   const { onOpen } = useDisclosure();
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
       <NavBar onOpen={onOpen} />
       <Outlet />
     </Box>

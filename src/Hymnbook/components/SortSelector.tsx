@@ -1,5 +1,5 @@
-import SidebarItemGroup from "../../components/SidebarItemGroup";
-import SidebarItem from "../../components/SidebarItem";
+import NavCollapseGroup from "../../components/NavCollapseGroup";
+import NavItem from "../../components/NavItem";
 import useHymnQueryStore from "../store";
 
 const SortSelector = () => {
@@ -17,19 +17,19 @@ const SortSelector = () => {
   const label = sortOrders.find((order) => sortOrder === order.value)?.label;
 
   return (
-    <SidebarItemGroup
+    <NavCollapseGroup
       label={"Orden: \n" + (sortOrder ? label : "Anadido Recientemente")}
     >
       {sortOrders.map((order) => (
-        <SidebarItem
+        <NavItem
           selected={order.value === sortOrder}
           key={order.value}
           onClick={() => setSortOrder(order.value)}
         >
           {order.label}
-        </SidebarItem>
+        </NavItem>
       ))}
-    </SidebarItemGroup>
+    </NavCollapseGroup>
   );
 };
 

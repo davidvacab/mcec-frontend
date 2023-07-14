@@ -6,6 +6,10 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
+  fonts: {
+    heading: `'Geologica', sans-serif`,
+    body: `'Geologica', sans-serif`,
+  },
 });
 
 export default theme;

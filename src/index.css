@@ -1,0 +1,13 @@
+.rhap_container {
+  background: transparent;
+  box-shadow: none;
+}
+
+.rhap_button-clear,
+.rhap_time,
+.rhap_progress-filled,
+.rhap_progress-indicator,
+.rhap_volume-filled,
+.rhap_volume-indicator {
+  background-color: blue;
+}

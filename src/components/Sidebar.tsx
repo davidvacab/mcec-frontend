@@ -22,7 +22,7 @@ const Sidebar = ({ label, children, onClose, ...rest }: Props) => {
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full", md: "80" }}
+      w={{ base: "full", md: "72" }}
       pos="fixed"
       top={{ base: 0, md: "5rem" }}
       h={{ base: "full", md: "calc(100vh - 5rem)" }}
@@ -32,7 +32,7 @@ const Sidebar = ({ label, children, onClose, ...rest }: Props) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+        <Text fontSize="2xl" fontWeight="bold" textAlign={"center"}>
           {label}
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />

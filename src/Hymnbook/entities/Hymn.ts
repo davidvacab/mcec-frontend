@@ -11,5 +11,5 @@ export interface Hymn {
   arranger?: Arranger;
   release_date: string;
   pdf_file: string;
-  audio_set?: Audio[];
+  audio_set: Audio[];
 }

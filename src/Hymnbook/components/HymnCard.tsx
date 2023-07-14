@@ -1,116 +1,86 @@
 import {
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   HStack,
   Heading,
-  Icon,
-  Show,
   Stack,
   StackDivider,
   Text,
-  VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { RiFileMusicFill } from "react-icons/ri";
-import { FaFilePdf } from "react-icons/fa";
-import { HymnListItem } from "../entities/HymnListItem";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
-import useTopic from "../hooks/useTopic";
-import { Link } from "react-router-dom";
+import { Hymn } from "../entities/Hymn";
 
 interface Props {
-  hymn: HymnListItem;
+  hymn: Hymn;
 }
 
 const HymnCard = ({ hymn }: Props) => {
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
-  const topic = useTopic(hymn.topic);
 
   return (
-    <Link to={"/hymns/" + hymn.id}>
-      <Card
-        direction={"row"}
-        bg={useColorModeValue("gray.100", "gray.700")}
-        h={"100%"}
-        justifyContent={"space-between"}
-      >
-        <CardHeader textAlign={"center"}>
-          <Heading
-            size={{
-              sm: "sm",
-              md: "md",
-              lg: "md",
-            }}
-          >
-            {hymn.title}
-          </Heading>
-        </CardHeader>
-        <Show above="lg">
-          <CardBody>
-            <Stack
-              divider={<StackDivider />}
-              spacing="4"
-              direction={"row"}
-              justifyContent={"right"}
-            >
-              <VStack>
-                <Heading size="sm" textTransform="uppercase">
-                  Tema:
-                </Heading>
-                <Text pt="1" fontSize="md">
-                  {topic?.title}
-                </Text>
-              </VStack>
-              {/*
-            {hymn.author && (
-              <VStack>
-                <Heading size="xs" textTransform="uppercase">
-                  Autor:
-                </Heading>
-                <Text pt="1" fontSize="sm">
-                  {hymn.author.first_name + " " + hymn.author.last_name}
-                </Text>
-              </VStack>
-            )}
-            {hymn.arranger && (
-              <VStack>
-                <Heading size="xs" textTransform="uppercase">
-                  Arreglista:
-                </Heading>
-                <Text pt="1" fontSize="sm">
-                  {hymn.arranger.first_name + " " + hymn.arranger.last_name}
-                </Text>
-              </VStack>
-            )}*/}
-              <VStack>
-                <Heading size="xs" textTransform="uppercase">
-                  Publicacion:
-                </Heading>
-                <Text pt="1" fontSize="md">
-                  {formattedDate}
-                </Text>
-              </VStack>
-            </Stack>
-          </CardBody>
-        </Show>
-        <Show above="md">
-          <CardFooter justifyContent={"space-between"} minWidth={28}>
-            <HStack justifyContent={"right"}>
-              {hymn.pdf_file && (
-                <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
-              )}
-              {hymn.audio_set?.length !== 0 && (
-                <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
-              )}
+    <Card
+      w={"100%"}
+      h={"100%"}
+      bg={useColorModeValue("gray.200", "gray.700")}
+      borderRadius={10}
+      boxShadow={useColorModeValue("2xl", "dark-lg")}
+    >
+      <CardHeader textAlign={"center"}>
+        <Heading
+          size={{
+            sm: "sm",
+            md: "md",
+            lg: "md",
+          }}
+        >
+          {hymn.title}
+        </Heading>
+      </CardHeader>
+      <CardBody>
+        <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
+          <HStack>
+            <Heading size="sm" textTransform="uppercase">
+              Tema:
+            </Heading>
+            <Text pt="1" fontSize="md">
+              {hymn.topic.title}
+            </Text>
+          </HStack>
+          {hymn.author && (
+            <HStack>
+              <Heading size="xs" textTransform="uppercase">
+                Autor:
+              </Heading>
+              <Text pt="1" fontSize="sm">
+                {hymn.author.first_name + " " + hymn.author.last_name}
+              </Text>
             </HStack>
-          </CardFooter>
-        </Show>
-      </Card>
-    </Link>
+          )}
+          {hymn.arranger && (
+            <HStack>
+              <Heading size="xs" textTransform="uppercase">
+                Arreglista:
+              </Heading>
+              <Text pt="1" fontSize="sm">
+                {hymn.arranger.first_name + " " + hymn.arranger.last_name}
+              </Text>
+            </HStack>
+          )}
+          <HStack>
+            <Heading size="xs" textTransform="uppercase">
+              Publicacion:
+            </Heading>
+            <Text pt="1" fontSize="md">
+              {formattedDate}
+            </Text>
+          </HStack>
+        </Stack>
+      </CardBody>
+    </Card>
   );
 };
 

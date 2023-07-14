@@ -5,7 +5,7 @@ interface Props {
   children: ReactNode;
 }
 
-const HymnCardContainer = ({ children }: Props) => {
+const HymnCardRowContainer = ({ children }: Props) => {
   return (
     <Box
       borderRadius={10}
@@ -21,4 +21,4 @@ const HymnCardContainer = ({ children }: Props) => {
   );
 };
 
-export default HymnCardContainer;
+export default HymnCardRowContainer;

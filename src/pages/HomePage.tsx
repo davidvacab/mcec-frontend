@@ -6,7 +6,7 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 const HomePage = () => {
   useDocumentTitle("Home");
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
       <Carousel />
       <Footer />
     </Box>
