@@ -4,7 +4,6 @@ import {
   IconButton,
   Text,
   useBreakpointValue,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -16,6 +15,7 @@ import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
+import { cardBgColor, cardBorderColor } from "../../theme";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -53,10 +53,10 @@ const PDFViewer = ({ pdfURL }: Props) => {
 
   return (
     <Box
-      boxShadow={useColorModeValue("2xl", "dark-lg")}
       borderRadius={10}
-      borderWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      borderWidth={1}
+      borderColor={cardBorderColor()}
+      bg={cardBgColor()}
     >
       <HStack spacing={5} justifyContent={"center"} my={3}>
         <IconButton

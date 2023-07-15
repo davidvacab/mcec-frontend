@@ -1,13 +1,7 @@
-import {
-  Box,
-  Flex,
-  useColorModeValue,
-  Text,
-  CloseButton,
-  BoxProps,
-} from "@chakra-ui/react";
+import { Box, BoxProps, CloseButton, Flex, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import useMainStore from "../store";
+import { layoutBorderColor } from "../theme";
 
 interface Props extends BoxProps {
   label: string;
@@ -20,15 +14,14 @@ const Sidebar = ({ label, children, ...rest }: Props) => {
     <Box
       as={"nav"}
       transition="3s ease"
-      bg={useColorModeValue("gray.100", "gray.900")}
-      borderRightWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      borderRightWidth={1}
+      borderColor={layoutBorderColor()}
       w={{ base: "full", md: "72" }}
       pos="fixed"
       top={{ base: 0, md: "5rem" }}
       h={{ base: "full", md: "calc(100vh - 5rem)" }}
       overflowY={"auto"}
-      overscrollBehavior={"auto"}
+      overscrollBehavior={"contain"}
       padding={4}
       {...rest}
     >

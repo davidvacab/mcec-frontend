@@ -11,15 +11,15 @@ import {
   StackDivider,
   Text,
   VStack,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import { RiFileMusicFill } from "react-icons/ri";
-import { FaFilePdf } from "react-icons/fa";
-import { HymnListItem } from "../entities/HymnListItem";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
-import useTopic from "../hooks/useTopic";
+import { FaFilePdf } from "react-icons/fa";
+import { RiFileMusicFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { cardBgColor } from "../../theme";
+import { HymnListItem } from "../entities/HymnListItem";
+import useTopic from "../hooks/useTopic";
 
 interface Props {
   hymn: HymnListItem;
@@ -34,7 +34,7 @@ const HymnCardRow = ({ hymn }: Props) => {
     <Link to={"/hymns/" + hymn.id}>
       <Card
         direction={"row"}
-        bg={useColorModeValue("gray.100", "gray.700")}
+        bg={cardBgColor()}
         h={"100%"}
         justifyContent={"space-between"}
       >
@@ -79,11 +79,9 @@ const HymnCardRow = ({ hymn }: Props) => {
         <Show above="lg">
           <CardFooter justifyContent={"space-between"} minWidth={28}>
             <HStack justifyContent={"right"}>
-              {hymn.pdf_file && (
-                <Icon as={FaFilePdf} color={"gray.500"} boxSize={8} />
-              )}
+              {hymn.pdf_file && <Icon as={FaFilePdf} boxSize={8} />}
               {hymn.audio_set?.length !== 0 && (
-                <Icon as={RiFileMusicFill} color={"gray.500"} boxSize={8} />
+                <Icon as={RiFileMusicFill} boxSize={8} />
               )}
             </HStack>
           </CardFooter>

@@ -12,6 +12,7 @@ import "react-h5-audio-player/lib/styles.css";
 import NavItem from "../../components/NavItem";
 import { Audio } from "../entities/Audio";
 import Voices from "../entities/Voices";
+import { cardBgColor, cardBorderColor } from "../../theme";
 
 interface Props {
   audios: Audio[];
@@ -43,9 +44,9 @@ const AudioPlaylist = ({ audios }: Props) => {
     <Card
       w={"100%"}
       h={"100%"}
-      bg={useColorModeValue("gray.100", "gray.700")}
-      borderWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      bg={cardBgColor()}
+      borderWidth={1}
+      borderColor={cardBorderColor()}
     >
       <CardBody
         p={2}

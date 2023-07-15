@@ -1,5 +1,6 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { cardBorderColor } from "../../theme";
 
 interface Props {
   children: ReactNode;
@@ -14,8 +15,8 @@ const HymnCardRowContainer = ({ children }: Props) => {
         transition: "transform .15s ease-in",
       }}
       overflow={"hidden"}
-      borderWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      borderWidth={1}
+      borderColor={cardBorderColor()}
     >
       {children}
     </Box>

@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import useHymnQueryStore from "../store";
 import useMainStore from "../../store";
+import { cardBgColor } from "../../theme";
 
 const SearchInput = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -28,8 +29,9 @@ const SearchInput = () => {
           borderRadius={20}
           placeholder="Buscar Cantos"
           variant={"filled"}
-          bgColor={useColorModeValue("gray.300", "gray.700")}
-          _focus={{bgColor: useColorModeValue("white", "")}}
+          bgColor={cardBgColor()}
+          _focus={{bg: useColorModeValue("gray.50", "gray.900")}}
+          _hover={{bg: useColorModeValue("gray.300","gray.600")}}
         />
       </InputGroup>
     </form>

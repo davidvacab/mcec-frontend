@@ -1,12 +1,13 @@
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
-import { useColorModeValue, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { layoutBgColor } from "../theme";
 
 const HomePage = () => {
   useDocumentTitle("Home | MCEC");
   return (
-    <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
+    <Box minH={"calc(100vh - 20)"} bg={layoutBgColor()}>
       <Carousel />
       <Footer />
     </Box>

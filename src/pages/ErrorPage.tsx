@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { layoutBgColor } from "../theme";
 
 const ErrorPage = () => {
   useDocumentTitle("Error");
@@ -14,7 +15,7 @@ const ErrorPage = () => {
 
 const Error = () => {
   return (
-    <Box textAlign="center" py={10} px={6}>
+    <Box textAlign="center" py={10} px={6} bg={layoutBgColor()}>
       <Box display="inline-block">
         <Flex
           flexDirection="column"

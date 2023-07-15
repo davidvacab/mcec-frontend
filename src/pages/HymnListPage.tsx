@@ -2,7 +2,6 @@ import {
   Box,
   Drawer,
   DrawerContent,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import HymnGrid from "../Hymnbook/components/HymnGrid";
 import HymnHeading from "../Hymnbook/components/HymnHeading";
@@ -14,6 +13,7 @@ import NavItem from "../components/NavItem";
 import Sidebar from "../components/Sidebar";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useMainStore from "../store";
+import { layoutBgColor } from "../theme";
 
 const HymnListPage = () => {
   useDocumentTitle("Repertorio | MCEC");
@@ -38,7 +38,7 @@ const HymnListPage = () => {
   );
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
+    <Box minH={"calc(100vh - 20)"} bg={layoutBgColor()}>
       <Sidebar label={"Filtros"} display={{ base: "none", md: "block" }}>
         {filters}
       </Sidebar>

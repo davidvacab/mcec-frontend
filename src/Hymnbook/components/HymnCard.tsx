@@ -7,19 +7,17 @@ import {
   Stack,
   StackDivider,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import { Hymn } from "../entities/Hymn";
+import { cardBgColor, cardBorderColor } from "../../theme";
 
 interface Props {
   hymn: Hymn;
 }
 
 const HymnCard = ({ hymn }: Props) => {
-  const bgColor = useColorModeValue("gray.100", "gray.700");
-  const borderColor = useColorModeValue("blue.700", "blue.900");
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
 
@@ -27,10 +25,10 @@ const HymnCard = ({ hymn }: Props) => {
     <Card
       w={"100%"}
       h={"100%"}
-      bg={bgColor}
+      bg={cardBgColor()}
       borderRadius={10}
-      borderWidth={2}
-      borderColor={borderColor}
+      borderWidth={1}
+      borderColor={cardBorderColor()}
     >
       <CardHeader textAlign={"center"}>
         <Heading
@@ -45,7 +43,7 @@ const HymnCard = ({ hymn }: Props) => {
       </CardHeader>
       <CardBody>
         <Stack
-          divider={<StackDivider borderColor={borderColor} />}
+          divider={<StackDivider borderColor={cardBorderColor()} />}
           spacing="4"
           justifyContent={"right"}
         >

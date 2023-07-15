@@ -3,13 +3,13 @@ import {
   HStack,
   IconButton,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
 import NavBarMenu from "./NavBarMenu";
 import useMainStore from "../store";
+import { layoutBgColor, layoutBorderColor } from "../theme";
 
 const NavBar = () => {
   const location = useLocation();
@@ -20,9 +20,9 @@ const NavBar = () => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("gray.100", "gray.900")}
-      borderBottomWidth={2}
-      borderColor={useColorModeValue("blue.700", "blue.900")}
+      bg={layoutBgColor()}
+      borderBottomWidth={1}
+      borderColor={layoutBorderColor()}
       justifyContent={"space-between"}
       position={"sticky"}
       zIndex={3}

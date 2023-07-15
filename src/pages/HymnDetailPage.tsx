@@ -1,16 +1,16 @@
-import { Spinner, VStack, Wrap, useColorModeValue } from "@chakra-ui/react";
+import { Spinner, VStack, Wrap } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import AudioPlaylist from "../Hymnbook/components/AudioPlaylist";
 import HymnCard from "../Hymnbook/components/HymnCard";
 import PDFViewer from "../Hymnbook/components/PDFViewer";
 import useHymn from "../Hymnbook/hooks/useHymn";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { layoutBgColor } from "../theme";
 
 const HymnDetailPage = () => {
   const { id } = useParams();
   const { data: hymn, isLoading, error } = useHymn(id!);
   useDocumentTitle(hymn?.title!);
-  const bgColor = useColorModeValue("white", "gray.900");
 
   if (isLoading) return <Spinner />;
 
@@ -23,8 +23,8 @@ const HymnDetailPage = () => {
       justify={"center"}
       align={"center"}
       width={"100%"}
-      minH={"100vh"}
-      bg={bgColor}
+      minH={"calc(100vh - 20)"}
+      bg={layoutBgColor()}
     >
       <VStack maxWidth={"400px"} w={"100%"} alignContent={"center"}>
         <HymnCard hymn={hymn} />

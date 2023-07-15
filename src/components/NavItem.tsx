@@ -27,11 +27,11 @@ const NavItem = ({ children, selected, ...rest }: Props) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        bg={selected ? useColorModeValue("blue.700", "gray.700") : ""}
+        bg={selected ? useColorModeValue("blue.900", "gray.600") : ""}
         fontWeight={selected ? "bold" : ""}
         color={selected ? "white" : ""}
         _hover={{
-          bg: useColorModeValue("blue.700", "gray.700"),
+          bg: useColorModeValue("blue.900", "gray.600"),
           color: "white",
         }}
         {...rest}
