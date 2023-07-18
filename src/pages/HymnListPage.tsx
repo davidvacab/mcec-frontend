@@ -1,8 +1,4 @@
-import {
-  Box,
-  Drawer,
-  DrawerContent,
-} from "@chakra-ui/react";
+import { Box, Drawer, DrawerContent } from "@chakra-ui/react";
 import HymnGrid from "../Hymnbook/components/HymnGrid";
 import HymnHeading from "../Hymnbook/components/HymnHeading";
 import SearchInput from "../Hymnbook/components/SearchInput";
@@ -14,6 +10,7 @@ import Sidebar from "../components/Sidebar";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useMainStore from "../store";
 import { layoutBgColor } from "../theme";
+import { RequireAuth } from "react-auth-kit";
 
 const HymnListPage = () => {
   useDocumentTitle("Repertorio | MCEC");
@@ -38,28 +35,30 @@ const HymnListPage = () => {
   );
 
   return (
-    <Box minH={"calc(100vh - 20)"} bg={layoutBgColor()}>
-      <Sidebar label={"Filtros"} display={{ base: "none", md: "block" }}>
-        {filters}
-      </Sidebar>
-      <Drawer
-        autoFocus={false}
-        isOpen={isDrawerOpen}
-        placement="left"
-        onClose={closeDrawer}
-        returnFocusOnClose={true}
-        onOverlayClick={closeDrawer}
-        size="full"
-      >
-        <DrawerContent>
-          <Sidebar label={"Filtros"}>{filters}</Sidebar>
-        </DrawerContent>
-      </Drawer>
-      <Box ml={{ base: 0, md: 72 }}>
-        <HymnHeading />
-        <HymnGrid />
+    <RequireAuth loginPath="/login">
+      <Box minH={"calc(100vh - 20)"} bg={layoutBgColor()}>
+        <Sidebar label={"Filtros"} display={{ base: "none", md: "block" }}>
+          {filters}
+        </Sidebar>
+        <Drawer
+          autoFocus={false}
+          isOpen={isDrawerOpen}
+          placement="left"
+          onClose={closeDrawer}
+          returnFocusOnClose={true}
+          onOverlayClick={closeDrawer}
+          size="full"
+        >
+          <DrawerContent>
+            <Sidebar label={"Filtros"}>{filters}</Sidebar>
+          </DrawerContent>
+        </Drawer>
+        <Box ml={{ base: 0, md: 72 }}>
+          <HymnHeading />
+          <HymnGrid />
+        </Box>
       </Box>
-    </Box>
+    </RequireAuth>
   );
 };
 

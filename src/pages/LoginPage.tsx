@@ -1,19 +1,78 @@
 import {
-  Flex,
   Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
-  Stack,
-  Link,
   Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Heading,
-  Text,
+  Input,
+  Link,
+  Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSignIn } from "react-auth-kit";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import AuthClient from "../services/auth-client";
 import { cardBgColor, layoutBgColor } from "../theme";
 
+const authClient = new AuthClient();
+
+const schema = z.object({
+  username: z.string().min(5, {
+    message: "El nombre de usuario debe de ser al menos 5 caracteres",
+  }),
+  password: z
+    .string()
+    .min(8, { message: "La contrasena tiene que ser al menos 8 caracteres" }),
+});
+
+type FormData = z.infer<typeof schema>;
+
 const LoginPage = () => {
+  const signIn = useSignIn();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+  const inputBgColor = useColorModeValue("gray.300", "gray.600");
+  const navigate = useNavigate();
+  const onSubmit = (formData: FormData) => {
+    authClient
+      .login(formData)
+      .then((data) => {
+        authClient.me(data.access).then((user) => {
+          if (
+            signIn({
+              token: data.access,
+              expiresIn: 10,
+              tokenType: "JWT",
+              authState: { ...user },
+              refreshToken: data.refresh,
+              refreshTokenExpireIn: 1440,
+            })
+          ) {
+            navigate("/");
+          } else throw new Error("Auth failed");
+        });
+      })
+      .catch((error: Error) => {
+        console.log(error);
+        setError("root", {
+          type: "validate",
+          message: "Invalid Credencials",
+        });
+      });
+  };
+
   return (
     <Flex
       minH={"calc(100vh - 20)"}
@@ -24,40 +83,57 @@ const LoginPage = () => {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
-          </Text>
         </Stack>
         <Box rounded={"lg"} bg={cardBgColor()} boxShadow={"lg"} p={8}>
-          <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
+          <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+            <Stack spacing={4}>
+              <FormControl
+                id="username"
+                isRequired
+                isInvalid={errors.username !== undefined}
               >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
+                <FormLabel>Username</FormLabel>
+                <Input {...register("username")} bg={inputBgColor} />
+                <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="password"
+                isRequired
+                isInvalid={errors.password !== undefined}
+              >
+                <FormLabel>Password</FormLabel>
+                <Input
+                  {...register("password")}
+                  type="password"
+                  bg={inputBgColor}
+                />
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={errors.root !== undefined}>
+                <FormErrorMessage>{errors.root?.message}</FormErrorMessage>
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: "column", sm: "row" }}
+                  align={"start"}
+                  justify={"space-between"}
+                >
+                  <Checkbox bg={inputBgColor}>Remember me</Checkbox>
+                  <Link color={"blue.400"}>Forgot password?</Link>
+                </Stack>
+                <Button
+                  type="submit"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                >
+                  Sign in
+                </Button>
               </Stack>
-              <Button
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Sign in
-              </Button>
             </Stack>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>

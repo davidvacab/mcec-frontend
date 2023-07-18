@@ -17,16 +17,17 @@ class APIClient<T> {
     this.endpoint = endpoint;
   }
 
-  getAll = (config: AxiosRequestConfig) => {
-    return axiosInstance
-      .get<FetchResponse<T>>(this.endpoint, config)
-      .then((res) => res.data);
+  getAll = async (config: AxiosRequestConfig) => {
+    const res = await axiosInstance.get<FetchResponse<T>>(
+      this.endpoint,
+      config
+    );
+    return res.data;
   };
 
-  get = (id: number | string) => {
-    return axiosInstance
-      .get<T>(this.endpoint + "/" + id)
-      .then((res) => res.data);
+  get = async (id: number | string, config: AxiosRequestConfig) => {
+    const res = await axiosInstance.get<T>(this.endpoint + "/" + id, config);
+    return res.data;
   };
 }
 

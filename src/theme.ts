@@ -1,10 +1,24 @@
 import { extendTheme, ThemeConfig, useColorModeValue } from "@chakra-ui/react";
 
-export const cardBorderColor = () => useColorModeValue("gray.400", "gray.600");
-export const layoutBorderColor = () =>
-  useColorModeValue("gray.300", "gray.800");
-export const layoutBgColor = () => useColorModeValue("gray.50", "gray.900");
-export const cardBgColor = () => useColorModeValue("gray.200", "gray.700");
+export const cardBorderColor = () => {
+  const color = useColorModeValue("gray.400", "gray.600");
+  return color;
+};
+
+export const layoutBorderColor = () => {
+  const color = useColorModeValue("gray.300", "gray.800");
+  return color;
+};
+
+export const layoutBgColor = () => {
+  const color = useColorModeValue("gray.50", "gray.900");
+  return color;
+};
+
+export const cardBgColor = () => {
+  const color = useColorModeValue("gray.200", "gray.700");
+  return color;
+};
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
