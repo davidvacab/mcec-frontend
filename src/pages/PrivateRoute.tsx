@@ -8,8 +8,8 @@ interface Props {
 
 const PrivateRoute = ({ children }: Props) => {
   const isAuthenticated = useIsAuthenticated();
-
   const auth = isAuthenticated();
+
   return auth ? children : <Navigate to="/login" />;
 };
 

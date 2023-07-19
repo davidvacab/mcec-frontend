@@ -5,7 +5,6 @@ import HymnCard from "../Hymnbook/components/HymnCard";
 import PDFViewer from "../Hymnbook/components/PDFViewer";
 import useHymn from "../Hymnbook/hooks/useHymn";
 import useDocumentTitle from "../hooks/useDocumentTitle";
-import { layoutBgColor } from "../theme";
 
 const HymnDetailPage = () => {
   const { id } = useParams();
@@ -24,7 +23,6 @@ const HymnDetailPage = () => {
       align={"center"}
       width={"100%"}
       minH={"calc(100vh - 20)"}
-      bg={layoutBgColor()}
     >
       <VStack maxWidth={"400px"} w={"100%"} alignContent={"center"}>
         <HymnCard hymn={hymn} />

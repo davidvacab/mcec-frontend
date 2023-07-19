@@ -1,9 +1,4 @@
-import {
-  Flex,
-  HStack,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, HStack, IconButton, Text } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
@@ -28,7 +23,7 @@ const NavBar = () => {
       zIndex={3}
       top={0}
     >
-      {location.pathname !== "/" && (
+      {location.pathname === "/hymns" && (
         <IconButton
           display={{ base: "flex", md: "none" }}
           onClick={openDrawer}

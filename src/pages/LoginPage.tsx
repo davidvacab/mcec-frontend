@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import AuthClient from "../services/auth-client";
 import { cardBgColor, layoutBgColor } from "../theme";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+import useMainStore from "../store";
 
 const authClient = new AuthClient();
 
@@ -34,12 +36,14 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const LoginPage = () => {
+  const setAlertElemnts = useMainStore((s) => s.setAlertElements);
+  const openAlert = useMainStore((s) => s.openAlert);
+  useDocumentTitle("Iniciar Sesion | MCEC");
   const signIn = useSignIn();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
@@ -49,27 +53,23 @@ const LoginPage = () => {
     authClient
       .login(formData)
       .then((data) => {
-        authClient.me(data.access).then((user) => {
-          if (
-            signIn({
-              token: data.access,
-              expiresIn: 10,
-              tokenType: "JWT",
-              authState: { ...user },
-              refreshToken: data.refresh,
-              refreshTokenExpireIn: 1440,
-            })
-          ) {
-            navigate("/");
-          } else throw new Error("Auth failed");
-        });
+        if (
+          signIn({
+            token: data.access,
+            expiresIn: 10,
+            tokenType: "JWT",
+            authState: data.user,
+            refreshToken: data.refresh,
+            refreshTokenExpireIn: 1440,
+          })
+        ) {
+          navigate("/");
+        } else throw new Error("Auth failed");
       })
       .catch((error: Error) => {
         console.log(error);
-        setError("root", {
-          type: "validate",
-          message: "Invalid Credencials",
-        });
+        setAlertElemnts("error", "Error", "Wrong Credentials");
+        openAlert();
       });
   };
 
@@ -108,9 +108,6 @@ const LoginPage = () => {
                   bg={inputBgColor}
                 />
                 <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={errors.root !== undefined}>
-                <FormErrorMessage>{errors.root?.message}</FormErrorMessage>
               </FormControl>
               <Stack spacing={10}>
                 <Stack

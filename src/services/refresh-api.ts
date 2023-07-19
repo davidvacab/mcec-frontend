@@ -13,7 +13,8 @@ const refreshApi = createRefresh({
         return {
           isSuccess: true,
           newAuthToken: data.access,
-        };
+          newAuthTokenExpireIn: 10,
+        } as RefreshTokenCallbackResponse;
       })
       .catch((error) => {
         console.log(error);
