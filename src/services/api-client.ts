@@ -25,7 +25,7 @@ class APIClient<T> {
     return res.data;
   };
 
-  get = async (id: number | string, config: AxiosRequestConfig) => {
+  get = async (id: string | number, config: AxiosRequestConfig) => {
     const res = await axiosInstance.get<T>(this.endpoint + "/" + id, config);
     return res.data;
   };

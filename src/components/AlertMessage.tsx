@@ -16,7 +16,11 @@ const AlertMessage = () => {
   const isAlertOpen = useMainStore((s) => s.mainElements.isAlertOpen);
   return (
     isAlertOpen && (
-      <Alert status={status} justifyContent={"space-between"} textAlign={"center"}>
+      <Alert
+        status={status}
+        justifyContent={"space-between"}
+        textAlign={"center"}
+      >
         <AlertIcon />
         <Box>
           <AlertTitle>{title}</AlertTitle>

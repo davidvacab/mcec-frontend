@@ -15,12 +15,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignIn } from "react-auth-kit";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import AuthClient from "../services/auth-client";
 import { cardBgColor, layoutBgColor } from "../theme";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useMainStore from "../store";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 
 const authClient = new AuthClient();
 
@@ -36,6 +36,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const LoginPage = () => {
+  const { state } = useLocation();
+  const { from } = state;
+  const navigate = useNavigate();
   const setAlertElemnts = useMainStore((s) => s.setAlertElements);
   const openAlert = useMainStore((s) => s.openAlert);
   useDocumentTitle("Iniciar Sesion | MCEC");
@@ -48,7 +51,6 @@ const LoginPage = () => {
     resolver: zodResolver(schema),
   });
   const inputBgColor = useColorModeValue("gray.300", "gray.600");
-  const navigate = useNavigate();
   const onSubmit = (formData: FormData) => {
     authClient
       .login(formData)
@@ -57,14 +59,14 @@ const LoginPage = () => {
           signIn({
             token: data.access,
             expiresIn: 10,
-            tokenType: "JWT",
+            tokenType: "Bearer",
             authState: data.user,
             refreshToken: data.refresh,
             refreshTokenExpireIn: 1440,
           })
-        ) {
-          navigate("/");
-        } else throw new Error("Auth failed");
+        )
+          navigate(from ? from : "/", { replace: true });
+        else throw new Error("Auth failed");
       })
       .catch((error: Error) => {
         console.log(error);

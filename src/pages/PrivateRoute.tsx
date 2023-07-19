@@ -1,6 +1,6 @@
 import { useIsAuthenticated } from "react-auth-kit";
 import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
@@ -9,8 +9,13 @@ interface Props {
 const PrivateRoute = ({ children }: Props) => {
   const isAuthenticated = useIsAuthenticated();
   const auth = isAuthenticated();
+  const location = useLocation();
 
-  return auth ? children : <Navigate to="/login" />;
+  return !auth ? (
+    <Navigate to="/login" state={{ from: location }} replace={false} />
+  ) : (
+    children
+  );
 };
 
 export default PrivateRoute;

@@ -25,7 +25,7 @@ class AuthClient {
       "/jwt/refresh",
       { refresh: refreshToken },
       {
-        headers: { Authorization: `JWT ${authToken}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       }
     );
     return res.data;
@@ -33,7 +33,7 @@ class AuthClient {
   me = async (authToken: string | undefined) => {
     return await axiosInstance
       .get("/users/me", {
-        headers: { Authorization: `JWT ${authToken}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((res) => res.data)
       .catch((error) => console.log(error));
