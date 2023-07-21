@@ -6,6 +6,7 @@ import HymnDetailPage from "./pages/HymnDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "./pages/PrivateRoute";
+import RegistrationPage from "./pages/RegistrationPage";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegistrationPage /> },
       {
         path: "/hymns",
         element: (

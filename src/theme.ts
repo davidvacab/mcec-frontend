@@ -20,6 +20,11 @@ export const cardBgColor = () => {
   return color;
 };
 
+export const buttonTextColor = () => {
+  const color = useColorModeValue("white", "black");
+  return color;
+}
+
 const config: ThemeConfig = {
   initialColorMode: "dark",
 };
