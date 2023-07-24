@@ -32,11 +32,26 @@ import { z } from "zod";
 import { FieldErrors, useForm, UseFormRegister } from "react-hook-form";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
+import countriesES from "../entities/countires.es";
+import memberRoles from "../entities/memberRoles";
+import memberVoices from "../entities/memberVoices";
+import phoneCountryCodes from "../entities/phoneCountryCodes";
+import AuthClient from "../services/auth-client";
+import { RegisterFormData } from "../entities/types";
+import { useNavigate } from "react-router-dom";
+
+const authClient = new AuthClient();
 
 const schema = z
   .object({
-    firstName: z.string().nonempty("Requerido"),
-    lastName: z.string().nonempty("Requerido"),
+    firstName: z.string().nonempty("Requerido").max(50),
+    lastName: z.string().nonempty("Requerido").max(50),
+    username: z
+      .string()
+      .nonempty("Requerido")
+      .min(8, "Debe ser al menos 8 letras")
+      .max(32, "Maximo 32 letras")
+      .regex(RegExp("^[a-z0-9]*$"), "Solo letras minusculas y numeros"),
     email: z.string().email("Correo invalido"),
     password: z
       .string()
@@ -51,14 +66,30 @@ const schema = z
       ),
     confirmPassword: z.string().nonempty("Requerido"),
     birthdate: z.string().nonempty("Requerido"),
+    areaCode: z.enum([
+      phoneCountryCodes[0].dial_code,
+      ...phoneCountryCodes.slice(0).map((code) => code.dial_code),
+    ]),
     phone: z
       .string()
       .min(6, "Debe ser al menos 8 numeros")
       .regex(RegExp("[0-9]{8,10}"), "Numero Invalido"),
+    voice: z.enum([
+      memberVoices[0].key,
+      ...memberVoices.slice(0).map((voice) => voice.key),
+    ]),
+    role: z.enum([
+      memberRoles[0].key,
+      ...memberRoles.slice(0).map((role) => role.key),
+    ]),
     minister: z.string().nonempty("Requerido"),
     church: z.string().nonempty("Requerido"),
     city: z.string().nonempty("Requerido"),
     state: z.string().nonempty("Requerido"),
+    country: z.enum([
+      countriesES[0].alpha2,
+      ...countriesES.slice(0).map((country) => country.alpha2),
+    ]),
   })
   .partial()
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
@@ -74,17 +105,93 @@ interface FormProps {
 }
 
 const steps = [
-  { title: "Usuario", description: "Cuenta" },
   { title: "Perfil", description: "Personal" },
   { title: "Iglesia", description: "Local" },
+  { title: "Usuario", description: "Cuenta" },
 ];
 
-const Form1 = ({ register, errors }: FormProps) => {
+const UserForm = ({ register, errors }: FormProps) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   return (
     <VStack spacing={5} width={"100%"}>
+      <FormControl isInvalid={errors.username !== undefined}>
+        <FormLabel htmlFor="username" fontWeight={"normal"}>
+          Usuario
+        </FormLabel>
+        <Input
+          {...register("username")}
+          id="username"
+          placeholder="Usuario"
+          autoComplete="username"
+          tabIndex={1}
+        />
+        <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={errors.email !== undefined}>
+        <FormLabel htmlFor="email" fontWeight={"normal"}>
+          Email address
+        </FormLabel>
+        <Input
+          {...register("email")}
+          id="email"
+          type="email"
+          placeholder="Correo"
+          autoComplete="email"
+          tabIndex={2}
+        />
+        <FormHelperText>We'll never share your email.</FormHelperText>
+        <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={errors.password !== undefined}>
+        <FormLabel htmlFor="password" fontWeight={"normal"}>
+          Password
+        </FormLabel>
+        <InputGroup>
+          <Input
+            {...register("password")}
+            id="password"
+            type={show ? "text" : "password"}
+            placeholder="Enter password"
+            autoComplete="new-password"
+            tabIndex={3}
+          />
+          <InputRightElement width="4.5rem">
+            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+          </InputRightElement>
+        </InputGroup>
+        <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={errors.confirmPassword !== undefined}>
+        <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
+          Confirm Password
+        </FormLabel>
+        <InputGroup>
+          <Input
+            {...register("confirmPassword")}
+            id="confirm-password"
+            type={show ? "text" : "password"}
+            placeholder="Confirm password"
+            autoComplete="new-password"
+            tabIndex={4}
+          />
+          <InputRightElement width="4.5rem">
+            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+          </InputRightElement>
+        </InputGroup>
+        <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+      </FormControl>
+    </VStack>
+  );
+};
+
+const ProfileForm = ({ register, errors }: FormProps) => {
+  return (
+    <VStack spacing={5} w={"100%"}>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"} spacing={5}>
         <FormControl isInvalid={errors.firstName !== undefined}>
           <FormLabel htmlFor="first-name" fontWeight={"normal"}>
@@ -95,6 +202,7 @@ const Form1 = ({ register, errors }: FormProps) => {
             id="first-name"
             placeholder="First name"
             autoComplete="given-name"
+            tabIndex={1}
           />
           <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
         </FormControl>
@@ -108,69 +216,11 @@ const Form1 = ({ register, errors }: FormProps) => {
             id="last-name"
             placeholder="Last name"
             autoComplete="family-name"
+            tabIndex={2}
           />
           <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
         </FormControl>
       </Stack>
-
-      <FormControl isInvalid={errors.email !== undefined}>
-        <FormLabel htmlFor="email" fontWeight={"normal"}>
-          Email address
-        </FormLabel>
-        <Input
-          {...register("email")}
-          id="email"
-          type="email"
-          autoComplete="email"
-        />
-        <FormHelperText>We'll never share your email.</FormHelperText>
-        <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={errors.password !== undefined}>
-        <FormLabel htmlFor="password1" fontWeight={"normal"}>
-          Password
-        </FormLabel>
-        <InputGroup>
-          <Input
-            {...register("password")}
-            id="password1"
-            type={show ? "text" : "password"}
-            placeholder="Enter password"
-            autoComplete="new-password"
-          />
-          <InputRightElement width="4.5rem">
-            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
-          </InputRightElement>
-        </InputGroup>
-        <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-      </FormControl>
-
-      <FormControl isInvalid={errors.confirmPassword !== undefined}>
-        <FormLabel htmlFor="password2" fontWeight={"normal"}>
-          Confirm Password
-        </FormLabel>
-        <InputGroup>
-          <Input
-            {...register("confirmPassword")}
-            id="password2"
-            type={show ? "text" : "password"}
-            placeholder="Confirm password"
-            autoComplete="new-password"
-          />
-          <InputRightElement width="4.5rem">
-            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
-          </InputRightElement>
-        </InputGroup>
-        <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
-      </FormControl>
-    </VStack>
-  );
-};
-
-const Form2 = ({ register, errors }: FormProps) => {
-  return (
-    <VStack spacing={5} w={"100%"}>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"}>
         <FormControl isInvalid={errors.birthdate !== undefined}>
           <FormLabel htmlFor="birthdate" fontWeight={"normal"}>
@@ -180,9 +230,13 @@ const Form2 = ({ register, errors }: FormProps) => {
             {...register("birthdate")}
             id="birthdate"
             type="text"
+            autoComplete="on"
             placeholder="01/01/2001"
-            autoComplete="bday"
-            onFocus={(e) => (e.target.type = "date")}
+            onFocus={(e) => {
+              e.target.type = "date";
+              e.target.autocomplete = "bday";
+            }}
+            tabIndex={3}
           />
           <FormErrorMessage>{errors.birthdate?.message}</FormErrorMessage>
         </FormControl>
@@ -193,7 +247,19 @@ const Form2 = ({ register, errors }: FormProps) => {
           </FormLabel>
           <InputGroup>
             <InputLeftAddon p={0}>
-              <Select margin={0} placeholder="123" />
+              <Select
+                margin={0}
+                {...register("areaCode")}
+                id="country-code"
+                autoComplete="on"
+                tabIndex={4}
+              >
+                {phoneCountryCodes.map((code) => (
+                  <option key={code.code} value={code.dial_code}>
+                    {code.dial_code}
+                  </option>
+                ))}
+              </Select>
             </InputLeftAddon>
             <Input
               {...register("phone")}
@@ -202,6 +268,7 @@ const Form2 = ({ register, errors }: FormProps) => {
               pattern="[0-9]{8,10}"
               placeholder="3333333333"
               autoComplete="tel"
+              tabIndex={5}
             />
           </InputGroup>
           <FormErrorMessage>{errors.phone?.message}</FormErrorMessage>
@@ -213,21 +280,38 @@ const Form2 = ({ register, errors }: FormProps) => {
           <FormLabel htmlFor="voice" fontWeight={"normal"}>
             Voice
           </FormLabel>
-          <Select id="voice" placeholder="Soprano 1" autoComplete="on" />
+          <Select
+            id="voice"
+            autoComplete="on"
+            {...register("voice")}
+            tabIndex={6}
+          >
+            {memberVoices.map((voice) => (
+              <option key={voice.key} value={voice.key}>
+                {voice.value}
+              </option>
+            ))}
+          </Select>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="role" fontWeight={"normal"}>
+          <FormLabel htmlFor="role" fontWeight={"normal"} {...register("role")}>
             Role
           </FormLabel>
-          <Select id="role" placeholder="Miembro" autoComplete="on" />
+          <Select id="role" autoComplete="on" tabIndex={7}>
+            {memberRoles.map((role) => (
+              <option key={role.key} value={role.key}>
+                {role.value}
+              </option>
+            ))}
+          </Select>
         </FormControl>
       </Stack>
     </VStack>
   );
 };
 
-const Form3 = ({ register, errors }: FormProps) => {
+const ChurchForm = ({ register, errors }: FormProps) => {
   return (
     <VStack spacing={5} w={"100%"}>
       <FormControl isInvalid={errors.minister !== undefined}>
@@ -237,6 +321,7 @@ const Form3 = ({ register, errors }: FormProps) => {
           id="minister"
           autoComplete="name"
           {...register("minister")}
+          tabIndex={1}
         />
         <FormErrorMessage>{errors.minister?.message}</FormErrorMessage>
       </FormControl>
@@ -248,6 +333,7 @@ const Form3 = ({ register, errors }: FormProps) => {
           id="church-name"
           autoComplete="organization"
           {...register("church")}
+          tabIndex={2}
         />
         <FormErrorMessage>{errors.church?.message}</FormErrorMessage>
       </FormControl>
@@ -259,6 +345,7 @@ const Form3 = ({ register, errors }: FormProps) => {
           id="city"
           autoComplete="address-level2"
           {...register("city")}
+          tabIndex={3}
         />
         <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
       </FormControl>
@@ -270,16 +357,24 @@ const Form3 = ({ register, errors }: FormProps) => {
           id="state"
           autoComplete="address-level1"
           {...register("state")}
+          tabIndex={4}
         />
         <FormErrorMessage>{errors.state?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl>
         <FormLabel htmlFor="country">Country / Region</FormLabel>
-        <Select id="country" autoComplete="country" placeholder="Select option">
-          <option>United States</option>
-          <option>Canada</option>
-          <option>Mexico</option>
+        <Select
+          id="country"
+          autoComplete="country"
+          {...register("country")}
+          tabIndex={5}
+        >
+          {countriesES.map((country) => (
+            <option key={country.alpha3} value={country.alpha2}>
+              {country.name}
+            </option>
+          ))}
         </Select>
       </FormControl>
     </VStack>
@@ -293,6 +388,7 @@ const RegistrationPage = () => {
     handleSubmit,
     trigger,
     register,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -301,23 +397,75 @@ const RegistrationPage = () => {
     index: 1,
     count: steps.length,
   });
+  const navigate = useNavigate();
 
   const onSubmit = (formData: FormData) => {
-    
+    const userObject = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      profile: {
+        birth_date: formData.birthdate,
+        phone: `${formData.areaCode} ${formData.phone}`,
+        voice: formData.voice,
+        role: formData.role,
+      },
+      church: {
+        current_minister_name: formData.minister,
+        church_name: formData.church,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country?.toUpperCase(),
+      },
+    } as RegisterFormData;
+    authClient
+      .register(userObject)
+      .then((response) => {
+        if (response.status === 201) {
+          toast({
+            title: "Suceess",
+            description: "Account Created",
+            status: "success",
+            position: "top",
+            duration: 9000,
+            isClosable: true,
+          });
+          navigate("/login");
+        } else console.log(response);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          if (error.response.data.email)
+            setError(
+              "email",
+              { type: "value", message: "Email already in use" },
+              { shouldFocus: true }
+            );
+          if (error.response.data.username)
+            setError(
+              "username",
+              { type: "value", message: "Username already in use" },
+              { shouldFocus: true }
+            );
+        } else console.log(error.response);
+      });
   };
 
   const onNext = async () => {
     if (
       activeStep === 1 &&
-      (await trigger(
-        ["firstName", "lastName", "email", "password", "confirmPassword"],
-        { shouldFocus: true }
-      ))
+      (await trigger(["firstName", "lastName", "birthdate", "phone"], {
+        shouldFocus: true,
+      }))
     ) {
       setActiveStep(2);
     } else if (
       activeStep === 2 &&
-      (await trigger(["birthdate", "phone"], { shouldFocus: true }))
+      (await trigger(["minister", "church", "city", "state"], {
+        shouldFocus: true,
+      }))
     ) {
       setActiveStep(3);
     }
@@ -342,7 +490,7 @@ const RegistrationPage = () => {
         onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <Heading>Registracion</Heading>
-        <Stepper index={activeStep} width={"100%"}>
+        <Stepper index={activeStep} width={"100%"} colorScheme="telegram">
           {steps.map((step, index) => (
             <Step key={index}>
               <StepIndicator>
@@ -363,11 +511,11 @@ const RegistrationPage = () => {
           ))}
         </Stepper>
         {activeStep === 1 ? (
-          <Form1 register={register} errors={errors} />
+          <ProfileForm register={register} errors={errors} />
         ) : activeStep === 2 ? (
-          <Form2 register={register} errors={errors} />
+          <ChurchForm register={register} errors={errors} />
         ) : (
-          <Form3 register={register} errors={errors} />
+          <UserForm register={register} errors={errors} />
         )}
         <ButtonGroup w="100%" mt={5} spacing={5}>
           <Button
@@ -388,6 +536,7 @@ const RegistrationPage = () => {
             onClick={onNext}
             colorScheme="telegram"
             variant="outline"
+            tabIndex={8}
           >
             Next
           </Button>
@@ -397,6 +546,7 @@ const RegistrationPage = () => {
               w="7rem"
               colorScheme="teal"
               variant="solid"
+              tabIndex={9}
               //   onClick={() => {
               //     toast({
               //       title: "Account created.",

@@ -11,8 +11,8 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import NavItem from "../../components/NavItem";
 import { Audio } from "../entities/Audio";
-import Voices from "../entities/Voices";
 import { cardBgColor, cardBorderColor } from "../../theme";
+import audioVoices from "../entities/audioVoices";
 
 interface Props {
   audios: Audio[];
@@ -76,8 +76,9 @@ const AudioPlaylist = ({ audios }: Props) => {
           header={
             <Heading size={"md"} textAlign={"center"} my={1}>
               {
-                Voices.find(({ key }) => key === audios[currentTrack].voice)
-                  ?.value
+                audioVoices.find(
+                  ({ key }) => key === audios[currentTrack].voice
+                )?.value
               }
             </Heading>
           }
@@ -101,7 +102,7 @@ const AudioPlaylist = ({ audios }: Props) => {
                 )
               }
             >
-              {Voices.find(({ key }) => key === audio.voice)?.value}
+              {audioVoices.find(({ key }) => key === audio.voice)?.value}
             </NavItem>
           ))}
         </VStack>

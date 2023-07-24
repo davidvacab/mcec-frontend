@@ -23,12 +23,8 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 const authClient = new AuthClient();
 
 const schema = z.object({
-  username: z.string().min(5, {
-    message: "El nombre de usuario debe de ser al menos 5 caracteres",
-  }),
-  password: z
-    .string()
-    .min(8, { message: "La contrasena tiene que ser al menos 8 caracteres" }),
+  username: z.string().nonempty("Requerido"),
+  password: z.string().nonempty("Requerido"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -60,10 +56,11 @@ const LoginPage = () => {
             refreshTokenExpireIn: 1440,
           })
         ) {
-          navigate(state.from ? state.from : "/", { replace: true });
+          navigate(state !== null ? state.from : "/", { replace: true });
         } else throw new Error("Auth failed");
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         toast({
           title: "Error",
           description: "Invalid Credentials",
@@ -87,18 +84,14 @@ const LoginPage = () => {
         borderWidth="1px"
         rounded="lg"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        spacing={5}
+        spacing={8}
         maxW={"lg"}
         w={"100%"}
-        p={6}
+        p={{ base: 3, md: 10 }}
         onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <Heading>Iniciar Sesion</Heading>
-        <FormControl
-          id="username"
-          isRequired
-          isInvalid={errors.username !== undefined}
-        >
+        <FormControl id="username" isInvalid={errors.username !== undefined}>
           <FormLabel>Username</FormLabel>
           <Input
             id="username"
@@ -107,11 +100,7 @@ const LoginPage = () => {
           />
           <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl
-          id="password"
-          isRequired
-          isInvalid={errors.password !== undefined}
-        >
+        <FormControl id="password" isInvalid={errors.password !== undefined}>
           <FormLabel>Password</FormLabel>
           <Input
             {...register("password")}
@@ -123,7 +112,7 @@ const LoginPage = () => {
         </FormControl>
         <Button
           type="submit"
-          w="7rem"
+          w="10rem"
           colorScheme="telegram"
           color={buttonTextColor()}
         >

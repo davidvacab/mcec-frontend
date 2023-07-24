@@ -1,42 +1,41 @@
 import axios from "axios";
+import {
+  LoginFormData,
+  RefreshTokens,
+  RegisterFormData,
+} from "../entities/types";
 
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/auth",
 });
 
-interface LoginForm {
-  username: string;
-  password: string;
-}
-
-interface RefreshTokens {
-  authToken: string | undefined;
-  refreshToken: string | undefined;
-}
-
 class AuthClient {
-  login = async (formValues: LoginForm) => {
-    const res = await axiosInstance.post("/jwt/create", formValues);
-    return res.data;
+  login = async (formValues: LoginFormData) => {
+    return await axiosInstance
+      .post("/jwt/create/", formValues)
+      .then((res) => res.data);
   };
 
   refresh = async ({ authToken, refreshToken }: RefreshTokens) => {
-    const res = await axiosInstance.post(
-      "/jwt/refresh",
-      { refresh: refreshToken },
-      {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }
-    );
-    return res.data;
+    return await axiosInstance
+      .post(
+        "/jwt/refresh/",
+        { refresh: refreshToken },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      )
+      .then((res) => res.data);
+  };
+  register = async (formValues: RegisterFormData) => {
+    return await axiosInstance.post("/users/", formValues).then((res) => res);
   };
   me = async (authToken: string | undefined) => {
     return await axiosInstance
-      .get("/users/me", {
+      .get("/users/me/", {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((res) => res.data)
-      .catch((error) => console.log(error));
+      .then((res) => res.data);
   };
 }
 
