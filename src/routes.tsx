@@ -7,9 +7,12 @@ import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "./pages/PrivateRoute";
 import RegistrationPage from "./pages/RegistrationPage";
-import ActivateAccountPage, {
+import AccountActivationPage, {
   activationLoader,
-} from "./pages/ActivateAccountPage";
+} from "./pages/AccountActivationPage";
+import AwaitActivationPage from "./pages/AwaitActivationPage";
+import PassResetPage from "./pages/PassResetPage";
+import PassResetConfirmPage from "./pages/PassResetConfirmPage";
 
 const router = createBrowserRouter([
   {
@@ -20,10 +23,23 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegistrationPage /> },
+
       {
-        path: "/activate-account/:uid/:token",
-        element: <ActivateAccountPage />,
+        path: "/activate-account",
+        element: <AwaitActivationPage />,
+      },
+      {
+        path: "/activation/:uid/:token",
+        element: <AccountActivationPage />,
         loader: activationLoader,
+      },
+      {
+        path: "/password-reset",
+        element: <PassResetPage />,
+      },
+      {
+        path: "/password-reset/:uid/:token",
+        element: <PassResetConfirmPage />,
       },
       {
         path: "/hymns",

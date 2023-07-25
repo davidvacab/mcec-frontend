@@ -37,8 +37,9 @@ import memberRoles from "../entities/memberRoles";
 import memberVoices from "../entities/memberVoices";
 import phoneCountryCodes from "../entities/phoneCountryCodes";
 import AuthClient from "../services/auth-client";
-import { RegisterFormData } from "../entities/types";
+import { RegisterData } from "../entities/types";
 import { useNavigate } from "react-router-dom";
+import useMainStore from "../store";
 
 const authClient = new AuthClient();
 
@@ -383,6 +384,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
 
 const RegistrationPage = () => {
   useDocumentTitle("Registracion | MCEC");
+  const setRegistrationEmail = useMainStore((s) => s.setRegistrationEmail);
   const toast = useToast();
   const {
     handleSubmit,
@@ -419,7 +421,7 @@ const RegistrationPage = () => {
         state: formData.state,
         country: formData.country?.toUpperCase(),
       },
-    } as RegisterFormData;
+    } as RegisterData;
     authClient
       .register(userObject)
       .then((response) => {
@@ -432,8 +434,12 @@ const RegistrationPage = () => {
             duration: 9000,
             isClosable: true,
           });
-          navigate("/login");
-        } else console.log(response);
+          setRegistrationEmail(formData.email);
+          navigate("/activate-account");
+        } else {
+          console.log(response);
+          throw new Response("Not Found", { status: 404 });
+        }
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -449,7 +455,10 @@ const RegistrationPage = () => {
               { type: "value", message: "Username already in use" },
               { shouldFocus: true }
             );
-        } else console.log(error.response);
+        } else {
+          console.log(error.response);
+          throw new Response("Not Found", { status: 404 });
+        }
       });
   };
 

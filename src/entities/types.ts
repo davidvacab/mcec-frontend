@@ -1,9 +1,9 @@
-export interface LoginFormData {
+export interface LoginData {
   username: string;
   password: string;
 }
 
-export interface RegisterFormData {
+export interface RegisterData {
   username?: string;
   email?: string;
   password?: string;
@@ -24,12 +24,18 @@ export interface RegisterFormData {
   };
 }
 
-export interface RefreshTokens {
-  authToken: string | undefined;
-  refreshToken: string | undefined;
-}
-
-export interface ActivateTokens {
+export interface UidTokenData {
   uid?: string;
   token?: string;
+}
+
+export interface SetPasswordData {
+  new_pasword?: string;
+  current_password?: string;
+}
+
+export interface ResetPasswordData {
+  uid?: string;
+  token?: string;
+  new_pasword?: string;
 }

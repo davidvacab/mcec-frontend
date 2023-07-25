@@ -1,9 +1,10 @@
 import axios from "axios";
 import {
-  LoginFormData,
-  RefreshTokens,
-  RegisterFormData,
-  ActivateTokens,
+  LoginData,
+  RegisterData,
+  ResetPasswordData,
+  SetPasswordData,
+  UidTokenData,
 } from "../entities/types";
 
 const axiosInstance = axios.create({
@@ -11,29 +12,48 @@ const axiosInstance = axios.create({
 });
 
 class AuthClient {
-  login = async (formValues: LoginFormData) => {
+  login = async (formValues: LoginData) => {
     return await axiosInstance
       .post("/jwt/create/", formValues)
       .then((res) => res.data);
   };
 
-  refresh = async ({ authToken, refreshToken }: RefreshTokens) => {
+  refresh = async (refreshToken: string | undefined) => {
     return await axiosInstance
-      .post(
-        "/jwt/refresh/",
-        { refresh: refreshToken },
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
-      )
+      .post("/jwt/refresh/", { refresh: refreshToken })
       .then((res) => res.data);
   };
-  register = async (formData: RegisterFormData) => {
+  register = async (formData: RegisterData) => {
     return await axiosInstance.post("/users/", formData).then((res) => res);
   };
-  activate = async (tokens: ActivateTokens) => {
+  activate = async (tokens: UidTokenData) => {
     return await axiosInstance
       .post("/users/activation/", tokens)
+      .then((res) => res);
+  };
+  resendActivate = async (email: string | undefined) => {
+    return await axiosInstance
+      .post("/users/resend_activation/", { email })
+      .then((res) => res);
+  };
+  setPassword = async (
+    formData: SetPasswordData,
+    authToken: string | undefined
+  ) => {
+    return await axiosInstance
+      .post("/users/set_password/", formData, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((res) => res);
+  };
+  resetPassword = async (email: string | undefined) => {
+    return await axiosInstance
+      .post("/users/reset_password/", { email })
+      .then((res) => res);
+  };
+  resetPasswordConfirmation = async (data: ResetPasswordData) => {
+    return await axiosInstance
+      .post("/users/reset_password_confirm/", data)
       .then((res) => res);
   };
   me = async (authToken: string | undefined) => {

@@ -57,7 +57,10 @@ const LoginPage = () => {
           })
         ) {
           navigate(state !== null ? state.from : "/", { replace: true });
-        } else throw new Error("Auth failed");
+        } else {
+          console.log(data);
+          throw new Response("Not Found", { status: 404 });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -119,7 +122,7 @@ const LoginPage = () => {
           Sign in
         </Button>
         <HStack>
-          <Link to="#" color={"blue.400"}>
+          <Link to="/password-reset" color={"blue.400"}>
             <Button variant={"link"}>Forgot password?</Button>
           </Link>
         </HStack>

@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface MainElements {
   isDrawerOpen: boolean;
   isAlertOpen: boolean;
+  registrationEmail?: string;
   alertElements: {
     status: "error" | "success" | "warning" | "info" | "loading";
     title?: string;
@@ -21,6 +22,7 @@ interface MainStore {
     title: string,
     description: string
   ) => void;
+  setRegistrationEmail: (email: string | undefined) => void;
 }
 
 const useMainStore = create<MainStore>((set) => ({
@@ -55,6 +57,10 @@ const useMainStore = create<MainStore>((set) => ({
           description: description,
         },
       },
+    })),
+  setRegistrationEmail: (email) =>
+    set((store) => ({
+      mainElements: { ...store.mainElements, registrationEmail: email },
     })),
 }));
 
