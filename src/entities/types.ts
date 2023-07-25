@@ -28,3 +28,8 @@ export interface RefreshTokens {
   authToken: string | undefined;
   refreshToken: string | undefined;
 }
+
+export interface ActivateTokens {
+  uid?: string;
+  token?: string;
+}

@@ -11,6 +11,7 @@ import {
   VStack,
   useColorModeValue,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { useAuthUser } from "react-auth-kit";
 import { FiChevronDown } from "react-icons/fi";
@@ -19,9 +20,11 @@ import { useSignOut } from "react-auth-kit";
 
 const NavBarMenu = () => {
   const auth = useAuthUser();
-
   const signOut = useSignOut();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const baseURL = "http://127.0.0.1:8000";
   return (
     <Flex alignItems={"center"}>
       <Menu>
@@ -32,9 +35,7 @@ const NavBarMenu = () => {
                 <Avatar
                   display={{ base: "none", md: "flex" }}
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  src={baseURL + auth()?.profile.picture}
                 />
 
                 <VStack
@@ -44,7 +45,7 @@ const NavBarMenu = () => {
                   ml="2"
                 >
                   <Text fontSize="sm">
-                    {auth()!.first_name} {auth()!.last_name}
+                    {auth()?.first_name} {auth()?.last_name}
                   </Text>
                   <Text fontSize="xs" color="gray.600">
                     User
@@ -75,6 +76,14 @@ const NavBarMenu = () => {
             <MenuItem
               onClick={() => {
                 signOut();
+                toast({
+                  title: "Logout",
+                  description: "Sesion Terminada",
+                  status: "info",
+                  position: "top",
+                  duration: 9000,
+                  isClosable: true,
+                });
                 navigate("/");
               }}
             >

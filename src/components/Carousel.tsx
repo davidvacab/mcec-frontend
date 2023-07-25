@@ -114,14 +114,14 @@ const Carousel = () => {
           >
             <Box height={height} px={1}>
               <VStack
-                margin={"auto"}
                 borderRadius={10}
+                mx={{md: 24}}
                 backdropFilter="auto"
                 backdropContrast="10%"
                 spacing={6}
                 p={5}
                 position="relative"
-                top={{ base: "80%", md: "90%" }}
+                top={{ base: "80%", md: "86%" }}
                 transform="translate(0, -50%)"
               >
                 <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }} color={"white"}>

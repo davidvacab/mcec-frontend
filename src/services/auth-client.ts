@@ -3,6 +3,7 @@ import {
   LoginFormData,
   RefreshTokens,
   RegisterFormData,
+  ActivateTokens,
 } from "../entities/types";
 
 const axiosInstance = axios.create({
@@ -27,8 +28,13 @@ class AuthClient {
       )
       .then((res) => res.data);
   };
-  register = async (formValues: RegisterFormData) => {
-    return await axiosInstance.post("/users/", formValues).then((res) => res);
+  register = async (formData: RegisterFormData) => {
+    return await axiosInstance.post("/users/", formData).then((res) => res);
+  };
+  activate = async (tokens: ActivateTokens) => {
+    return await axiosInstance
+      .post("/users/activation/", tokens)
+      .then((res) => res);
   };
   me = async (authToken: string | undefined) => {
     return await axiosInstance
