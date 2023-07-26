@@ -1,11 +1,5 @@
-import {
-  Box,
-  HStack,
-  IconButton,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -27,16 +21,21 @@ interface Props {
 }
 
 const PDFViewer = ({ pdfURL }: Props) => {
-  const baseURL = "http://127.0.0.1:8000";
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!ref.current?.clientWidth || !ref.current?.clientHeight) {
+      return;
+    }
+    setWidth(ref?.current?.clientWidth - 5);
+  }, []);
+
   const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const responsiveWidth = useBreakpointValue({
-    base: 320,
-    md: 500,
-    lg: 550,
-    xl: 650,
-  });
+  const baseURL = "http://127.0.0.1:8000";
 
   const onDocumentLoadSuccess = ({
     numPages: nextNumPages,
@@ -52,7 +51,19 @@ const PDFViewer = ({ pdfURL }: Props) => {
   };
 
   return (
-    <Box borderRadius={10} {...cardStyles}>
+    <Box
+      borderRadius={10}
+      width={"100%"}
+      maxWidth={580}
+      minH={{
+        base: 452,
+        md: 812,
+        lg: 877,
+      }}
+      flexShrink={"1 0 auto"}
+      {...cardStyles}
+      ref={ref}
+    >
       <HStack spacing={5} justifyContent={"center"} my={3}>
         <IconButton
           variant="ghost"
@@ -73,10 +84,11 @@ const PDFViewer = ({ pdfURL }: Props) => {
         />
       </HStack>
       <Document
+        className={"Document"}
         file={{ url: baseURL + decodeURI(pdfURL) }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page pageNumber={pageNumber} height={} width={responsiveWidth} />
+        <Page className="Page" pageNumber={pageNumber} width={width} />
       </Document>
     </Box>
   );

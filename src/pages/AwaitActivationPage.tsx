@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import InfoPage from "../components/InfoPage";
+import Info from "../components/Info";
 import AuthClient from "../services/auth-client";
 import useMainStore from "../store";
 
@@ -32,7 +32,7 @@ const AwaitActivationPage = () => {
   if (email === undefined) throw new Response("Not Found", { status: 404 });
 
   return (
-    <InfoPage
+    <Info
       title="Email sent"
       description="An email was send with an activation link"
       variant="info"

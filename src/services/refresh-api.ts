@@ -8,11 +8,11 @@ const refreshApi = createRefresh({
   interval: 10, // Refreshs the token in every 10 minutes
   refreshApiCallback: async ({ refreshToken }) =>
     await authClient
-      .refresh(refreshToken)
-      .then((data) => {
+      .refreshAuth(refreshToken)
+      .then((res) => {
         return {
           isSuccess: true,
-          newAuthToken: data.access,
+          newAuthToken: res.data.access,
           newAuthTokenExpireIn: 10,
         } as RefreshTokenCallbackResponse;
       })

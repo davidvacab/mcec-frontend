@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import HymnDetailPage from "./pages/HymnDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
-import PrivateRoute from "./pages/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import RegistrationPage from "./pages/RegistrationPage";
 import AccountActivationPage, {
   activationLoader,

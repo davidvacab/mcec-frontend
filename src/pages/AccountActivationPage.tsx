@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 import AuthClient from "../services/auth-client";
-import InfoPage from "../components/InfoPage";
+import Info from "../components/Info";
 
 const authClient = new AuthClient();
 
@@ -23,7 +23,7 @@ export const activationLoader = async ({ params }: LoaderFunctionArgs) => {
 
 const AccountActivationPage = () => {
   return (
-    <InfoPage
+    <Info
       title="Activation"
       description="Activation Successful please go to the dashboard to login"
     />

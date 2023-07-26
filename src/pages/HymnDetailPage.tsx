@@ -24,7 +24,7 @@ const HymnDetailPage = () => {
       width={"100%"}
       minH={"calc(100vh - 20)"}
     >
-      <VStack maxWidth={"400px"} w={"100%"} alignContent={"center"}>
+      <VStack maxWidth={"380px"} w={"100%"} alignContent={"center"}>
         <HymnCard hymn={hymn} />
         {hymn.audio_set.length !== 0 && (
           <AudioPlaylist audios={hymn.audio_set} />

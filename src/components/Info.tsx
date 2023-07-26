@@ -24,7 +24,7 @@ interface Props {
   button2OnClick?: () => void;
 }
 
-const InfoPage = ({
+const Info = ({
   title,
   description,
   variant = "success",
@@ -121,4 +121,4 @@ const InfoPage = ({
   );
 };
 
-export default InfoPage;
+export default Info;

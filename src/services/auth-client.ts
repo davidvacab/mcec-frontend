@@ -15,14 +15,21 @@ class AuthClient {
   login = async (formValues: LoginData) => {
     return await axiosInstance
       .post("/jwt/create/", formValues)
-      .then((res) => res.data);
+      .then((res) => res);
   };
 
-  refresh = async (refreshToken: string | undefined) => {
+  refreshAuth = async (refreshToken: string | undefined) => {
     return await axiosInstance
       .post("/jwt/refresh/", { refresh: refreshToken })
-      .then((res) => res.data);
+      .then((res) => res);
   };
+
+  verifyAuth = async (authToken: string | undefined) => {
+    return await axiosInstance
+      .post("/jwt/verify/", { token: authToken })
+      .then((res) => res);
+  };
+
   register = async (formData: RegisterData) => {
     return await axiosInstance.post("/users/", formData).then((res) => res);
   };
