@@ -9,7 +9,6 @@ import {
   Flex,
   HStack,
   VStack,
-  useColorModeValue,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -28,7 +27,7 @@ const NavBarMenu = () => {
   return (
     <Flex alignItems={"center"}>
       <Menu>
-        <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: "none" }}>
+        <MenuButton py={2} transition="all 0.3s">
           <HStack>
             {auth() && (
               <>
@@ -58,10 +57,7 @@ const NavBarMenu = () => {
             </Box>
           </HStack>
         </MenuButton>
-        <MenuList
-          bg={useColorModeValue("white", "gray.900")}
-          borderColor={useColorModeValue("gray.200", "gray.700")}
-        >
+        <MenuList>
           <MenuItem>
             <Link to={"/hymns"}>Repertorio</Link>
           </MenuItem>

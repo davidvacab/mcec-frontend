@@ -9,6 +9,8 @@ const ColorModeButton = () => {
       aria-label="Dark Mode"
       rounded={"full"}
       bg={"transparent"}
+      color={"navy.700"}
+      _dark={{ color: "white" }}
       onClick={toggleColorMode}
       icon={colorMode === "light" ? <BsFillMoonFill /> : <BsFillSunFill />}
     />

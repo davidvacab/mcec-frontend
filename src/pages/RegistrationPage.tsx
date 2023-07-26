@@ -40,6 +40,7 @@ import AuthClient from "../services/auth-client";
 import { RegisterData } from "../entities/types";
 import { useNavigate } from "react-router-dom";
 import useMainStore from "../store";
+import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
 
 const authClient = new AuthClient();
 
@@ -123,6 +124,7 @@ const UserForm = ({ register, errors }: FormProps) => {
         </FormLabel>
         <Input
           {...register("username")}
+          {...inputStyles}
           id="username"
           placeholder="Usuario"
           autoComplete="username"
@@ -137,6 +139,7 @@ const UserForm = ({ register, errors }: FormProps) => {
         </FormLabel>
         <Input
           {...register("email")}
+          {...inputStyles}
           id="email"
           type="email"
           placeholder="Correo"
@@ -154,6 +157,7 @@ const UserForm = ({ register, errors }: FormProps) => {
         <InputGroup>
           <Input
             {...register("password")}
+            {...inputStyles}
             id="password"
             type={show ? "text" : "password"}
             placeholder="Enter password"
@@ -174,6 +178,7 @@ const UserForm = ({ register, errors }: FormProps) => {
         <InputGroup>
           <Input
             {...register("confirmPassword")}
+            {...inputStyles}
             id="confirm-password"
             type={show ? "text" : "password"}
             placeholder="Confirm password"
@@ -200,6 +205,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           </FormLabel>
           <Input
             {...register("firstName")}
+            {...inputStyles}
             id="first-name"
             placeholder="First name"
             autoComplete="given-name"
@@ -214,6 +220,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           </FormLabel>
           <Input
             {...register("lastName")}
+            {...inputStyles}
             id="last-name"
             placeholder="Last name"
             autoComplete="family-name"
@@ -229,6 +236,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           </FormLabel>
           <Input
             {...register("birthdate")}
+            {...inputStyles}
             id="birthdate"
             type="text"
             autoComplete="on"
@@ -249,8 +257,8 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           <InputGroup>
             <InputLeftAddon p={0}>
               <Select
-                margin={0}
                 {...register("areaCode")}
+                {...selectStyles}
                 id="country-code"
                 autoComplete="on"
                 tabIndex={4}
@@ -264,6 +272,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
             </InputLeftAddon>
             <Input
               {...register("phone")}
+              {...inputStyles}
               type="tel"
               id="phone"
               pattern="[0-9]{8,10}"
@@ -285,6 +294,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
             id="voice"
             autoComplete="on"
             {...register("voice")}
+            {...selectStyles}
             tabIndex={6}
           >
             {memberVoices.map((voice) => (
@@ -296,10 +306,16 @@ const ProfileForm = ({ register, errors }: FormProps) => {
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="role" fontWeight={"normal"} {...register("role")}>
+          <FormLabel htmlFor="role" fontWeight={"normal"}>
             Role
           </FormLabel>
-          <Select id="role" autoComplete="on" tabIndex={7}>
+          <Select
+            id="role"
+            autoComplete="on"
+            tabIndex={7}
+            {...register("role")}
+            {...selectStyles}
+          >
             {memberRoles.map((role) => (
               <option key={role.key} value={role.key}>
                 {role.value}
@@ -322,6 +338,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           id="minister"
           autoComplete="name"
           {...register("minister")}
+          {...inputStyles}
           tabIndex={1}
         />
         <FormErrorMessage>{errors.minister?.message}</FormErrorMessage>
@@ -334,6 +351,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           id="church-name"
           autoComplete="organization"
           {...register("church")}
+          {...inputStyles}
           tabIndex={2}
         />
         <FormErrorMessage>{errors.church?.message}</FormErrorMessage>
@@ -346,6 +364,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           id="city"
           autoComplete="address-level2"
           {...register("city")}
+          {...inputStyles}
           tabIndex={3}
         />
         <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
@@ -358,6 +377,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           id="state"
           autoComplete="address-level1"
           {...register("state")}
+          {...inputStyles}
           tabIndex={4}
         />
         <FormErrorMessage>{errors.state?.message}</FormErrorMessage>
@@ -369,6 +389,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           id="country"
           autoComplete="country"
           {...register("country")}
+          {...selectStyles}
           tabIndex={5}
         >
           {countriesES.map((country) => (
@@ -488,18 +509,17 @@ const RegistrationPage = () => {
       px={1}
     >
       <VStack
-        borderWidth="1px"
         spacing={10}
-        rounded="lg"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
         maxWidth={800}
         w={"100%"}
         p={6}
         as="form"
         onSubmit={handleSubmit((data) => onSubmit(data))}
+        {...cardStyles}
       >
         <Heading>Registracion</Heading>
-        <Stepper index={activeStep} width={"100%"} colorScheme="telegram">
+        <Stepper index={activeStep} width={"100%"} colorScheme="navy">
           {steps.map((step, index) => (
             <Step key={index}>
               <StepIndicator>
@@ -532,7 +552,7 @@ const RegistrationPage = () => {
               setActiveStep(activeStep - 1);
             }}
             isDisabled={activeStep === 1}
-            colorScheme="telegram"
+            colorScheme="navy"
             variant="solid"
             w="7rem"
           >
@@ -543,7 +563,7 @@ const RegistrationPage = () => {
             w="7rem"
             isDisabled={activeStep === 3}
             onClick={onNext}
-            colorScheme="telegram"
+            colorScheme="navy"
             variant="outline"
             tabIndex={8}
           >
@@ -553,18 +573,9 @@ const RegistrationPage = () => {
             <Button
               type="submit"
               w="7rem"
-              colorScheme="teal"
+              colorScheme="gold"
               variant="solid"
               tabIndex={9}
-              //   onClick={() => {
-              //     toast({
-              //       title: "Account created.",
-              //       description: "We've created your account for you.",
-              //       status: "success",
-              //       duration: 3000,
-              //       isClosable: true,
-              //     });
-              //   }}
             >
               Submit
             </Button>

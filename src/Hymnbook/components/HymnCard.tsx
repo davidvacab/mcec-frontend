@@ -11,7 +11,7 @@ import {
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import { Hymn } from "../entities/Hymn";
-import { cardBgColor, cardBorderColor } from "../../theme";
+import { cardStyles } from "../../theme/theme";
 
 interface Props {
   hymn: Hymn;
@@ -22,14 +22,7 @@ const HymnCard = ({ hymn }: Props) => {
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
 
   return (
-    <Card
-      w={"100%"}
-      h={"100%"}
-      bg={cardBgColor()}
-      borderRadius={10}
-      borderWidth={1}
-      borderColor={cardBorderColor()}
-    >
+    <Card w={"100%"} h={"100%"} borderRadius={10} {...cardStyles}>
       <CardHeader textAlign={"center"}>
         <Heading
           size={{
@@ -42,11 +35,7 @@ const HymnCard = ({ hymn }: Props) => {
         </Heading>
       </CardHeader>
       <CardBody>
-        <Stack
-          divider={<StackDivider borderColor={cardBorderColor()} />}
-          spacing="4"
-          justifyContent={"right"}
-        >
+        <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
           <HStack align={"center"}>
             <Heading size="sm" textTransform="uppercase">
               Tema:
@@ -60,7 +49,7 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 Autor:
               </Heading>
-              <Text pt="1" fontSize="sm">
+              <Text pt="1" fontSize="md">
                 {hymn.author.first_name + " " + hymn.author.last_name}
               </Text>
             </HStack>
@@ -70,7 +59,7 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 Arreglista:
               </Heading>
-              <Text pt="1" fontSize="sm">
+              <Text pt="1" fontSize="md">
                 {hymn.arranger.first_name + " " + hymn.arranger.last_name}
               </Text>
             </HStack>

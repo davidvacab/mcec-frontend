@@ -1,9 +1,9 @@
-import { Input, InputGroup, InputLeftElement, useColorModeValue } from "@chakra-ui/react";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import useHymnQueryStore from "../store";
 import useMainStore from "../../store";
-import { cardBgColor } from "../../theme";
+import { inputStyles } from "../../theme/theme";
 
 const SearchInput = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -26,12 +26,9 @@ const SearchInput = () => {
         <InputLeftElement children={<BsSearch />} />
         <Input
           ref={ref}
-          borderRadius={20}
+          borderRadius={5}
           placeholder="Buscar Cantos"
-          variant={"filled"}
-          bgColor={cardBgColor()}
-          _focus={{bg: useColorModeValue("gray.50", "gray.900")}}
-          _hover={{bg: useColorModeValue("gray.300","gray.600")}}
+          {...inputStyles}
         />
       </InputGroup>
     </form>

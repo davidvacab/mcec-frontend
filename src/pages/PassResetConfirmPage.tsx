@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import AuthClient from "../services/auth-client";
+import { cardStyles, inputStyles } from "../theme/theme";
 
 const authClient = new AuthClient();
 
@@ -86,16 +87,16 @@ const PassResetConfirmPage = () => {
   return (
     <Flex minH={"calc(100vh - 5rem)"} justify={"center"} px={1}>
       <VStack
+        marginTop={5}
         spacing={5}
-        borderWidth="1px"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
         p={6}
-        rounded="lg"
         h={"100%"}
         width={"100%"}
         maxW={600}
         as="form"
         onSubmit={handleSubmit((data) => onSubmit(data))}
+        {...cardStyles}
       >
         <FormControl isInvalid={errors.password !== undefined}>
           <FormLabel htmlFor="password" fontWeight={"normal"}>
@@ -109,6 +110,7 @@ const PassResetConfirmPage = () => {
               placeholder="Enter password"
               autoComplete="new-password"
               tabIndex={3}
+              {...inputStyles}
             />
             <InputRightElement width="4.5rem">
               <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
@@ -129,6 +131,7 @@ const PassResetConfirmPage = () => {
               placeholder="Confirm password"
               autoComplete="new-password"
               tabIndex={4}
+              {...inputStyles}
             />
             <InputRightElement width="4.5rem">
               <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
@@ -139,7 +142,7 @@ const PassResetConfirmPage = () => {
         <Button
           type="submit"
           w="7rem"
-          colorScheme="teal"
+          colorScheme="gold"
           variant="solid"
           tabIndex={9}
         >

@@ -4,11 +4,12 @@ import {
   IconButton,
   Text,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import Slider from "react-slick";
+import { cardOpaqueStyles } from "../theme/theme";
 
 const settings = {
   dots: true,
@@ -73,8 +74,7 @@ const Carousel = () => {
       />
       <IconButton
         borderRadius={20}
-        backdropFilter="auto"
-        backdropContrast="10%"
+        {...cardOpaqueStyles}
         aria-label="left-arrow"
         variant="ghost"
         position="absolute"
@@ -87,8 +87,7 @@ const Carousel = () => {
       />
       <IconButton
         borderRadius={20}
-        backdropFilter="auto"
-        backdropContrast="10%"
+        {...cardOpaqueStyles}
         aria-label="right-arrow"
         variant="ghost"
         position="absolute"
@@ -115,22 +114,18 @@ const Carousel = () => {
             <Box height={height} px={1}>
               <VStack
                 borderRadius={10}
-                mx={{md: 24}}
-                backdropFilter="auto"
-                backdropContrast="10%"
+                mx={{ md: 24 }}
+                {...cardOpaqueStyles}
                 spacing={6}
                 p={5}
                 position="relative"
                 top={{ base: "80%", md: "86%" }}
                 transform="translate(0, -50%)"
               >
-                <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }} color={"white"}>
+                <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
                   {card.title}
                 </Heading>
-                <Text
-                  fontSize={{ base: "sm", md: "md", lg: "lg" }}
-                  color="white"
-                >
+                <Text fontSize={{ base: "sm", md: "md", lg: "lg" }}>
                   {card.text}
                 </Text>
               </VStack>

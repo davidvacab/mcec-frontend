@@ -1,10 +1,10 @@
-import { Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { Flex, HStack, Heading, IconButton } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import ColorModeButton from "./ColorModeButton";
 import NavBarMenu from "./NavBarMenu";
 import useMainStore from "../store";
-import { layoutBgColor, layoutBorderColor } from "../theme";
+import { navBarStyles } from "../theme/theme";
 
 const NavBar = () => {
   const location = useLocation();
@@ -15,13 +15,11 @@ const NavBar = () => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={layoutBgColor()}
-      borderBottomWidth={1}
-      borderColor={layoutBorderColor()}
       justifyContent={"space-between"}
       position={"sticky"}
       zIndex={3}
       top={0}
+      {...navBarStyles}
     >
       {location.pathname === "/hymns" && (
         <IconButton
@@ -33,14 +31,7 @@ const NavBar = () => {
         />
       )}
       <Link to={"/"}>
-        <Text
-          display={"flex"}
-          fontSize="2xl"
-          fontFamily="monospace"
-          fontWeight="bold"
-        >
-          MCEC
-        </Text>
+        <Heading size={"xl"}>MCEC</Heading>
       </Link>
       <HStack spacing={{ base: "2", md: "6" }}>
         <ColorModeButton />

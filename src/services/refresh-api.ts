@@ -6,9 +6,9 @@ const authClient = new AuthClient();
 
 const refreshApi = createRefresh({
   interval: 10, // Refreshs the token in every 10 minutes
-  refreshApiCallback: async ({ authToken, refreshToken }) =>
+  refreshApiCallback: async ({ refreshToken }) =>
     await authClient
-      .refresh({ authToken: authToken, refreshToken: refreshToken })
+      .refresh(refreshToken)
       .then((data) => {
         return {
           isSuccess: true,

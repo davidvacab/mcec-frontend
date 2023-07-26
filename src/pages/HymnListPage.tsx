@@ -9,7 +9,6 @@ import NavItem from "../components/NavItem";
 import Sidebar from "../components/Sidebar";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useMainStore from "../store";
-import { layoutBgColor } from "../theme";
 import { RequireAuth } from "react-auth-kit";
 
 const HymnListPage = () => {
@@ -36,7 +35,7 @@ const HymnListPage = () => {
 
   return (
     <RequireAuth loginPath="/login">
-      <Box minH={"calc(100vh - 20)"} bg={layoutBgColor()}>
+      <Box minH={"calc(100vh - 20)"}>
         <Sidebar label={"Filtros"} display={{ base: "none", md: "block" }}>
           {filters}
         </Sidebar>

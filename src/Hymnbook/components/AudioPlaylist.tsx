@@ -1,18 +1,11 @@
-import {
-  Card,
-  CardBody,
-  Divider,
-  Heading,
-  VStack,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Card, CardBody, Divider, Heading, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import NavItem from "../../components/NavItem";
 import { Audio } from "../entities/Audio";
-import { cardBgColor, cardBorderColor } from "../../theme";
 import audioVoices from "../entities/audioVoices";
+import { cardStyles } from "../../theme/theme";
 
 interface Props {
   audios: Audio[];
@@ -41,29 +34,32 @@ const AudioPlaylist = ({ audios }: Props) => {
   };
 
   return (
-    <Card
-      w={"100%"}
-      h={"100%"}
-      bg={cardBgColor()}
-      borderWidth={1}
-      borderColor={cardBorderColor()}
-    >
+    <Card w={"100%"} h={"100%"} {...cardStyles}>
       <CardBody
         p={2}
         sx={{
           ".rhap_button-clear,\
             .rhap_time": {
-            color: useColorModeValue("black", "white"),
+            color: "navy.700",
+            _dark: {
+              color: "white",
+            },
           },
           ".rhap_progress-filled,\
             .rhap_progress-indicator,\
             .rhap_volume-filled,\
             .rhap_volume-indicator": {
-            background: useColorModeValue("black", "white"),
+            bg: "navy.700",
+            _dark: {
+              bg: "gray.600",
+            },
           },
           ".rhap_download-progress,\
             .rhap_volume-bar": {
-            background: useColorModeValue("#b3b6c9", "#5d6385"),
+            bg: "gray.300",
+            _dark: {
+              bg: "gray.900",
+            },
           },
           ".rhap_container": {
             background: "transparent",

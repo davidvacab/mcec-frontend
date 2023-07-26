@@ -12,7 +12,6 @@ import {
   AiFillCheckCircle,
   AiFillInfoCircle,
 } from "react-icons/ai";
-import { layoutBgColor } from "../theme";
 import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
@@ -51,7 +50,7 @@ const InfoPage = ({
       break;
   }
   return (
-    <Box textAlign="center" py={10} px={6} bg={layoutBgColor()} minH={"100vh"}>
+    <Box textAlign="center" py={10} px={6} minH={"100vh"}>
       <Box>
         <Flex
           mx={"auto"}

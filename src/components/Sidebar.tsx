@@ -1,7 +1,7 @@
 import { Box, BoxProps, CloseButton, Flex, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import useMainStore from "../store";
-import { layoutBorderColor } from "../theme";
+import { sideBarStyles } from "../theme/theme";
 
 interface Props extends BoxProps {
   label: string;
@@ -14,8 +14,6 @@ const Sidebar = ({ label, children, ...rest }: Props) => {
     <Box
       as={"nav"}
       transition="3s ease"
-      borderRightWidth={1}
-      borderColor={layoutBorderColor()}
       w={{ base: "full", md: "72" }}
       pos="fixed"
       top={{ base: 0, md: "5rem" }}
@@ -24,6 +22,7 @@ const Sidebar = ({ label, children, ...rest }: Props) => {
       overscrollBehavior={"contain"}
       padding={4}
       {...rest}
+      {...sideBarStyles}
     >
       <Flex h="20" alignItems="center" justifyContent="space-between">
         <Text fontSize="2xl" fontWeight="bold" textAlign={"center"}>

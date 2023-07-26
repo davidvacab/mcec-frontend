@@ -4,7 +4,6 @@ import {
   Stack,
   useDisclosure,
   Text,
-  useColorModeValue,
   Icon,
   Collapse,
   Box,
@@ -32,10 +31,7 @@ const NavCollapseGroup = ({ label, children }: Props) => {
           textDecoration: "none",
         }}
       >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Text fontWeight={600} color={"gray.600"} _dark={{ color: "gray.200" }}>
           {label}
         </Text>
         {children && (
@@ -56,7 +52,6 @@ const NavCollapseGroup = ({ label, children }: Props) => {
           onClick={onToggle}
           borderLeft={1}
           borderStyle={"solid"}
-          borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
           {children}

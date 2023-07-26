@@ -1,10 +1,4 @@
-import {
-  Flex,
-  FlexProps,
-  Icon,
-  Link,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, FlexProps, Icon, Link } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BsArrowRightSquareFill } from "react-icons/bs";
 
@@ -27,12 +21,16 @@ const NavItem = ({ children, selected, ...rest }: Props) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        bg={selected ? useColorModeValue("blue.900", "gray.600") : ""}
+        bg={selected ? "navy.700" : ""}
+        _dark={selected ? { bg: "gray.700" } : {}}
         fontWeight={selected ? "bold" : ""}
         color={selected ? "white" : ""}
         _hover={{
-          bg: useColorModeValue("blue.900", "gray.600"),
+          bg: "navy.700",
           color: "white",
+          _dark: {
+            bg: "gray.600",
+          },
         }}
         {...rest}
       >

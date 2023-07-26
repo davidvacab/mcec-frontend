@@ -15,7 +15,7 @@ import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
-import { cardBgColor, cardBorderColor } from "../../theme";
+import { cardStyles } from "../../theme/theme";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -52,12 +52,7 @@ const PDFViewer = ({ pdfURL }: Props) => {
   };
 
   return (
-    <Box
-      borderRadius={10}
-      borderWidth={1}
-      borderColor={cardBorderColor()}
-      bg={cardBgColor()}
-    >
+    <Box borderRadius={10} {...cardStyles}>
       <HStack spacing={5} justifyContent={"center"} my={3}>
         <IconButton
           variant="ghost"
@@ -81,7 +76,7 @@ const PDFViewer = ({ pdfURL }: Props) => {
         file={{ url: baseURL + decodeURI(pdfURL) }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page pageNumber={pageNumber} width={responsiveWidth} />
+        <Page pageNumber={pageNumber} height={} width={responsiveWidth} />
       </Document>
     </Box>
   );

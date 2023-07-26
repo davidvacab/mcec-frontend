@@ -13,9 +13,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import AuthClient from "../services/auth-client";
-import { buttonTextColor } from "../theme";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
+import { cardStyles, inputStyles } from "../theme/theme";
 
 const authClient = new AuthClient();
 
@@ -61,27 +61,26 @@ const PassResetPage = () => {
     >
       <VStack
         as={"form"}
-        borderWidth="1px"
-        rounded="lg"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
         spacing={8}
         maxW={"lg"}
         w={"100%"}
         p={{ base: 3, md: 10 }}
         onSubmit={handleSubmit((data) => onSubmit(data))}
+        {...cardStyles}
       >
         <Heading>Password Reset</Heading>
         <FormControl id="username" isInvalid={errors.email !== undefined}>
           <FormLabel>Email</FormLabel>
-          <Input id="username" {...register("email")} autoComplete="username" />
+          <Input
+            id="username"
+            {...register("email")}
+            {...inputStyles}
+            autoComplete="username"
+          />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
-        <Button
-          type="submit"
-          w="10rem"
-          colorScheme="telegram"
-          color={buttonTextColor()}
-        >
+        <Button type="submit" w="10rem" colorScheme="gold">
           Request
         </Button>
       </VStack>

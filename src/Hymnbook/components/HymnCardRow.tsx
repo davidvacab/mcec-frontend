@@ -17,9 +17,9 @@ import "dayjs/locale/es";
 import { FaFilePdf } from "react-icons/fa";
 import { RiFileMusicFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { cardBgColor } from "../../theme";
 import { HymnListItem } from "../entities/HymnListItem";
 import useTopic from "../hooks/useTopic";
+import { cardStyles } from "../../theme/theme";
 
 interface Props {
   hymn: HymnListItem;
@@ -34,9 +34,9 @@ const HymnCardRow = ({ hymn }: Props) => {
     <Link to={"/hymns/" + hymn.id}>
       <Card
         direction={"row"}
-        bg={cardBgColor()}
         h={"100%"}
         justifyContent={"space-between"}
+        {...cardStyles}
       >
         <CardHeader textAlign={"center"}>
           <Heading
@@ -58,17 +58,25 @@ const HymnCardRow = ({ hymn }: Props) => {
               justifyContent={"right"}
             >
               <VStack>
-                <Heading size="sm" textTransform="uppercase">
+                <Text
+                  size="sm"
+                  fontWeight={"extrabold"}
+                  textTransform="uppercase"
+                >
                   Tema:
-                </Heading>
+                </Text>
                 <Text pt="1" fontSize="md">
                   {topic?.title}
                 </Text>
               </VStack>
               <VStack>
-                <Heading size="xs" textTransform="uppercase">
+                <Text
+                  size="sm"
+                  fontWeight={"extrabold"}
+                  textTransform="uppercase"
+                >
                   Publicacion:
-                </Heading>
+                </Text>
                 <Text pt="1" fontSize="md">
                   {formattedDate}
                 </Text>
@@ -79,9 +87,21 @@ const HymnCardRow = ({ hymn }: Props) => {
         <Show above="lg">
           <CardFooter justifyContent={"space-between"} minWidth={28}>
             <HStack justifyContent={"right"}>
-              {hymn.pdf_file && <Icon as={FaFilePdf} boxSize={8} />}
+              {hymn.pdf_file && (
+                <Icon
+                  as={FaFilePdf}
+                  color={"navy.700"}
+                  _dark={{ color: "white" }}
+                  boxSize={8}
+                />
+              )}
               {hymn.audio_set?.length !== 0 && (
-                <Icon as={RiFileMusicFill} boxSize={8} />
+                <Icon
+                  as={RiFileMusicFill}
+                  color={"navy.700"}
+                  _dark={{ color: "white" }}
+                  boxSize={8}
+                />
               )}
             </HStack>
           </CardFooter>
