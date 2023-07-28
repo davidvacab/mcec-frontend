@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   VStack,
   useToast,
 } from "@chakra-ui/react";
@@ -15,12 +16,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
-import AuthClient from "../services/auth-client";
 import { cardStyles, inputStyles } from "../theme/theme";
+import useResetPassConfirm from "../hooks/useResetPassConfirm";
 
-const authClient = new AuthClient();
-
-const schema = z
+const resetPassSchema = z
   .object({
     password: z
       .string()
@@ -40,32 +39,33 @@ const schema = z
     path: ["confirmPassword"],
   });
 
-type FormData = z.infer<typeof schema>;
+type PasswordData = z.infer<typeof resetPassSchema>;
 
 const PassResetConfirmPage = () => {
-  const params = useParams();
+  const { uid, token } = useParams();
   const toast = useToast();
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<PasswordData>({
+    resolver: zodResolver(resetPassSchema),
   });
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const { mutate: confirmPass, error, isLoading } = useResetPassConfirm();
+
   const handleClick = () => setShow(!show);
 
-  const onSubmit = ({ password }: FormData) => {
-    const resetPassData = {
-      uid: params.uid,
-      token: params.token,
-      new_password: password,
-    };
-    authClient
-      .resetPasswordConfirmation(resetPassData)
-      .then((res) => {
-        if (res.status === 204) {
+  const onSubmit = ({ password }: PasswordData) => {
+    confirmPass(
+      {
+        uid: uid,
+        token: token,
+        new_password: password,
+      },
+      {
+        onSuccess: () => {
           toast({
             title: "Suceess",
             description: "Password Resetted",
@@ -74,15 +74,15 @@ const PassResetConfirmPage = () => {
             duration: 9000,
             isClosable: true,
           });
-          navigate("/");
-        } else {
-          throw new Response("Not Found", { status: 404 });
-        }
-      })
-      .catch(() => {
-        throw new Response("Not Found", { status: 404 });
-      });
+          navigate("/", { replace: true });
+        },
+      }
+    );
   };
+
+  if (isLoading) return <Spinner />;
+
+  if (error) throw error;
 
   return (
     <Flex minH={"calc(100vh - 5rem)"} justify={"center"} px={1}>

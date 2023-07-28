@@ -1,19 +1,19 @@
-import { useToast } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 import Info from "../components/Info";
-import AuthClient from "../services/auth-client";
 import useMainStore from "../store";
-
-const authClient = new AuthClient();
+import useResendActivate from "../hooks/useResendActivate";
+import { useState } from "react";
 
 const AwaitActivationPage = () => {
   const email = useMainStore((s) => s.mainElements.registrationEmail);
-  const setEmail = useMainStore((s) => s.setRegistrationEmail);
   const toast = useToast();
+  const { mutate: resend, isLoading } = useResendActivate();
+  const [disable, setDisable] = useState(false);
+
   const onResendEmail = () => {
-    authClient
-      .resendActivate(email)
-      .then((res) => {
-        console.log(res);
+    resend(email, {
+      onSettled: () => {
+        setDisable(true);
         toast({
           title: "Email sent",
           description: "Email has been sent",
@@ -22,12 +22,11 @@ const AwaitActivationPage = () => {
           duration: 9000,
           isClosable: true,
         });
-      })
-      .catch(() => {
-        setEmail(undefined);
-        throw new Response("Not Found", { status: 404 });
-      });
+      },
+    });
   };
+
+  if (isLoading) return <Spinner />;
 
   if (email === undefined) throw new Response("Not Found", { status: 404 });
 
@@ -39,6 +38,7 @@ const AwaitActivationPage = () => {
       button2={true}
       button2Text="Resend Email"
       button2OnClick={onResendEmail}
+      button2Disabled={disable}
     />
   );
 };

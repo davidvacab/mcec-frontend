@@ -21,6 +21,7 @@ interface Props {
   variant?: "error" | "info" | "success";
   button2?: boolean;
   button2Text?: string;
+  button2Disabled?: boolean;
   button2OnClick?: () => void;
 }
 
@@ -31,6 +32,7 @@ const Info = ({
   button2 = false,
   button2Text,
   button2OnClick,
+  button2Disabled,
 }: Props) => {
   useDocumentTitle(title);
   let icon;
@@ -112,6 +114,7 @@ const Info = ({
             color="white"
             variant="solid"
             onClick={button2OnClick}
+            isDisabled={button2Disabled}
           >
             {button2Text}
           </Button>

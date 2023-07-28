@@ -31,11 +31,11 @@ const NavBarMenu = () => {
           <HStack>
             {auth() && (
               <>
-                <Avatar
+                {/* <Avatar
                   display={{ base: "none", md: "flex" }}
                   size={"sm"}
                   src={baseURL + auth()?.profile.picture}
-                />
+                /> */}
 
                 <VStack
                   display={{ base: "none", md: "flex" }}
@@ -43,12 +43,8 @@ const NavBarMenu = () => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">
-                    {auth()?.first_name} {auth()?.last_name}
-                  </Text>
-                  <Text fontSize="xs" color="gray.600">
-                    User
-                  </Text>
+                  <Text fontSize="sm">{auth()?.first_name}</Text>
+                  <Text fontSize="sm">{auth()?.last_name}</Text>
                 </VStack>
               </>
             )}
@@ -58,13 +54,16 @@ const NavBarMenu = () => {
           </HStack>
         </MenuButton>
         <MenuList>
-          <MenuItem>
-            <Link to={"/hymns"}>Repertorio</Link>
-          </MenuItem>
+          <Link to={"/hymns"}>
+            <MenuItem>Repertorio</MenuItem>
+          </Link>
           {auth() && (
             <>
-              <MenuItem>Perfil</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <Link to={"/profile/me"}>
+                <MenuItem>Perfil</MenuItem>
+              </Link>
+
+              <MenuItem>Reportar un problema</MenuItem>
             </>
           )}
           <MenuDivider />
@@ -87,12 +86,13 @@ const NavBarMenu = () => {
             </MenuItem>
           ) : (
             <>
-              <MenuItem>
-                <Link to={"/login"}>Iniciar Sesion</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to={"/register"}>Registrarse</Link>
-              </MenuItem>
+              <Link to={"/login"}>
+                <MenuItem>Iniciar Sesion</MenuItem>
+              </Link>
+
+              <Link to={"/register"}>
+                <MenuItem>Registrarse</MenuItem>
+              </Link>
             </>
           )}
         </MenuList>

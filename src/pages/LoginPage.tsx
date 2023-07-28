@@ -10,17 +10,16 @@ import {
   Text,
   HStack,
   VStack,
+  Spinner,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignIn } from "react-auth-kit";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import AuthClient from "../services/auth-client";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { cardStyles, inputStyles } from "../theme/theme";
-
-const authClient = new AuthClient();
+import useLogin from "../hooks/useLogin";
 
 const schema = z.object({
   username: z.string().nonempty("Requerido"),
@@ -42,28 +41,24 @@ const LoginPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-  const onSubmit = (formData: FormData) => {
-    authClient
-      .login(formData)
-      .then((data) => {
+  const { mutate: login, isLoading } = useLogin();
+
+  const onSubmit = (credentials: FormData) => {
+    login(credentials, {
+      onSuccess: (response) => {
         if (
           signIn({
-            token: data.access,
+            token: response.data.access,
             expiresIn: 10,
             tokenType: "Bearer",
-            authState: data.user,
-            refreshToken: data.refresh,
+            authState: response.data.user,
+            refreshToken: response.data.refresh,
             refreshTokenExpireIn: 1440,
           })
-        ) {
+        )
           navigate(state !== null ? state.from : "/", { replace: true });
-        } else {
-          console.log(data);
-          throw new Response("Not Found", { status: 404 });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      },
+      onError: () => {
         toast({
           title: "Error",
           description: "Invalid Credentials",
@@ -72,8 +67,11 @@ const LoginPage = () => {
           duration: 9000,
           isClosable: true,
         });
-      });
+      },
+    });
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <Flex

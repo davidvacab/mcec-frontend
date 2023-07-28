@@ -6,13 +6,12 @@ import HymnDetailPage from "./pages/HymnDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "./components/PrivateRoute";
-import RegistrationPage from "./pages/RegistrationPage";
-import AccountActivationPage, {
-  activationLoader,
-} from "./pages/AccountActivationPage";
+import SignUpPage from "./pages/SignUpPage";
+import UserActivatePage from "./pages/UserActivatePage";
 import AwaitActivationPage from "./pages/AwaitActivationPage";
 import PassResetPage from "./pages/PassResetPage";
-import PassResetConfirmPage from "./pages/PassResetConfirmPage";
+import PassResetConfirmPage from "./pages/ResetPassConfirmPage";
+import ProfilePage from "./pages/AccountPage";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegistrationPage /> },
+      { path: "/register", element: <SignUpPage /> },
 
       {
         path: "/activate-account",
@@ -30,8 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/activation/:uid/:token",
-        element: <AccountActivationPage />,
-        loader: activationLoader,
+        element: <UserActivatePage />,
       },
       {
         path: "/password-reset",
@@ -40,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: "/password-reset/:uid/:token",
         element: <PassResetConfirmPage />,
+      },
+      {
+        path: "/profile/me",
+        element: (
+          <PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/hymns",

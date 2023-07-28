@@ -28,6 +28,7 @@ const SearchInput = () => {
           ref={ref}
           borderRadius={5}
           placeholder="Buscar Cantos"
+          id="search-hymns"
           {...inputStyles}
         />
       </InputGroup>

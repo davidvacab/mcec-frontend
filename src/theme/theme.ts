@@ -3,38 +3,40 @@ import colors from "./colors";
 import fonts from "./fonts";
 import Heading from "./components/Heading";
 
-export const layoutStyles = { bg: "gray.50", _dark: { bg: "gray.900" } };
+const bgDark = "gray.900";
+const bgLight = "gray.100";
+const borderDark = "gray.600";
+
+export const layoutStyles = { bg: bgLight, _dark: { bg: bgDark } };
 
 export const navBarStyles = {
-  bg: "gray.100",
-  borderBottomWidth: 1,
-  borderBottomColor: "gray.400",
+  bg: "whiteAlpha.900",
   boxShadow: "xl",
   _dark: {
     bg: "gray.800",
-    borderBottomColor: "gray.700",
+    borderBottomWidth: 1,
+    borderBottomColor: borderDark,
   },
 };
 
 export const sideBarStyles = {
-  bg: "gray.50",
+  bg: bgLight,
   borderRightWidth: 1,
   borderRightColor: "gray.400",
   _dark: {
-    bg: "gray.900",
-    borderRightColor: "gray.700",
+    bg: bgDark,
+    borderRightColor: borderDark,
   },
 };
 
 export const cardStyles = {
-  bg: "gray.100",
+  bg: "whiteAlpha.900",
   rounded: "lg",
-  borderWidth: 1,
-  boxShadow: "xl",
-  borderColor: "gray.400",
+  boxShadow: "2xl",
   _dark: {
     bg: "gray.800",
-    borderColor: "gray.700",
+    borderWidth: 1,
+    borderColor: borderDark,
   },
 };
 
@@ -46,36 +48,45 @@ export const cardOpaqueStyles = {
 
 export const inputStyles = {
   borderWidth: 1,
-  borderColor: "gray.500",
+  borderColor: "gray.400",
   _dark: {
-    borderColor: "gray.600",
-    _focus: {
-      bg: "gray.900",
-    },
+    borderColor: borderDark,
   },
+
   _focus: {
-    bg: "gray.50",
+    bg: bgLight,
     _dark: {
-      borderColor: "gray.900",
+      bg: bgDark,
     },
   },
 };
 
 export const selectStyles = {
   borderColor: "gray.400",
-  _focus: {
-    bg: "gray.50",
-  },
-  "> option, > optgroup": {
-    bg: "gray.50",
-  },
   _dark: {
-    borderColor: "gray.600",
-    _focus: {
-      bg: "gray.900",
+    borderColor: borderDark,
+  },
+
+  _focus: {
+    bg: bgLight,
+    option: {
+      bg: bgLight,
     },
-    "> option, > optgroup": {
-      bg: "gray.900",
+    _dark: {
+      bg: bgDark,
+      option: {
+        bg: bgDark,
+      },
+    },
+  },
+};
+
+export const tabStyles = {
+  _selected: {
+    bg: "navy.700",
+    color: "white",
+    _dark: {
+      bg: bgDark,
     },
   },
 };

@@ -29,7 +29,7 @@ const NavItem = ({ children, selected, ...rest }: Props) => {
           bg: "navy.700",
           color: "white",
           _dark: {
-            bg: "gray.600",
+            bg: "gold.400",
           },
         }}
         {...rest}

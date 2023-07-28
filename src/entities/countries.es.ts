@@ -1,6 +1,4 @@
 const countriesES = [
-  { id: 484, alpha2: "mx", alpha3: "mex", name: "México" },
-  { id: 840, alpha2: "us", alpha3: "usa", name: "Estados Unidos" },
   { id: 4, alpha2: "af", alpha3: "afg", name: "Afganistán" },
   { id: 8, alpha2: "al", alpha3: "alb", name: "Albania" },
   { id: 276, alpha2: "de", alpha3: "deu", name: "Alemania" },
@@ -58,7 +56,7 @@ const countriesES = [
   { id: 703, alpha2: "sk", alpha3: "svk", name: "Eslovaquia" },
   { id: 705, alpha2: "si", alpha3: "svn", name: "Eslovenia" },
   { id: 724, alpha2: "es", alpha3: "esp", name: "España" },
-
+  { id: 840, alpha2: "us", alpha3: "usa", name: "Estados Unidos" },
   { id: 233, alpha2: "ee", alpha3: "est", name: "Estonia" },
   { id: 231, alpha2: "et", alpha3: "eth", name: "Etiopía" },
   { id: 608, alpha2: "ph", alpha3: "phl", name: "Filipinas" },
@@ -116,7 +114,7 @@ const countriesES = [
   { id: 504, alpha2: "ma", alpha3: "mar", name: "Marruecos" },
   { id: 480, alpha2: "mu", alpha3: "mus", name: "Mauricio" },
   { id: 478, alpha2: "mr", alpha3: "mrt", name: "Mauritania" },
-
+  { id: 484, alpha2: "mx", alpha3: "mex", name: "México" },
   { id: 583, alpha2: "fm", alpha3: "fsm", name: "Micronesia" },
   { id: 498, alpha2: "md", alpha3: "mda", name: "Moldavia" },
   { id: 492, alpha2: "mc", alpha3: "mco", name: "Mónaco" },

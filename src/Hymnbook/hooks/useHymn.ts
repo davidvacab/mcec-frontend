@@ -6,21 +6,12 @@ import { useAuthHeader } from "react-auth-kit";
 
 const apiClient = new APIClient<Hymn>("/hymnbook/hymns");
 
-// export const hymnLoader = ({ params }: Params) => {
-//   const results = useQuery({
-//     queryKey: ["hymns", params],
-//     queryFn: () => apiClient.get(params),
-//     staleTime: ms("24h"),
-//   });
-//   return results;
-// };
-
 const useHymn = (id: string) => {
   const authHeader = useAuthHeader();
+  const config = { headers: { Authorization: authHeader() } };
   return useQuery({
     queryKey: ["hymns", id],
-    queryFn: () =>
-      apiClient.get(id, { headers: { Authorization: authHeader() } }),
+    queryFn: () => apiClient.getID(id, config),
     staleTime: ms("24h"),
   });
 };

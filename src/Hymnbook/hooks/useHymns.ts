@@ -5,7 +5,7 @@ import { HymnListItem } from "../entities/HymnListItem";
 import useHymnQueryStore from "../store";
 import { useAuthHeader } from "react-auth-kit";
 
-const apiClient = new APIClient<HymnListItem>("/hymnbook/hymns");
+const apiClient = new APIClient<HymnListItem>("/hymnbook/hymns/");
 
 const useHymns = () => {
   const hymnQuery = useHymnQueryStore((s) => s.hymnQuery);

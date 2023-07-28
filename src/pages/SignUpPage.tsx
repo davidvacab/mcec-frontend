@@ -26,25 +26,24 @@ import {
   StepTitle,
   Stepper,
   useSteps,
+  Spinner,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { z } from "zod";
 import { FieldErrors, useForm, UseFormRegister } from "react-hook-form";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import countriesES from "../entities/countires.es";
+import countriesES from "../entities/countries.es";
 import memberRoles from "../entities/memberRoles";
 import memberVoices from "../entities/memberVoices";
 import phoneCountryCodes from "../entities/phoneCountryCodes";
-import AuthClient from "../services/auth-client";
-import { RegisterData } from "../entities/types";
 import { useNavigate } from "react-router-dom";
 import useMainStore from "../store";
 import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
+import useSignUp from "../hooks/useSignUp";
+import { AxiosError } from "axios";
 
-const authClient = new AuthClient();
-
-const schema = z
+const signUpSchema = z
   .object({
     firstName: z.string().nonempty("Requerido").max(50),
     lastName: z.string().nonempty("Requerido").max(50),
@@ -99,11 +98,11 @@ const schema = z
     path: ["confirmPassword"],
   });
 
-type FormData = z.infer<typeof schema>;
+type SignUpData = z.infer<typeof signUpSchema>;
 
 interface FormProps {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<SignUpData>;
+  errors: FieldErrors<SignUpData>;
 }
 
 const steps = [
@@ -112,7 +111,7 @@ const steps = [
   { title: "Usuario", description: "Cuenta" },
 ];
 
-const UserForm = ({ register, errors }: FormProps) => {
+const AccountForm = ({ register, errors }: FormProps) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
@@ -403,7 +402,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
   );
 };
 
-const RegistrationPage = () => {
+const SignUpPage = () => {
   useDocumentTitle("Registracion | MCEC");
   const setRegistrationEmail = useMainStore((s) => s.setRegistrationEmail);
   const toast = useToast();
@@ -413,16 +412,17 @@ const RegistrationPage = () => {
     register,
     setError,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<SignUpData>({
+    resolver: zodResolver(signUpSchema),
   });
   const { activeStep, setActiveStep } = useSteps({
     index: 1,
     count: steps.length,
   });
   const navigate = useNavigate();
+  const { mutate: registrate, isLoading } = useSignUp();
 
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = (formData: SignUpData) => {
     const userObject = {
       username: formData.username,
       email: formData.email,
@@ -442,45 +442,41 @@ const RegistrationPage = () => {
         state: formData.state,
         country: formData.country?.toUpperCase(),
       },
-    } as RegisterData;
-    authClient
-      .register(userObject)
-      .then((response) => {
-        if (response.status === 201) {
-          toast({
-            title: "Suceess",
-            description: "Account Created",
-            status: "success",
-            position: "top",
-            duration: 9000,
-            isClosable: true,
-          });
-          setRegistrationEmail(formData.email);
-          navigate("/activate-account");
-        } else {
-          console.log(response);
-          throw new Response("Not Found", { status: 404 });
+    };
+    registrate(userObject, {
+      onSuccess: (response) => {
+        toast({
+          title: "Suceess",
+          description: "Account Created",
+          status: "success",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
+        setRegistrationEmail(response.data.email);
+        navigate("/activate-account");
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 400) {
+            if (error.response.data.email)
+              setError(
+                "email",
+                { type: "value", message: "Email already in use" },
+                { shouldFocus: true }
+              );
+            if (error.response.data.username)
+              setError(
+                "username",
+                { type: "value", message: "Username already in use" },
+                { shouldFocus: true }
+              );
+          } else {
+            console.log(error.response);
+          }
         }
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          if (error.response.data.email)
-            setError(
-              "email",
-              { type: "value", message: "Email already in use" },
-              { shouldFocus: true }
-            );
-          if (error.response.data.username)
-            setError(
-              "username",
-              { type: "value", message: "Username already in use" },
-              { shouldFocus: true }
-            );
-        } else {
-          console.log(error.response);
-          throw new Response("Not Found", { status: 404 });
-        }
-      });
+      },
+    });
   };
 
   const onNext = async () => {
@@ -500,6 +496,8 @@ const RegistrationPage = () => {
       setActiveStep(3);
     }
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <Flex
@@ -544,7 +542,7 @@ const RegistrationPage = () => {
         ) : activeStep === 2 ? (
           <ChurchForm register={register} errors={errors} />
         ) : (
-          <UserForm register={register} errors={errors} />
+          <AccountForm register={register} errors={errors} />
         )}
         <ButtonGroup w="100%" mt={5} spacing={5}>
           <Button
@@ -559,7 +557,6 @@ const RegistrationPage = () => {
             Back
           </Button>
           <Button
-            type="submit"
             w="7rem"
             isDisabled={activeStep === 3}
             onClick={onNext}
@@ -586,4 +583,4 @@ const RegistrationPage = () => {
   );
 };
 
-export default RegistrationPage;
+export default SignUpPage;

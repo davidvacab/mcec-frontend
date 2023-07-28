@@ -3,7 +3,7 @@ import ms from "ms";
 import APIClient, { FetchResponse } from "../../services/api-client";
 import { Topic } from "../entities/Topic";
 
-const apiClient = new APIClient<Topic>("/hymnbook/topics");
+const apiClient = new APIClient<Topic>("/hymnbook/topics/");
 
 const useTopics = () =>
   useQuery<FetchResponse<Topic>, Error>({

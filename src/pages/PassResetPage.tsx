@@ -6,18 +6,17 @@ import {
   FormLabel,
   Heading,
   Input,
+  Spinner,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import AuthClient from "../services/auth-client";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { cardStyles, inputStyles } from "../theme/theme";
-
-const authClient = new AuthClient();
+import useResetPassword from "../hooks/useResetPassword";
 
 const schema = z.object({
   email: z.string().email("Correo invalido"),
@@ -36,21 +35,27 @@ const PassResetPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-  const onSubmit = (formData: FormData) => {
-    authClient.resetPassword(formData.email).catch((error) => {
-      console.log(error);
-      throw new Response("Not Found", { status: 404 });
+  const { mutate: requestReset, isLoading, error } = useResetPassword();
+
+  const onSubmit = (data: FormData) => {
+    requestReset(data.email, {
+      onSettled: () => {
+        toast({
+          title: "Request sent",
+          description: "You will recieve an email shortly if an account exists",
+          status: "info",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
+        navigate("/login", { replace: true });
+      },
     });
-    toast({
-      title: "Request sent",
-      description: "You will recieve an email shortly if an account exists",
-      status: "info",
-      position: "top",
-      duration: 9000,
-      isClosable: true,
-    });
-    navigate("/login", { replace: true });
   };
+
+  if (isLoading) return <Spinner />;
+
+  if (error) throw error;
 
   return (
     <Flex
