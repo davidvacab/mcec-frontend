@@ -2,16 +2,15 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import ms from "ms";
 import { useAuthHeader } from "react-auth-kit";
 import APIClient from "../services/api-client";
-import { Church } from "../entities/Church";
+import Church from "../entities/Church";
 
-const apiClient = new APIClient<Church>("/members/churches/me/");
+const apiClient = new APIClient<Church, Church>("/members/churches/me/");
 
 const useChurch = () => {
   const authHeader = useAuthHeader();
-  const config = { headers: { Authorization: authHeader() } };
   return useQuery({
     queryKey: ["church"],
-    queryFn: () => apiClient.get(config),
+    queryFn: () => apiClient.get({ headers: { Authorization: authHeader() } }),
     staleTime: ms("24h"),
   });
 };
@@ -21,13 +20,9 @@ export const useChurchUpdate = () => {
   return useMutation({
     mutationKey: ["churchUpdate"],
     mutationFn: (church: Church) =>
-      apiClient.post({
+      apiClient.put(church, {
         headers: { Authorization: authHeader() },
-        data: church,
       }),
-    onError: () => {
-      throw new Response("Not Found", { status: 404 });
-    },
   });
 };
 

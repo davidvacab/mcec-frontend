@@ -1,7 +1,10 @@
-const memberRoles = [
-  { key: "CM", value: "Integrante del Coro" },
-  { key: "LD", value: "Director Local" },
-  { key: "SD", value: "Director Estatal o Nacional" },
-  { key: "NM", value: "No integrante del Coro" },
+export const MemberRoleList = [
+  { key: "CM", value: "Choir member" },
+  { key: "LD", value: "Local director" },
+  { key: "SD", value: "State Director" },
+  { key: "NM", value: "Non choir member" },
 ] as const;
-export default memberRoles;
+
+const MemberRoles = MemberRoleList.map((role) => role.key);
+
+export default MemberRoles;

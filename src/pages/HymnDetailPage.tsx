@@ -26,8 +26,8 @@ const HymnDetailPage = () => {
     >
       <VStack maxWidth={"380px"} w={"100%"} alignContent={"center"}>
         <HymnCard hymn={hymn} />
-        {hymn.audio_set.length !== 0 && (
-          <AudioPlaylist audios={hymn.audio_set} />
+        {hymn.audio_files.length !== 0 && (
+          <AudioPlaylist audios={hymn.audio_files} />
         )}
       </VStack>
       <PDFViewer pdfURL={hymn.pdf_file} />

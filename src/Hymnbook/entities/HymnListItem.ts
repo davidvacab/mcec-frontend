@@ -1,8 +1,8 @@
-export interface HymnListItem {
-  id: number;
+export default interface HymnListItem {
+  slug: string;
   title: string;
-  topic: number;
+  topics: string[];
   release_date: string;
   pdf_file: string;
-  audio_set?: number[];
+  audios?: number[];
 }

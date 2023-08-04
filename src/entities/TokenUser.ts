@@ -1,6 +1,6 @@
-import { UserSignUp } from "./UserSignUp";
+import UserSignUp from "./UserSignUp";
 
-export interface UserAuthToken {
+export default interface UserAuthToken {
   access: string;
   refresh: string;
   user: UserSignUp;

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface HymnQuery {
-  topicId?: number;
+  topicCode?: string;
   sortOrder?: string;
   searchText?: string;
 }
@@ -9,7 +9,7 @@ interface HymnQuery {
 interface HymnQueryStore {
   hymnQuery: HymnQuery;
   setSearchText: (searchText: string) => void;
-  setTopicId: (topicId: number) => void;
+  setTopicCode: (topicCode: string) => void;
   setSortOrder: (sortOrder: string) => void;
 }
 
@@ -17,8 +17,8 @@ const useHymnQueryStore = create<HymnQueryStore>((set) => ({
   hymnQuery: {},
   setSearchText: (searchText: string) =>
     set(() => ({ hymnQuery: { searchText } })),
-  setTopicId: (topicId: number) =>
-    set((store) => ({ hymnQuery: { ...store.hymnQuery, topicId } })),
+  setTopicCode: (topicCode: string) =>
+    set((store) => ({ hymnQuery: { ...store.hymnQuery, topicCode: topicCode } })),
   setSortOrder: (sortOrder: string) =>
     set((store) => ({ hymnQuery: { ...store.hymnQuery, sortOrder } })),
 }));

@@ -17,9 +17,9 @@ import "dayjs/locale/es";
 import { FaFilePdf } from "react-icons/fa";
 import { RiFileMusicFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { HymnListItem } from "../entities/HymnListItem";
-import useTopic from "../hooks/useTopic";
+import HymnListItem from "../entities/HymnListItem";
 import { cardStyles } from "../../theme/theme";
+import useTopics from "../hooks/useTopics";
 
 interface Props {
   hymn: HymnListItem;
@@ -28,10 +28,10 @@ interface Props {
 const HymnCardRow = ({ hymn }: Props) => {
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
-  const topic = useTopic(hymn.topic);
+  const topics = useTopics(hymn.topics);
 
   return (
-    <Link to={"/hymns/" + hymn.id}>
+    <Link to={"/hymns/" + hymn.slug}>
       <Card
         direction={"row"}
         h={"100%"}
@@ -63,11 +63,13 @@ const HymnCardRow = ({ hymn }: Props) => {
                   fontWeight={"extrabold"}
                   textTransform="uppercase"
                 >
-                  Tema:
+                  {topics.length > 1 ? "Temas:" : "Tema:"}
                 </Text>
-                <Text pt="1" fontSize="md">
-                  {topic?.title}
-                </Text>
+                {topics.map((topic) => (
+                  <Text pt="1" fontSize="md" key={topic?.code}>
+                    {topic?.title}
+                  </Text>
+                ))}
               </VStack>
               <VStack>
                 <Text
@@ -95,7 +97,7 @@ const HymnCardRow = ({ hymn }: Props) => {
                   boxSize={8}
                 />
               )}
-              {hymn.audio_set?.length !== 0 && (
+              {hymn.audios?.length !== 0 && (
                 <Icon
                   as={RiFileMusicFill}
                   color={"navy.700"}

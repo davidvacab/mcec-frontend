@@ -10,8 +10,9 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
-import { Hymn } from "../entities/Hymn";
+import Hymn from "../entities/Hymn";
 import { cardStyles } from "../../theme/theme";
+import useTopics from "../hooks/useTopics";
 
 interface Props {
   hymn: Hymn;
@@ -20,6 +21,7 @@ interface Props {
 const HymnCard = ({ hymn }: Props) => {
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
+  const topics = useTopics(hymn.topics);
 
   return (
     <Card w={"100%"} h={"100%"} borderRadius={10} {...cardStyles}>
@@ -38,29 +40,33 @@ const HymnCard = ({ hymn }: Props) => {
         <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
           <HStack align={"center"}>
             <Heading size="sm" textTransform="uppercase">
-              Tema:
+              {hymn.topics.length > 2 ? "Temas:" : "Tema:"}
             </Heading>
-            <Text pt="1" fontSize="md">
-              {hymn.topic.title}
-            </Text>
+            {topics.map((topic) => (
+              <Text pt="1" fontSize="md" key={topic?.code}>
+                {topic?.title}
+              </Text>
+            ))}
           </HStack>
-          {hymn.author && (
+          {hymn.authors?.length !== 0 && (
             <HStack>
               <Heading size="xs" textTransform="uppercase">
-                Autor:
+                {hymn.authors?.length > 1 ? "Autores:" : "Autor:"}
               </Heading>
-              <Text pt="1" fontSize="md">
-                {hymn.author.first_name + " " + hymn.author.last_name}
-              </Text>
+              {hymn.authors.map((author) => (
+                <Text pt="1" fontSize="md" key={author.id}>
+                  {`${author.first_name} ${author.last_name}`}
+                </Text>
+              ))}
             </HStack>
           )}
-          {hymn.arranger && (
+          {hymn.arrangers && (
             <HStack>
               <Heading size="xs" textTransform="uppercase">
                 Arreglista:
               </Heading>
               <Text pt="1" fontSize="md">
-                {hymn.arranger.first_name + " " + hymn.arranger.last_name}
+                {/* {hymn.arrangers.first_name + " " + hymn.arrangers.last_name} */}
               </Text>
             </HStack>
           )}

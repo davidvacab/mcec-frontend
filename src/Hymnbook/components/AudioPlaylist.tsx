@@ -3,8 +3,8 @@ import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import NavItem from "../../components/NavItem";
-import { Audio } from "../entities/Audio";
-import audioVoices from "../entities/audioVoices";
+import Audio from "../entities/Audio";
+import { AudioVoiceTypeList } from "../entities/AudioVoiceTypes";
 import { cardStyles } from "../../theme/theme";
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 const AudioPlaylist = ({ audios }: Props) => {
   const [currentTrack, setTrackIndex] = useState(0);
 
-  const baseURL = "http://127.0.0.1:8000";
   const handleClickNext = () => {
     setTrackIndex((currentTrack) =>
       currentTrack < audios.length - 1 ? currentTrack + 1 : 0
@@ -72,13 +71,13 @@ const AudioPlaylist = ({ audios }: Props) => {
           header={
             <Heading size={"md"} textAlign={"center"} my={1}>
               {
-                audioVoices.find(
-                  ({ key }) => key === audios[currentTrack].voice
+                AudioVoiceTypeList.find(
+                  ({ key }) => key === audios[currentTrack].voice_type
                 )?.value
               }
             </Heading>
           }
-          src={baseURL + decodeURI(audios[currentTrack].audio)}
+          src={decodeURI(audios[currentTrack].audio_file)}
           showSkipControls={true}
           showJumpControls={false}
           showFilledVolume={true}
@@ -98,7 +97,10 @@ const AudioPlaylist = ({ audios }: Props) => {
                 )
               }
             >
-              {audioVoices.find(({ key }) => key === audio.voice)?.value}
+              {
+                AudioVoiceTypeList.find(({ key }) => key === audio.voice_type)
+                  ?.value
+              }
             </NavItem>
           ))}
         </VStack>

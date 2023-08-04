@@ -1,8 +1,7 @@
-import useTopics from "./useTopics";
+import { TopicList } from "../entities/Topics";
 
-const useTopic = (id?: number) => {
-  const { data: topics } = useTopics();
-  return topics?.results.find((t) => t.id === id);
+const useTopic = (code: string | undefined) => {
+  return TopicList.find((t) => t.code === code);
 };
 
 export default useTopic;

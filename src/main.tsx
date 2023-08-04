@@ -13,20 +13,20 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <AuthProvider
+      authType={"cookie"}
+      authName={"_auth"}
+      cookieDomain={window.location.hostname}
+      cookieSecure={false}
+      refresh={refreshApi}
+    >
       <QueryClientProvider client={queryClient}>
-        <AuthProvider
-          authType={"cookie"}
-          authName={"_auth"}
-          cookieDomain={window.location.hostname}
-          cookieSecure={false}
-          refresh={refreshApi}
-        >
+        <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <RouterProvider router={router} />
-        </AuthProvider>
-        <ReactQueryDevtools />
+          <ReactQueryDevtools />
+        </ChakraProvider>
       </QueryClientProvider>
-    </ChakraProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

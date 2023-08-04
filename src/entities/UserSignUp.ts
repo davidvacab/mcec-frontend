@@ -1,12 +1,11 @@
-import { Church } from "./Church";
-import { Profile } from "./Profile";
+import Church from "./Church";
+import Profile from "./Profile";
 
-export interface UserSignUp {
-  username?: string;
-  email?: string;
-  password?: string;
-  first_name?: string;
-  last_name?: string;
+export default interface UserSignUp {
+  username: string;
+  email: string;
+  password: string;
+  re_password: string;
   profile: Profile;
   church: Church;
 }

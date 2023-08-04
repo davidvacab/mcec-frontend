@@ -1,35 +1,29 @@
-import { Spinner, Text } from "@chakra-ui/react";
 import NavItem from "../../components/NavItem";
 import NavCollapseGroup from "../../components/NavCollapseGroup";
 import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
-import useTopics from "../hooks/useTopics";
 import useMainStore from "../../store";
+import { TopicList } from "../entities/Topics";
 
 const TopicSelector = () => {
-  const { data, error, isLoading } = useTopics();
-  const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicId);
-  const setSelectedTopicId = useHymnQueryStore((s) => s.setTopicId);
+  const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicCode);
+  const setSelectedTopicId = useHymnQueryStore((s) => s.setTopicCode);
   const selectedTopic = useTopic(selectedTopicId);
   const closeDrawer = useMainStore((s) => s.closeSideDrawer);
 
-  {
-    error && <Text>{error.message}</Text>;
-  }
-  if (isLoading) return <Spinner />;
 
   return (
     <NavCollapseGroup
       label={"Tema" + (selectedTopic ? ": " + selectedTopic.title : "s")}
     >
-      {data?.results.map((topic) => (
+      {TopicList.map((topic) => (
         <NavItem
-          key={topic.id}
+          key={topic.code}
           onClick={() => {
-            setSelectedTopicId(topic.id);
+            setSelectedTopicId(topic.code);
             closeDrawer();
           }}
-          selected={selectedTopic?.id === topic.id}
+          selected={selectedTopic?.code === topic.code}
         >
           {topic.title}
         </NavItem>

@@ -1,4 +1,4 @@
-const phoneCountryCodes = [
+export const CountryPhoneCodeList = [
   {
     name: "Mexico",
     dial_code: "+52",
@@ -1213,4 +1213,6 @@ const phoneCountryCodes = [
   },
 ] as const;
 
-export default phoneCountryCodes;
+const CountryPhoneCodes = CountryPhoneCodeList.map((code) => code.code);
+
+export default CountryPhoneCodes;

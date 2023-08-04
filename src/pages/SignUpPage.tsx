@@ -33,20 +33,21 @@ import { z } from "zod";
 import { FieldErrors, useForm, UseFormRegister } from "react-hook-form";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
-import countriesES from "../entities/countries.es";
-import memberRoles from "../entities/memberRoles";
-import memberVoices from "../entities/memberVoices";
-import phoneCountryCodes from "../entities/phoneCountryCodes";
+import CountryNames, { CountryNameList } from "../entities/CountryNames";
+import MemberRoles, { MemberRoleList } from "../entities/MemberRoles";
+import MemberVoiceTypes, { MemberVoiceTypeList } from "../entities/MemberVoiceTypes";
+import CountryPhoneCodes, { CountryPhoneCodeList } from "../entities/CountryPhoneCodes";
 import { useNavigate } from "react-router-dom";
 import useMainStore from "../store";
 import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
 import useSignUp from "../hooks/useSignUp";
 import { AxiosError } from "axios";
+import UserSignUp from "../entities/UserSignUp";
 
 const signUpSchema = z
   .object({
-    firstName: z.string().nonempty("Requerido").max(50),
-    lastName: z.string().nonempty("Requerido").max(50),
+    first_name: z.string().nonempty("Requerido").max(50),
+    last_name: z.string().nonempty("Requerido").max(50),
     username: z
       .string()
       .nonempty("Requerido")
@@ -65,44 +66,42 @@ const signUpSchema = z
         RegExp("[!@#$%^&*()_+.-]"),
         "Must contain one special character ( !@#$%^&*()_+.- )."
       ),
-    confirmPassword: z.string().nonempty("Requerido"),
+    re_password: z.string().nonempty("Requerido"),
     birthdate: z.string().nonempty("Requerido"),
-    areaCode: z.enum([
-      phoneCountryCodes[0].dial_code,
-      ...phoneCountryCodes.slice(0).map((code) => code.dial_code),
+    phone_area_code: z.enum([
+      CountryPhoneCodes[0],
+      ...CountryPhoneCodes.slice(0),
     ]),
-    phone: z
+    phone_number: z
       .string()
       .min(6, "Debe ser al menos 8 numeros")
       .regex(RegExp("[0-9]{8,10}"), "Numero Invalido"),
-    voice: z.enum([
-      memberVoices[0].key,
-      ...memberVoices.slice(0).map((voice) => voice.key),
+    voice_type: z.enum([
+      MemberVoiceTypes[0],
+      ...MemberVoiceTypes.slice(0),
     ]),
     role: z.enum([
-      memberRoles[0].key,
-      ...memberRoles.slice(0).map((role) => role.key),
+      MemberRoles[0],
+      ...MemberRoles.slice(0),
     ]),
-    minister: z.string().nonempty("Requerido"),
-    church: z.string().nonempty("Requerido"),
+    minister_name: z.string().nonempty("Requerido"),
+    church_name: z.string().nonempty("Requerido"),
     city: z.string().nonempty("Requerido"),
     state: z.string().nonempty("Requerido"),
     country: z.enum([
-      countriesES[0].alpha2,
-      ...countriesES.slice(0).map((country) => country.alpha2),
+      CountryNames[0],
+      ...CountryNames.slice(0),
     ]),
   })
   .partial()
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+  .refine(({ password, re_password }) => password === re_password, {
     message: "Passwords dont match",
     path: ["confirmPassword"],
   });
 
-type SignUpData = z.infer<typeof signUpSchema>;
-
 interface FormProps {
-  register: UseFormRegister<SignUpData>;
-  errors: FieldErrors<SignUpData>;
+  register: UseFormRegister<UserSignUp>;
+  errors: FieldErrors<UserSignUp>;
 }
 
 const steps = [
@@ -170,13 +169,13 @@ const AccountForm = ({ register, errors }: FormProps) => {
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.confirmPassword !== undefined}>
+      <FormControl isInvalid={errors.re_password !== undefined}>
         <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
           Confirm Password
         </FormLabel>
         <InputGroup>
           <Input
-            {...register("confirmPassword")}
+            {...register("re_password")}
             {...inputStyles}
             id="confirm-password"
             type={show ? "text" : "password"}
@@ -188,7 +187,7 @@ const AccountForm = ({ register, errors }: FormProps) => {
             <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
           </InputRightElement>
         </InputGroup>
-        <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.re_password?.message}</FormErrorMessage>
       </FormControl>
     </VStack>
   );
@@ -198,43 +197,43 @@ const ProfileForm = ({ register, errors }: FormProps) => {
   return (
     <VStack spacing={5} w={"100%"}>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"} spacing={5}>
-        <FormControl isInvalid={errors.firstName !== undefined}>
+        <FormControl isInvalid={errors.profile?.first_name !== undefined}>
           <FormLabel htmlFor="first-name" fontWeight={"normal"}>
             Nombre
           </FormLabel>
           <Input
-            {...register("firstName")}
+            {...register("profile.first_name")}
             {...inputStyles}
             id="first-name"
             placeholder="First name"
             autoComplete="given-name"
             tabIndex={1}
           />
-          <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.profile?.first_name?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.lastName !== undefined}>
+        <FormControl isInvalid={errors.profile?.last_name !== undefined}>
           <FormLabel htmlFor="last-name" fontWeight={"normal"}>
             Apellido(s)
           </FormLabel>
           <Input
-            {...register("lastName")}
+            {...register("profile.last_name")}
             {...inputStyles}
             id="last-name"
             placeholder="Last name"
             autoComplete="family-name"
             tabIndex={2}
           />
-          <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.profile?.last_name?.message}</FormErrorMessage>
         </FormControl>
       </Stack>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"}>
-        <FormControl isInvalid={errors.birthdate !== undefined}>
+        <FormControl isInvalid={errors.profile?.birthdate !== undefined}>
           <FormLabel htmlFor="birthdate" fontWeight={"normal"}>
             Birthdate
           </FormLabel>
           <Input
-            {...register("birthdate")}
+            {...register("profile.birthdate")}
             {...inputStyles}
             id="birthdate"
             type="text"
@@ -246,23 +245,23 @@ const ProfileForm = ({ register, errors }: FormProps) => {
             }}
             tabIndex={3}
           />
-          <FormErrorMessage>{errors.birthdate?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.profile?.birthdate?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.phone !== undefined}>
+        <FormControl isInvalid={errors.profile?.phone_number !== undefined}>
           <FormLabel htmlFor="phone" fontWeight={"normal"}>
             Phone
           </FormLabel>
           <InputGroup>
             <InputLeftAddon p={0}>
               <Select
-                {...register("areaCode")}
+                {...register("profile.phone_area_code")}
                 {...selectStyles}
                 id="country-code"
                 autoComplete="on"
                 tabIndex={4}
               >
-                {phoneCountryCodes.map((code) => (
+                {CountryPhoneCodeList.map((code) => (
                   <option key={code.code} value={code.dial_code}>
                     {code.dial_code}
                   </option>
@@ -270,7 +269,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
               </Select>
             </InputLeftAddon>
             <Input
-              {...register("phone")}
+              {...register("profile.phone_number")}
               {...inputStyles}
               type="tel"
               id="phone"
@@ -280,7 +279,7 @@ const ProfileForm = ({ register, errors }: FormProps) => {
               tabIndex={5}
             />
           </InputGroup>
-          <FormErrorMessage>{errors.phone?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.profile?.phone_number?.message}</FormErrorMessage>
         </FormControl>
       </Stack>
 
@@ -292,11 +291,11 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           <Select
             id="voice"
             autoComplete="on"
-            {...register("voice")}
+            {...register("profile.voice_type")}
             {...selectStyles}
             tabIndex={6}
           >
-            {memberVoices.map((voice) => (
+            {MemberVoiceTypeList.map((voice) => (
               <option key={voice.key} value={voice.key}>
                 {voice.value}
               </option>
@@ -312,10 +311,10 @@ const ProfileForm = ({ register, errors }: FormProps) => {
             id="role"
             autoComplete="on"
             tabIndex={7}
-            {...register("role")}
+            {...register("profile.role")}
             {...selectStyles}
           >
-            {memberRoles.map((role) => (
+            {MemberRoleList.map((role) => (
               <option key={role.key} value={role.key}>
                 {role.value}
               </option>
@@ -330,56 +329,56 @@ const ProfileForm = ({ register, errors }: FormProps) => {
 const ChurchForm = ({ register, errors }: FormProps) => {
   return (
     <VStack spacing={5} w={"100%"}>
-      <FormControl isInvalid={errors.minister !== undefined}>
+      <FormControl isInvalid={errors.church?.minister_name !== undefined}>
         <FormLabel htmlFor="minister">Ministro</FormLabel>
         <Input
           type="text"
           id="minister"
           autoComplete="name"
-          {...register("minister")}
+          {...register("church.minister_name")}
           {...inputStyles}
           tabIndex={1}
         />
-        <FormErrorMessage>{errors.minister?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.church?.minister_name?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.church !== undefined}>
+      <FormControl isInvalid={errors.church?.church_name !== undefined}>
         <FormLabel htmlFor="church-name">Nombre de Iglesia</FormLabel>
         <Input
           type="text"
           id="church-name"
           autoComplete="organization"
-          {...register("church")}
+          {...register("church.church_name")}
           {...inputStyles}
           tabIndex={2}
         />
-        <FormErrorMessage>{errors.church?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.church?.church_name?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.city !== undefined}>
+      <FormControl isInvalid={errors.church?.city !== undefined}>
         <FormLabel htmlFor="city">Ciudad</FormLabel>
         <Input
           type="text"
           id="city"
           autoComplete="address-level2"
-          {...register("city")}
+          {...register("church.city")}
           {...inputStyles}
           tabIndex={3}
         />
-        <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.church?.city?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.state !== undefined}>
+      <FormControl isInvalid={errors.church?.state !== undefined}>
         <FormLabel htmlFor="state">State / Province</FormLabel>
         <Input
           type="text"
           id="state"
           autoComplete="address-level1"
-          {...register("state")}
+          {...register("church.state")}
           {...inputStyles}
           tabIndex={4}
         />
-        <FormErrorMessage>{errors.state?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.church?.state?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl>
@@ -387,11 +386,11 @@ const ChurchForm = ({ register, errors }: FormProps) => {
         <Select
           id="country"
           autoComplete="country"
-          {...register("country")}
+          {...register("church.country")}
           {...selectStyles}
           tabIndex={5}
         >
-          {countriesES.map((country) => (
+          {CountryNameList.map((country) => (
             <option key={country.alpha3} value={country.alpha2}>
               {country.name}
             </option>
@@ -412,7 +411,7 @@ const SignUpPage = () => {
     register,
     setError,
     formState: { errors },
-  } = useForm<SignUpData>({
+  } = useForm<UserSignUp>({
     resolver: zodResolver(signUpSchema),
   });
   const { activeStep, setActiveStep } = useSteps({
@@ -422,28 +421,8 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const { mutate: registrate, isLoading } = useSignUp();
 
-  const onSubmit = (formData: SignUpData) => {
-    const userObject = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      profile: {
-        birth_date: formData.birthdate,
-        phone: `${formData.areaCode} ${formData.phone}`,
-        voice: formData.voice,
-        role: formData.role,
-      },
-      church: {
-        current_minister_name: formData.minister,
-        church_name: formData.church,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country?.toUpperCase(),
-      },
-    };
-    registrate(userObject, {
+  const onSubmit = (userData: UserSignUp) => {
+    registrate(userData, {
       onSuccess: (response) => {
         toast({
           title: "Suceess",
@@ -482,14 +461,14 @@ const SignUpPage = () => {
   const onNext = async () => {
     if (
       activeStep === 1 &&
-      (await trigger(["firstName", "lastName", "birthdate", "phone"], {
+      (await trigger(["profile.first_name", "profile.last_name", "profile.birthdate", "profile.phone_number"], {
         shouldFocus: true,
       }))
     ) {
       setActiveStep(2);
     } else if (
       activeStep === 2 &&
-      (await trigger(["minister", "church", "city", "state"], {
+      (await trigger(["church.minister_name", "church.church_name", "church.city", "church.state"], {
         shouldFocus: true,
       }))
     ) {

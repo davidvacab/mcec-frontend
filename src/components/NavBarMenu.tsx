@@ -5,12 +5,12 @@ import {
   MenuItem,
   MenuDivider,
   Avatar,
-  Box,
   Flex,
   HStack,
   VStack,
   Text,
   useToast,
+  Button,
 } from "@chakra-ui/react";
 import { useAuthUser } from "react-auth-kit";
 import { FiChevronDown } from "react-icons/fi";
@@ -23,35 +23,36 @@ const NavBarMenu = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const baseURL = "http://127.0.0.1:8000";
   return (
     <Flex alignItems={"center"}>
       <Menu>
-        <MenuButton py={2} transition="all 0.3s">
-          <HStack>
-            {auth() && (
-              <>
-                {/* <Avatar
+        <MenuButton
+          as={Button}
+          rightIcon={<FiChevronDown />}
+          color={"navy.700"}
+          _dark={{ color: "white" }}
+          bg={"transparent"}
+          transition="all 0.3s"
+        >
+          {auth() && (
+            <HStack>
+              <Avatar
                   display={{ base: "none", md: "flex" }}
                   size={"sm"}
-                  src={baseURL + auth()?.profile.picture}
-                /> */}
+                  src={auth()?.profile.profile_picture}
+                /> 
 
-                <VStack
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">{auth()?.first_name}</Text>
-                  <Text fontSize="sm">{auth()?.last_name}</Text>
-                </VStack>
-              </>
-            )}
-            <Box display="flex">
-              <FiChevronDown />
-            </Box>
-          </HStack>
+              <VStack
+                display={{ base: "none", md: "flex" }}
+                alignItems="flex-start"
+                spacing="1px"
+                ml="2"
+              >
+                <Text fontSize="sm">{auth()?.profile.first_name}</Text>
+                <Text fontSize="sm">{auth()?.profile.last_name}</Text>
+              </VStack>
+            </HStack>
+          )}
         </MenuButton>
         <MenuList>
           <Link to={"/hymns"}>

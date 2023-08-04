@@ -13,75 +13,69 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import countriesES from "../entities/countries.es";
+import CountryNames, { CountryNameList } from "../entities/CountryNames";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { inputStyles, selectStyles } from "../theme/theme";
 import useChurch, { useChurchUpdate } from "../hooks/useChurch";
+import { useQueryClient } from "@tanstack/react-query";
+import Church from "../entities/Church";
+import { z } from "zod";
 
-const churchSchema = z.object({
-  minister: z.string().nonempty("Requerido"),
-  church: z.string().nonempty("Requerido"),
+export const churchSchema = z.object({
+  minister_name: z.string().nonempty("Requerido"),
+  church_name: z.string().nonempty("Requerido"),
   city: z.string().nonempty("Requerido"),
   state: z.string().nonempty("Requerido"),
-  country: z.enum([
-    countriesES[0].alpha2,
-    ...countriesES.slice(0).map((country) => country.alpha2),
-  ]),
+  country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
 });
-
-type ChurchData = z.infer<typeof churchSchema>;
 
 const ChurchForm = () => {
   useDocumentTitle("Registracion | MCEC");
   const toast = useToast();
+  const [edit, setEdit] = useState(false);
+  const { data: church, isLoading: getLoading, error: getError } = useChurch();
+  const { mutate: update, isLoading: updateLoading } = useChurchUpdate();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
-  } = useForm<ChurchData>({
+  } = useForm<Church>({
     resolver: zodResolver(churchSchema),
   });
-  const [edit, setEdit] = useState(false);
-  const {
-    data: church,
-    isLoading: getLoading,
-    error: getError,
-    refetch,
-  } = useChurch();
-  const {
-    mutate: update,
-    isLoading: updateLoading,
-    error: updateError,
-  } = useChurchUpdate();
+  const queryClient = useQueryClient();
 
   if (getLoading || updateLoading) return <Spinner />;
 
   if (getError || !church) throw getError;
-  if (updateError) throw updateError;
 
-  const onSubmit = (data: ChurchData) => {
-    update(
-      {
-        ...data,
-        current_minister_name: data.minister,
-        church_name: data.church,
+  const onSubmit = (churchData: Church) => {
+    setEdit(false);
+    update(churchData, {
+      onSuccess: (response) => {
+        queryClient.setQueryData(["church"], response.data);
+        reset(response.data, { keepErrors: false, keepDefaultValues: false });
+        toast({
+          title: "Success",
+          description: "Update Successful",
+          status: "success",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
       },
-      {
-        onSuccess: () => {
-          setEdit(false);
-          refetch();
-          toast({
-            title: "Success",
-            description: "Update Successful",
-            status: "success",
-            position: "top",
-            duration: 9000,
-            isClosable: true,
-          });
-        },
-      }
-    );
+      onError: () => {
+        reset(church, { keepErrors: false });
+        toast({
+          title: "Error",
+          description: "Update Failed",
+          status: "error",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
+      },
+    });
   };
 
   return (
@@ -91,32 +85,38 @@ const ChurchForm = () => {
       as={"form"}
       onSubmit={handleSubmit((data) => onSubmit(data))}
     >
-      <FormControl isInvalid={errors.minister !== undefined} isDisabled={!edit}>
+      <FormControl
+        isInvalid={errors.minister_name !== undefined}
+        isDisabled={!edit}
+      >
         <FormLabel htmlFor="minister">Ministro</FormLabel>
         <Input
           type="text"
           id="minister"
           autoComplete="name"
-          {...register("minister")}
+          {...register("minister_name", {
+            value: church.minister_name,
+          })}
           {...inputStyles}
           tabIndex={1}
-          value={church.current_minister_name}
         />
-        <FormErrorMessage>{errors.minister?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.minister_name?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.church !== undefined} isDisabled={!edit}>
+      <FormControl
+        isInvalid={errors.church_name !== undefined}
+        isDisabled={!edit}
+      >
         <FormLabel htmlFor="church-name">Nombre de Iglesia</FormLabel>
         <Input
           type="text"
           id="church-name"
           autoComplete="organization"
-          {...register("church")}
+          {...register("church_name", { value: church.church_name })}
           {...inputStyles}
           tabIndex={2}
-          value={church.church_name}
         />
-        <FormErrorMessage>{errors.church?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.church_name?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.city !== undefined} isDisabled={!edit}>
@@ -125,10 +125,9 @@ const ChurchForm = () => {
           type="text"
           id="city"
           autoComplete="address-level2"
-          {...register("city")}
+          {...register("city", { value: church.city })}
           {...inputStyles}
           tabIndex={3}
-          value={church.city}
         />
         <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
       </FormControl>
@@ -139,10 +138,9 @@ const ChurchForm = () => {
           type="text"
           id="state"
           autoComplete="address-level1"
-          {...register("state")}
+          {...register("state", { value: church.state })}
           {...inputStyles}
           tabIndex={4}
-          value={church.state}
         />
         <FormErrorMessage>{errors.state?.message}</FormErrorMessage>
       </FormControl>
@@ -152,12 +150,11 @@ const ChurchForm = () => {
         <Select
           id="country"
           autoComplete="country"
-          {...register("country")}
+          {...register("country", { value: church.country })}
           {...selectStyles}
           tabIndex={5}
-          value={church.country?.toLowerCase()}
         >
-          {countriesES.map((country) => (
+          {CountryNameList.map((country) => (
             <option key={country.alpha3} value={country.alpha2}>
               {country.name}
             </option>
@@ -191,7 +188,10 @@ const ChurchForm = () => {
             colorScheme="red"
             variant="solid"
             tabIndex={4}
-            onClick={() => setEdit(false)}
+            onClick={() => {
+              setEdit(false);
+              reset(church, { keepErrors: false });
+            }}
           >
             Cancelar
           </Button>

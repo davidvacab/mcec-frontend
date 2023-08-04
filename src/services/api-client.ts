@@ -17,7 +17,7 @@ class APIClient<TResponse = unknown, TRequest = unknown> {
     this.endpoint = endpoint;
   }
 
-  getAll = async (config: AxiosRequestConfig<TRequest>) => {
+  getAll = async (config?: AxiosRequestConfig<TRequest>) => {
     const res = await axiosInstance.get<FetchResponse<TResponse>>(
       this.endpoint,
       config
@@ -25,30 +25,56 @@ class APIClient<TResponse = unknown, TRequest = unknown> {
     return res.data;
   };
 
-  getID = async (id: string | number, config: AxiosRequestConfig<TRequest>) => {
+  get = async (config?: AxiosRequestConfig<TRequest>, id?: string | number) => {
+    let endID = "";
+    if (id !== undefined) endID = `/${id}/`;
     const res = await axiosInstance.get<TResponse>(
-      this.endpoint + "/" + id + "/",
+      this.endpoint + endID,
       config
     );
     return res.data;
   };
 
-  get = async (config: AxiosRequestConfig<TRequest>) => {
-    const res = await axiosInstance.get<TResponse>(this.endpoint, config);
-    return res.data;
-  };
-
-  post = async (config: AxiosRequestConfig<TRequest> | unknown) => {
-    const res = await axiosInstance.post<TResponse>(this.endpoint, config);
+  post = async (
+    data?: TRequest,
+    config?: AxiosRequestConfig<TRequest>,
+    id?: string | number
+  ) => {
+    let endID = "";
+    if (id !== undefined) endID = `/${id}/`;
+    const res = await axiosInstance.post<TResponse>(
+      this.endpoint + endID,
+      data,
+      config
+    );
     return res;
   };
 
-  postID = async (
-    id: string | number,
-    config: AxiosRequestConfig<TRequest> | unknown
+  put = async (
+    data?: TRequest,
+    config?: AxiosRequestConfig<TRequest>,
+    id?: string | number
   ) => {
-    const res = await axiosInstance.post<TResponse>(
-      this.endpoint + "/" + id + "/",
+    let endID = "";
+    if (id !== undefined) endID = `/${id}/`;
+    const res = await axiosInstance.put<TResponse>(
+      this.endpoint + endID,
+      data,
+      config
+    );
+    return res;
+  };
+
+  patch = async (
+    data?: TRequest,
+    config?: AxiosRequestConfig<TRequest>,
+    id?: string | number
+  ) => {
+    let endID = "";
+    if (id !== undefined) endID = `/${id}/`;
+    const res = await axiosInstance.patch<TResponse>(
+      this.endpoint + endID,
+      data,
       config
     );
     return res;

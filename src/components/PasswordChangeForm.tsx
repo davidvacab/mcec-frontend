@@ -18,11 +18,12 @@ import { z } from "zod";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useSetPassword from "../hooks/useSetPassword";
 import { inputStyles } from "../theme/theme";
+import SetPassword from "../entities/SetPassword";
 
 const passwordSchema = z
   .object({
-    currentPassword: z.string().nonempty("Requerido"),
-    newPassword: z
+    current_password: z.string().nonempty("Requerido"),
+    new_password: z
       .string()
       .min(8, "Debe ser al menos 8 caracteres")
       .max(32, "Maximo 32 caracteres")
@@ -33,18 +34,15 @@ const passwordSchema = z
         RegExp("[!@#$%^&*()_+.-]"),
         "Must contain one special character ( !@#$%^&*()_+.- )."
       ),
-    confirmNewPassword: z.string().nonempty("Requerido"),
+    re_new_password: z.string().nonempty("Requerido"),
   })
   .refine(
-    ({ newPassword: password, confirmNewPassword: confirmPassword }) =>
-      password === confirmPassword,
+    ({ new_password, re_new_password }) => new_password === re_new_password,
     {
       message: "Passwords dont match",
       path: ["confirmPassword"],
     }
   );
-
-type PasswordData = z.infer<typeof passwordSchema>;
 
 const PasswordChangeForm = () => {
   useDocumentTitle("Registracion | MCEC");
@@ -52,41 +50,45 @@ const PasswordChangeForm = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
-  } = useForm<PasswordData>({
+  } = useForm<SetPassword>({
     resolver: zodResolver(passwordSchema),
   });
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const { mutate: setPassword, error, isLoading } = useSetPassword();
+  const { mutate: setPassword, isLoading } = useSetPassword();
 
   const handleClick = () => setShow(!show);
 
-  const onSubmit = (formData: PasswordData) => {
-    setPassword(
-      {
-        new_password: formData.newPassword,
-        current_password: formData.currentPassword,
+  const onSubmit = (setPasswordData: SetPassword) => {
+    setEdit(false);
+    reset();
+    setPassword(setPasswordData, {
+      onSuccess: () => {
+        toast({
+          title: "Success",
+          description: "Password Changed",
+          status: "success",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
       },
-      {
-        onSuccess: () => {
-          toast({
-            title: "Success",
-            description: "Password Changed",
-            status: "success",
-            position: "top",
-            duration: 9000,
-            isClosable: true,
-          });
-          setEdit(false);
-        },
-      }
-    );
+      onError: () => {
+        toast({
+          title: "Error",
+          description: "Update Failed",
+          status: "error",
+          position: "top",
+          duration: 9000,
+          isClosable: true,
+        });
+      },
+    });
   };
 
   if (isLoading) return <Spinner />;
-
-  if (error) throw error;
 
   return (
     <VStack
@@ -98,19 +100,19 @@ const PasswordChangeForm = () => {
       onSubmit={handleSubmit((data) => onSubmit(data))}
     >
       <FormControl
-        isInvalid={errors.currentPassword !== undefined}
+        isInvalid={errors.current_password !== undefined}
         isDisabled={!edit}
       >
         <FormLabel htmlFor="current-password" fontWeight={"normal"}>
-          Password
+          Current Password
         </FormLabel>
         <InputGroup>
           <Input
-            {...register("currentPassword")}
+            {...register("current_password")}
             {...inputStyles}
             id="current-password"
             type={show ? "text" : "password"}
-            placeholder="Enter password"
+            placeholder="Enter Current password"
             autoComplete="current-password"
             tabIndex={1}
           />
@@ -120,23 +122,23 @@ const PasswordChangeForm = () => {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <FormErrorMessage>{errors.currentPassword?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.current_password?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl
-        isInvalid={errors.newPassword !== undefined}
+        isInvalid={errors.new_password !== undefined}
         isDisabled={!edit}
       >
         <FormLabel htmlFor="new-password" fontWeight={"normal"}>
-          Password
+          New Password
         </FormLabel>
         <InputGroup>
           <Input
-            {...register("newPassword")}
+            {...register("new_password")}
             {...inputStyles}
             id="new-password"
             type={show ? "text" : "password"}
-            placeholder="Enter password"
+            placeholder="Enter New password"
             autoComplete="new-password"
             tabIndex={2}
           />
@@ -146,11 +148,11 @@ const PasswordChangeForm = () => {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <FormErrorMessage>{errors.newPassword?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.new_password?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl
-        isInvalid={errors.confirmNewPassword !== undefined}
+        isInvalid={errors.re_new_password !== undefined}
         isDisabled={!edit}
       >
         <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
@@ -158,7 +160,7 @@ const PasswordChangeForm = () => {
         </FormLabel>
         <InputGroup>
           <Input
-            {...register("confirmNewPassword")}
+            {...register("re_new_password")}
             {...inputStyles}
             id="confirm-password"
             type={show ? "text" : "password"}
@@ -172,9 +174,7 @@ const PasswordChangeForm = () => {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <FormErrorMessage>
-          {errors.confirmNewPassword?.message}
-        </FormErrorMessage>
+        <FormErrorMessage>{errors.re_new_password?.message}</FormErrorMessage>
       </FormControl>
 
       {!edit ? (
@@ -206,6 +206,7 @@ const PasswordChangeForm = () => {
             onClick={() => {
               setShow(false);
               setEdit(false);
+              reset();
             }}
           >
             Cancelar

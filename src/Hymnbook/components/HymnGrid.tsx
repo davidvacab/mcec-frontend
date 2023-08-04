@@ -37,7 +37,7 @@ const HymnGrid = () => {
           {data?.pages.map((page, index) => (
             <React.Fragment key={index}>
               {page.results.map((hymn) => (
-                <HymnCardRowContainer key={hymn.id}>
+                <HymnCardRowContainer key={hymn.slug}>
                   <HymnCardRow hymn={hymn} />
                 </HymnCardRowContainer>
               ))}

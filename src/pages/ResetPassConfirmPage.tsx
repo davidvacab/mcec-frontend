@@ -21,7 +21,7 @@ import useResetPassConfirm from "../hooks/useResetPassConfirm";
 
 const resetPassSchema = z
   .object({
-    password: z
+    new_password: z
       .string()
       .min(8, "Debe ser al menos 8 caracteres")
       .max(32, "Maximo 32 caracteres")
@@ -32,12 +32,15 @@ const resetPassSchema = z
         RegExp("[!@#$%^&*()_+.-]"),
         "Must contain one special character ( !@#$%^&*()_+.- )."
       ),
-    confirmPassword: z.string().nonempty("Requerido"),
+    re_new_password: z.string().nonempty("Requerido"),
   })
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
-    message: "Passwords dont match",
-    path: ["confirmPassword"],
-  });
+  .refine(
+    ({ new_password, re_new_password }) => new_password === re_new_password,
+    {
+      message: "Passwords dont match",
+      path: ["confirmPassword"],
+    }
+  );
 
 type PasswordData = z.infer<typeof resetPassSchema>;
 
@@ -53,16 +56,16 @@ const PassResetConfirmPage = () => {
   });
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { mutate: confirmPass, error, isLoading } = useResetPassConfirm();
+  const { mutate: confirmPass, isLoading } = useResetPassConfirm();
 
   const handleClick = () => setShow(!show);
 
-  const onSubmit = ({ password }: PasswordData) => {
+  const onSubmit = (passwordData: PasswordData) => {
     confirmPass(
       {
         uid: uid,
         token: token,
-        new_password: password,
+        ...passwordData,
       },
       {
         onSuccess: () => {
@@ -76,13 +79,22 @@ const PassResetConfirmPage = () => {
           });
           navigate("/", { replace: true });
         },
+        onError: () => {
+          toast({
+            title: "Error",
+            description: "Update Failed",
+            status: "error",
+            position: "top",
+            duration: 9000,
+            isClosable: true,
+          });
+          navigate("/", { replace: true });
+        },
       }
     );
   };
 
   if (isLoading) return <Spinner />;
-
-  if (error) throw error;
 
   return (
     <Flex minH={"calc(100vh - 5rem)"} justify={"center"} px={1}>
@@ -98,13 +110,13 @@ const PassResetConfirmPage = () => {
         onSubmit={handleSubmit((data) => onSubmit(data))}
         {...cardStyles}
       >
-        <FormControl isInvalid={errors.password !== undefined}>
+        <FormControl isInvalid={errors.new_password !== undefined}>
           <FormLabel htmlFor="password" fontWeight={"normal"}>
             New Password
           </FormLabel>
           <InputGroup>
             <Input
-              {...register("password")}
+              {...register("new_password")}
               id="password"
               type={show ? "text" : "password"}
               placeholder="Enter password"
@@ -116,16 +128,16 @@ const PassResetConfirmPage = () => {
               <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
             </InputRightElement>
           </InputGroup>
-          <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.new_password?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.confirmPassword !== undefined}>
+        <FormControl isInvalid={errors.re_new_password !== undefined}>
           <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
             Confirm New Password
           </FormLabel>
           <InputGroup>
             <Input
-              {...register("confirmPassword")}
+              {...register("re_new_password")}
               id="confirm-password"
               type={show ? "text" : "password"}
               placeholder="Confirm password"
@@ -137,7 +149,7 @@ const PassResetConfirmPage = () => {
               <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
             </InputRightElement>
           </InputGroup>
-          <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.re_new_password?.message}</FormErrorMessage>
         </FormControl>
         <Button
           type="submit"

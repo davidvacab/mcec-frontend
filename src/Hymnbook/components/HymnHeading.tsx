@@ -3,11 +3,11 @@ import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
 
 const HymnHeading = () => {
-  const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicId);
-  const topic = useTopic(selectedTopicId);
+  const selectedTopicCode = useHymnQueryStore((s) => s.hymnQuery.topicCode);
+  const topic = useTopic(selectedTopicCode);
   const searchText = useHymnQueryStore((s) => s.hymnQuery.searchText);
-  const heading = `${searchText || selectedTopicId ? "Cantos " : ""} ${
-    selectedTopicId ? "de " + topic?.title : ""
+  const heading = `${searchText || selectedTopicCode ? "Cantos " : ""} ${
+    selectedTopicCode ? "de " + topic?.title : ""
   } ${searchText ? "con el titulo '" + searchText + "'" : ""}`;
   return (
     <Heading

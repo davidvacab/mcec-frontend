@@ -1,4 +1,4 @@
-const memberVoices = [
+export const MemberVoiceTypeList = [
   { key: "S1", value: "Soprano 1" },
   { key: "S2", value: "Soprano 2" },
   { key: "A1", value: "Alto 1" },
@@ -9,4 +9,6 @@ const memberVoices = [
   { key: "B2", value: "Bajo 2" },
 ] as const;
 
-export default memberVoices;
+const MemberVoiceTypes = MemberVoiceTypeList.map((voiceType) => voiceType.key);
+
+export default MemberVoiceTypes;

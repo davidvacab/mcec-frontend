@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ms from "ms";
 import APIClient, { FetchResponse } from "../../services/api-client";
-import { HymnListItem } from "../entities/HymnListItem";
+import HymnListItem from "../entities/HymnListItem";
 import useHymnQueryStore from "../store";
 import { useAuthHeader } from "react-auth-kit";
 
@@ -15,7 +15,7 @@ const useHymns = () => {
     queryFn: ({ pageParam = 1 }) =>
       apiClient.getAll({
         params: {
-          topic: hymnQuery.topicId,
+          topics: hymnQuery.topicCode,
           ordering: hymnQuery.sortOrder,
           search: hymnQuery.searchText,
           page: pageParam,

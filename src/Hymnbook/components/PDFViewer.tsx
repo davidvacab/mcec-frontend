@@ -35,8 +35,6 @@ const PDFViewer = ({ pdfURL }: Props) => {
   const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const baseURL = "http://127.0.0.1:8000";
-
   const onDocumentLoadSuccess = ({
     numPages: nextNumPages,
   }: PDFDocumentProxy) => {
@@ -85,7 +83,7 @@ const PDFViewer = ({ pdfURL }: Props) => {
       </HStack>
       <Document
         className={"Document"}
-        file={{ url: baseURL + decodeURI(pdfURL) }}
+        file={{ url: decodeURI(pdfURL) }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
         <Page className="Page" pageNumber={pageNumber} width={width} />

@@ -1,4 +1,6 @@
-export interface Topic {
-  id: number;
+import TopicCodes from "./Topics";
+
+export default interface Topic {
+  code: typeof TopicCodes;
   title: string;
 }

@@ -2,9 +2,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import ms from "ms";
 import { useAuthHeader } from "react-auth-kit";
 import APIClient from "../services/api-client";
-import { Profile } from "../entities/Profile";
+import Profile from "../entities/Profile";
 
-const apiClient = new APIClient<Profile>("/members/profiles/me/");
+const apiClient = new APIClient<Profile, Profile>("/members/profiles/me/");
 
 const useProfile = () => {
   const authHeader = useAuthHeader();
@@ -21,13 +21,9 @@ export const useProfileUpdate = () => {
   return useMutation({
     mutationKey: ["profileUpdate"],
     mutationFn: (profile: Profile) =>
-      apiClient.post({
+      apiClient.put(profile, {
         headers: { Authorization: authHeader() },
-        data: profile,
       }),
-    onError: () => {
-      throw new Response("Not Found", { status: 404 });
-    },
   });
 };
 

@@ -1,15 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import ms from "ms";
-import APIClient, { FetchResponse } from "../../services/api-client";
-import { Topic } from "../entities/Topic";
+import { TopicList } from "../entities/Topics";
 
-const apiClient = new APIClient<Topic>("/hymnbook/topics/");
-
-const useTopics = () =>
-  useQuery<FetchResponse<Topic>, Error>({
-    queryKey: ["topics"],
-    queryFn: apiClient.getAll,
-    staleTime: ms("24h"),
-  });
+const useTopics = (codes: string[]) => {
+  return codes.map((code) => TopicList.find((topic) => topic.code === code));
+};
 
 export default useTopics;

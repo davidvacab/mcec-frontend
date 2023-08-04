@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../../services/api-client";
-import { Hymn } from "../entities/Hymn";
+import Hymn from "../entities/Hymn";
 import ms from "ms";
 import { useAuthHeader } from "react-auth-kit";
 
@@ -11,7 +11,7 @@ const useHymn = (id: string) => {
   const config = { headers: { Authorization: authHeader() } };
   return useQuery({
     queryKey: ["hymns", id],
-    queryFn: () => apiClient.getID(id, config),
+    queryFn: () => apiClient.get(config, id),
     staleTime: ms("24h"),
   });
 };
