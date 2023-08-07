@@ -1,0 +1,12 @@
+{
+  "required": "Requerido",
+  "max": "Maximo {{value}} caracteres",
+  "min": "Al menos {{value}} caracteres",
+  "phone": "Numero invalido",
+  "username": "Solo letras minusculas y numeros",
+  "password_low": "Debe contener al menos una letra minuscula",
+  "password_up": "Debe contener al menos una letra mayuscula",
+  "password_num": "Debe contener al menos un numero",
+  "password_esp": "Debe contener al menos un carater especial ( !@#$%^&*()_+.- )",
+  "password_mat": "Las constrasenas no son iguales"
+}

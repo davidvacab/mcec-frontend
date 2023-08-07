@@ -1,0 +1,29 @@
+{
+  "label": {
+    "profile": "Perfil",
+    "church": "Iglesia",
+    "signin": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "success": "Exito",
+    "error": "Error",
+    "go_home": "Ir al inicio",
+    "404_des": "Pagina no encontrada",
+    "error_des": "Ocurrio on problema"
+  },
+  "button": {
+    "back": "Regresar",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "edit": "Editar",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "page": {
+    "account": "Cuenta de usuario",
+    "await_activation": "Activacion requerida",
+    "password_reset": "Reiniciar contraseña",
+    "activate": "Activar cuenta"
+  }
+}

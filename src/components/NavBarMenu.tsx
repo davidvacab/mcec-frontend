@@ -16,12 +16,14 @@ import { useAuthUser } from "react-auth-kit";
 import { FiChevronDown } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
+import { useTranslation } from "react-i18next";
 
 const NavBarMenu = () => {
   const auth = useAuthUser();
   const signOut = useSignOut();
   const navigate = useNavigate();
   const toast = useToast();
+  const { t } = useTranslation("home");
 
   return (
     <Flex alignItems={"center"}>
@@ -37,10 +39,10 @@ const NavBarMenu = () => {
           {auth() && (
             <HStack>
               <Avatar
-                  display={{ base: "none", md: "flex" }}
-                  size={"sm"}
-                  src={auth()?.profile.profile_picture}
-                /> 
+                display={{ base: "none", md: "flex" }}
+                size={"sm"}
+                src={auth()?.profile.profile_picture}
+              />
 
               <VStack
                 display={{ base: "none", md: "flex" }}
@@ -56,15 +58,14 @@ const NavBarMenu = () => {
         </MenuButton>
         <MenuList>
           <Link to={"/hymns"}>
-            <MenuItem>Repertorio</MenuItem>
+            <MenuItem>{t("label.hymnbook")}</MenuItem>
           </Link>
           {auth() && (
             <>
               <Link to={"/profile/me"}>
-                <MenuItem>Perfil</MenuItem>
+                <MenuItem>{t("common:label.profile")}</MenuItem>
               </Link>
-
-              <MenuItem>Reportar un problema</MenuItem>
+              <MenuItem>{t("navmenu.problem")}</MenuItem>
             </>
           )}
           <MenuDivider />
@@ -73,8 +74,8 @@ const NavBarMenu = () => {
               onClick={() => {
                 signOut();
                 toast({
-                  title: "Logout",
-                  description: "Sesion Terminada",
+                  title: t("navmenu.logout"),
+                  description: t("navmenu.logout_des"),
                   status: "info",
                   position: "top",
                   duration: 9000,
@@ -83,16 +84,16 @@ const NavBarMenu = () => {
                 navigate("/");
               }}
             >
-              Cerrar Sesion
+              {t("navmenu.logout")}
             </MenuItem>
           ) : (
             <>
               <Link to={"/login"}>
-                <MenuItem>Iniciar Sesion</MenuItem>
+                <MenuItem>{t("common:label.signin")}</MenuItem>
               </Link>
 
               <Link to={"/register"}>
-                <MenuItem>Registrarse</MenuItem>
+                <MenuItem>{t("common:label.signup")}</MenuItem>
               </Link>
             </>
           )}

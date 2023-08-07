@@ -24,57 +24,69 @@ import MemberVoiceTypes, {
 import CountryPhoneCodes, {
   CountryPhoneCodeList,
 } from "../entities/CountryPhoneCodes";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 import { inputStyles, selectStyles } from "../theme/theme";
 import { useState } from "react";
 import useProfile, { useProfileUpdate } from "../hooks/useProfile";
 import { useQueryClient } from "@tanstack/react-query";
 import Profile from "../entities/Profile";
+import { useTranslation } from "react-i18next";
+import { zodI18nMap } from "zod-i18n-map";
+
+z.setErrorMap(zodI18nMap);
 
 const MB_BYTES = 1000000;
 
 const ACCEPTED_MIME_TYPES = ["image/gif", "image/jpeg", "image/png"];
 
-const profileSchema = z.object({
-  first_name: z.string().nonempty("Requerido").max(50),
-  last_name: z.string().nonempty("Requerido").max(50),
-  birthdate: z.string().nonempty("Requerido"),
-  phone_area_code: z.enum([
-    CountryPhoneCodes[0],
-    ...CountryPhoneCodes.slice(0),
-  ]),
-  phone_number: z
-    .string()
-    .min(6, "Debe ser al menos 8 numeros")
-    .regex(RegExp("[0-9]{8,10}"), "Numero Invalido"),
-  voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
-  role: z.enum([MemberRoles[0], ...MemberRoles.slice(0)]),
-  bio: z.string().max(250).optional(),
-  profile_picture: z.instanceof(FileList).superRefine((f, ctx) => {
-    if (!ACCEPTED_MIME_TYPES.includes(f[0].type)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `File must be one of [${ACCEPTED_MIME_TYPES.join(
-          ", "
-        )}] but was ${f[0].type}`,
-      });
-    }
-    if (f[0].size > 3 * MB_BYTES) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.too_big,
-        type: "array",
-        message: `The file must not be larger than ${3 * MB_BYTES} bytes: ${
-          f[0].size
-        }`,
-        maximum: 3 * MB_BYTES,
-        inclusive: true,
-      });
-    }
-  }),
-});
-
 const ProfileForm = () => {
-  useDocumentTitle("Registracion | MCEC");
+  const { t } = useTranslation("members");
+  const profileSchema = z.object({
+    first_name: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    last_name: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    birthdate: z.string().nonempty(t("validation:required")),
+    phone_area_code: z.enum([
+      CountryPhoneCodes[0],
+      ...CountryPhoneCodes.slice(0),
+    ]),
+    phone_number: z
+      .string()
+      .min(6, t("validation:min", { value: 6 }))
+      .max(20, t("validation:max", { value: 20 }))
+      .regex(RegExp("[0-9]{8,10}"), t("validation:phone")),
+    voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
+    role: z.enum([MemberRoles[0], ...MemberRoles.slice(0)]),
+    bio: z
+      .string()
+      .max(250, t("validation:max", { value: 250 }))
+      .optional(),
+    profile_picture: z.instanceof(FileList).superRefine((f, ctx) => {
+      if (!ACCEPTED_MIME_TYPES.includes(f[0].type)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `File must be one of [${ACCEPTED_MIME_TYPES.join(
+            ", "
+          )}] but was ${f[0].type}`,
+        });
+      }
+      if (f[0].size > 3 * MB_BYTES) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_big,
+          type: "array",
+          message: `The file must not be larger than ${3 * MB_BYTES} bytes: ${
+            f[0].size
+          }`,
+          maximum: 3 * MB_BYTES,
+          inclusive: true,
+        });
+      }
+    }),
+  });
   const toast = useToast();
   const {
     handleSubmit,
@@ -119,8 +131,8 @@ const ProfileForm = () => {
         queryClient.setQueryData(["profile"], response.data);
         reset(response.data, { keepErrors: false, keepDefaultValues: false });
         toast({
-          title: "Suceess",
-          description: "Profile Updated",
+          title: t("common:label.success"),
+          description: t("member.update_success"),
           status: "success",
           position: "top",
           duration: 9000,
@@ -130,8 +142,8 @@ const ProfileForm = () => {
       onError: () => {
         reset(profile, { keepErrors: false });
         toast({
-          title: "Error",
-          description: "Update Failed",
+          title: t("common:label.error"),
+          description: t("member.update_failed"),
           status: "error",
           position: "top",
           duration: 9000,
@@ -146,7 +158,7 @@ const ProfileForm = () => {
       spacing={5}
       w={"100%"}
       as={"form"}
-      onSubmit={handleSubmit((data) => onSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Stack direction={{ base: "column", md: "row" }} w={"100%"} spacing={5}>
         <FormControl
@@ -154,7 +166,7 @@ const ProfileForm = () => {
           isDisabled={!edit}
         >
           <FormLabel htmlFor="first-name" fontWeight={"normal"}>
-            Nombre
+            {t("member.first_name")}
           </FormLabel>
           <Input
             {...register("first_name", { value: profile.first_name })}
@@ -172,7 +184,7 @@ const ProfileForm = () => {
           isDisabled={!edit}
         >
           <FormLabel htmlFor="last-name" fontWeight={"normal"}>
-            Apellido(s)
+            {t("member.last_name")}
           </FormLabel>
           <Input
             {...register("last_name", { value: profile.last_name })}
@@ -191,7 +203,7 @@ const ProfileForm = () => {
           isDisabled={!edit}
         >
           <FormLabel htmlFor="birthdate" fontWeight={"normal"}>
-            Birthdate
+            {t("member.birthdate")}
           </FormLabel>
           <Input
             {...register("birthdate", { value: profile.birthdate })}
@@ -214,7 +226,7 @@ const ProfileForm = () => {
           isDisabled={!edit}
         >
           <FormLabel htmlFor="phone" fontWeight={"normal"}>
-            Phone
+            {t("member.phone")}
           </FormLabel>
           <InputGroup>
             <InputLeftAddon p={0}>
@@ -253,7 +265,7 @@ const ProfileForm = () => {
       <Stack direction={{ base: "column", md: "row" }} w={"100%"}>
         <FormControl isDisabled={!edit}>
           <FormLabel htmlFor="voice" fontWeight={"normal"}>
-            Voice
+            {t("member.voice")}
           </FormLabel>
           <Select
             id="voice"
@@ -273,7 +285,7 @@ const ProfileForm = () => {
 
         <FormControl isDisabled={!edit}>
           <FormLabel htmlFor="role" fontWeight={"normal"}>
-            Role
+            {t("member.role")}
           </FormLabel>
           <Select
             id="role"
@@ -297,7 +309,7 @@ const ProfileForm = () => {
         isDisabled={!edit}
       >
         <FormLabel htmlFor="image" fontWeight={"normal"}>
-          Picture
+          {t("member.picture")}
         </FormLabel>
         <Input
           {...register("profile_picture")}
@@ -314,7 +326,7 @@ const ProfileForm = () => {
 
       <FormControl isInvalid={errors.bio !== undefined} isDisabled={!edit}>
         <FormLabel htmlFor="bio" fontWeight={"normal"}>
-          Bio
+          {t("member.bio")}
         </FormLabel>
         <Textarea
           {...register("bio")}
@@ -335,7 +347,7 @@ const ProfileForm = () => {
           tabIndex={4}
           onClick={() => setEdit(true)}
         >
-          Editar
+          {t("common:button.edit")}
         </Button>
       ) : (
         <ButtonGroup spacing={5}>
@@ -346,7 +358,7 @@ const ProfileForm = () => {
             variant="solid"
             tabIndex={4}
           >
-            Guardar
+            {t("common:button.save")}
           </Button>
           <Button
             w="7rem"
@@ -358,7 +370,7 @@ const ProfileForm = () => {
               setEdit(false);
             }}
           >
-            Cancelar
+            {t("common:button.cancel")}
           </Button>
         </ButtonGroup>
       )}

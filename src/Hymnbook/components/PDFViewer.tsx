@@ -10,6 +10,7 @@ import {
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
 import { cardStyles } from "../../theme/theme";
+import { useTranslation } from "react-i18next";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const PDFViewer = ({ pdfURL }: Props) => {
+  const { t } = useTranslation("hymnbook");
   const ref = useRef<HTMLDivElement>(null);
 
   const [width, setWidth] = useState(0);
@@ -71,7 +73,7 @@ const PDFViewer = ({ pdfURL }: Props) => {
           aria-label="Previous Page"
         />
         <Text>
-          Page {pageNumber} of {numPages}
+          {t("page")} {pageNumber} {t("of")} {numPages}
         </Text>
         <IconButton
           variant="ghost"

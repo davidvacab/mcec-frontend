@@ -1,0 +1,17 @@
+{
+  "label": {
+    "hymnbook": "Hymnbook",
+    "signup": "Sign up"
+  },
+  "navmenu": {
+    "problem": "Report an issue",
+    "logout": "Sign out",
+    "logout_des": "Session ended"
+  },
+  "footer": {
+    "about_us": "About us",
+    "contact_us": "Contact us",
+    "orfeon": "Choirs",
+    "rights": "All rights reserved."
+  }
+}

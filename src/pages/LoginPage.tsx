@@ -20,30 +20,31 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { cardStyles, inputStyles } from "../theme/theme";
 import useLogin from "../hooks/useLogin";
-
-const schema = z.object({
-  username: z.string().nonempty("Requerido"),
-  password: z.string().nonempty("Requerido"),
-});
-
-type FormData = z.infer<typeof schema>;
+import { useTranslation } from "react-i18next";
+import LoginCredentials from "../entities/LoginCredentials";
 
 const LoginPage = () => {
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("common:label.signin")} | MCEC`);
+  const schema = z.object({
+    username: z.string().nonempty(t("validation:required")),
+    password: z.string().nonempty(t("validation:required")),
+  });
   const toast = useToast();
   const { state } = useLocation();
   const navigate = useNavigate();
-  useDocumentTitle("Iniciar Sesion | MCEC");
   const signIn = useSignIn();
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<LoginCredentials>({
     resolver: zodResolver(schema),
   });
   const { mutate: login, isLoading } = useLogin();
 
-  const onSubmit = (credentials: FormData) => {
+  const onSubmit = (credentials: LoginCredentials) => {
     login(credentials, {
       onSuccess: (response) => {
         if (
@@ -59,9 +60,10 @@ const LoginPage = () => {
           navigate(state !== null ? state.from : "/", { replace: true });
       },
       onError: () => {
+        resetField("password");
         toast({
           title: "Error",
-          description: "Invalid Credentials",
+          description: t("login.inv_cred"),
           status: "error",
           position: "top",
           duration: 9000,
@@ -87,12 +89,12 @@ const LoginPage = () => {
         maxW={"md"}
         w={"100%"}
         p={{ base: 3, md: 10 }}
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit(onSubmit)}
         {...cardStyles}
       >
-        <Heading>Iniciar Sesion</Heading>
+        <Heading>{t("common:label.signin")}</Heading>
         <FormControl id="username" isInvalid={errors.username !== undefined}>
-          <FormLabel>Username</FormLabel>
+          <FormLabel>{t("member.username")}</FormLabel>
           <Input
             id="username"
             {...register("username")}
@@ -102,7 +104,7 @@ const LoginPage = () => {
           <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
         </FormControl>
         <FormControl id="password" isInvalid={errors.password !== undefined}>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>{t("member.password")}</FormLabel>
           <Input
             {...register("password")}
             {...inputStyles}
@@ -113,17 +115,17 @@ const LoginPage = () => {
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
         <Button type="submit" w="10rem" colorScheme="gold">
-          Sign in
+          {t("common:label.signin")}
         </Button>
         <HStack>
           <Link to="/password-reset">
-            <Button variant={"link"}>Forgot password?</Button>
+            <Button variant={"link"}>{t("login.forgot-password")}</Button>
           </Link>
         </HStack>
         <HStack>
-          <Text>No tienes cuenta?</Text>
+          <Text>{t("login.need-account")}</Text>
           <Link to={"/register"}>
-            <Button variant={"link"}>Registrate</Button>
+            <Button variant={"link"}>{t("login.signup")}</Button>
           </Link>
         </HStack>
       </VStack>

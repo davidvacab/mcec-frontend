@@ -9,6 +9,7 @@ interface MainElements {
     title?: string;
     description?: string;
   };
+  locale: string;
 }
 
 interface MainStore {
@@ -23,6 +24,7 @@ interface MainStore {
     description: string
   ) => void;
   setRegistrationEmail: (email: string | undefined) => void;
+  setLocale: (locale: string) => void;
 }
 
 const useMainStore = create<MainStore>((set) => ({
@@ -30,6 +32,7 @@ const useMainStore = create<MainStore>((set) => ({
     isDrawerOpen: false,
     isAlertOpen: false,
     alertElements: { status: "info" },
+    locale: "es",
   },
   openSideDrawer: () =>
     set((store) => ({
@@ -61,6 +64,10 @@ const useMainStore = create<MainStore>((set) => ({
   setRegistrationEmail: (email) =>
     set((store) => ({
       mainElements: { ...store.mainElements, registrationEmail: email },
+    })),
+  setLocale: (locale) =>
+    set((store) => ({
+      mainElements: { ...store.mainElements, locale: locale },
     })),
 }));
 

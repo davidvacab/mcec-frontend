@@ -10,9 +10,11 @@ import Sidebar from "../components/Sidebar";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import useMainStore from "../store";
 import { RequireAuth } from "react-auth-kit";
+import { useTranslation } from "react-i18next";
 
 const HymnListPage = () => {
-  useDocumentTitle("Repertorio | MCEC");
+  const { t } = useTranslation("home");
+  useDocumentTitle(`${t("label.hymnbook")} | MCEC`);
   const setSearchText = useHymnQueryStore((s) => s.setSearchText);
   const closeDrawer = useMainStore((s) => s.closeSideDrawer);
   const isDrawerOpen = useMainStore((s) => s.mainElements.isDrawerOpen);

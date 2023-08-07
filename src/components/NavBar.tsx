@@ -5,6 +5,7 @@ import ColorModeButton from "./ColorModeButton";
 import NavBarMenu from "./NavBarMenu";
 import useMainStore from "../store";
 import { navBarStyles } from "../theme/theme";
+import LanguageModeButton from "./LanguageModeButton";
 
 const NavBar = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const NavBar = () => {
         <Heading size={"xl"}>MCEC</Heading>
       </Link>
       <HStack spacing={{ base: "2", md: "6" }}>
+        <LanguageModeButton />
         <ColorModeButton />
         <NavBarMenu />
       </HStack>

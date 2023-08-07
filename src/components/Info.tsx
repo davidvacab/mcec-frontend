@@ -14,6 +14,7 @@ import {
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -34,6 +35,7 @@ const Info = ({
   button2OnClick,
   button2Disabled,
 }: Props) => {
+  const { t } = useTranslation("common");
   useDocumentTitle(title);
   let icon;
   let color;
@@ -96,7 +98,7 @@ const Info = ({
             color="white"
             variant="solid"
           >
-            Go to Home
+            {t("go_home")}
           </Button>
         </Link>
         {button2 && (

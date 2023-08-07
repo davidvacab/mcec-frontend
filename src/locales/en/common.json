@@ -1,0 +1,28 @@
+{
+  "label": {
+    "profile": "Profile",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "success": "Success",
+    "error": "Error",
+    "go_home": "Go home",
+    "404_des": "Page not found",
+    "error_des": "Something went wrong"
+  },
+  "button": {
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "show": "Show",
+    "hide": "Hide",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "page": {
+    "account": "User account",
+    "await_activation": "Activation required",
+    "password_reset": "Reset password",
+    "activate": "Activate account"
+  }
+}

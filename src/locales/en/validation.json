@@ -1,0 +1,12 @@
+{
+  "required": "Required",
+  "max": "At most {{value}} characters",
+  "min": "At least {{value}} characters",
+  "phone": "Invalid number",
+  "username": "Only lowercase letters and numbers",
+  "password_low": "Must contain at least one lowercase letter",
+  "password_up": "Must contain at least one uppercase letter",
+  "password_num": "Must contain at least one number",
+  "password_esp": "Must contain at least one special character ( !@#$%^&*()_+.- )",
+  "password_mat": "Passwords don't match"
+}

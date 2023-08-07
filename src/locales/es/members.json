@@ -1,0 +1,76 @@
+{
+  "login": {
+    "forgot-password": "¿Olvidaste tu contraseña?",
+    "need-account": "¿No tienes cuenta?",
+    "signup": "Registrate",
+    "inv_cred": "Credenciales invalidas"
+  },
+  "set_password": {
+    "success": "Contraseña cambiada",
+    "error": "El cambio de contraseña fallo",
+    "current_password": "Contraseña actual",
+    "new_password": "Contraseña nueva",
+    "re_new_password": "Confirme contraseña nueva"
+  },
+  "password_reset": {
+    "heading": "Solicitar reinicio de contraseña",
+    "success": "Contraseña cambiada",
+    "error": "El cambio de contraseña fallo"
+  },
+  "acccount_activation": {
+    "title": "Activacion",
+    "des": "Activacion exitosa, por favor vaya al inicio"
+  },
+  "await_activation": {
+    "title": "Correo enviado",
+    "des": "Recibiras un correo con un link de activacion",
+    "button": "Reenviar correo"
+  },
+  "member": {
+    "account": "Cuenta",
+    "local": "Local",
+    "personal": "Personal",
+    "user": "Usuario",
+    "account_success": "Cuenta creada",
+    "account_error": "Ocurrio un problema",
+    "update_failed": "La actualizacion fallo",
+    "update_success": "Actualizacion exitosa",
+    "register": "Registrarse",
+    "email_des": "Nunca compartiremos tu correo electronico",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "re_password": "Confirme contraseña",
+    "email": "Correo electronico",
+    "first_name": "Nombre",
+    "last_name": "Apellidos",
+    "birthdate": "Fecha de nacimiento",
+    "phone": "Numero de telefono",
+    "voice": "Tesitura",
+    "role": "Rol en coro",
+    "picture": "Foto de perfil",
+    "bio": "Biografia",
+    "minister_name": "Nombre de ministro",
+    "church_name": "Iglesia local",
+    "city": "Ciudad",
+    "state": "Estado / Provincia",
+    "country": "Pais",
+    "email_used": "Correo electronico ya en uso",
+    "username_used": "Nombre de usuario ya en uso"
+  },
+  "member_voice": {
+    "S1": "Soprano 1",
+    "S2": "Soprano 2",
+    "A1": "Alto 1",
+    "A2": "Alto 2",
+    "T1": "Tenor 1",
+    "T2": "Tenor 2",
+    "B1": "Bajo 1",
+    "B2": "Bajo 2"
+  },
+  "member_role": {
+    "CM": "Miembro del coro",
+    "LD": "Director local",
+    "SD": "Director estatal",
+    "NM": "No miembro del coro"
+  }
+}

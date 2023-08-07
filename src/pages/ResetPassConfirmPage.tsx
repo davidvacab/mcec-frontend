@@ -18,40 +18,39 @@ import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import { cardStyles, inputStyles } from "../theme/theme";
 import useResetPassConfirm from "../hooks/useResetPassConfirm";
-
-const resetPassSchema = z
-  .object({
-    new_password: z
-      .string()
-      .min(8, "Debe ser al menos 8 caracteres")
-      .max(32, "Maximo 32 caracteres")
-      .regex(RegExp("[a-z]"), "Must contain one lowercase letter.")
-      .regex(RegExp("[A-Z]"), "Must contain one uppercase letter.")
-      .regex(RegExp("[0-9]"), "Must contain one number.")
-      .regex(
-        RegExp("[!@#$%^&*()_+.-]"),
-        "Must contain one special character ( !@#$%^&*()_+.- )."
-      ),
-    re_new_password: z.string().nonempty("Requerido"),
-  })
-  .refine(
-    ({ new_password, re_new_password }) => new_password === re_new_password,
-    {
-      message: "Passwords dont match",
-      path: ["confirmPassword"],
-    }
-  );
-
-type PasswordData = z.infer<typeof resetPassSchema>;
+import { useTranslation } from "react-i18next";
+import ResetPasswordConfirm from "../entities/ResetPassConfirm";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const PassResetConfirmPage = () => {
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("common:page.password_reset")} | MCEC`);
+  const resetPassSchema = z
+    .object({
+      new_password: z
+        .string()
+        .min(8, t("validation:min", { value: 8 }))
+        .max(32, t("validation:max", { value: 32 }))
+        .regex(RegExp("[a-z]"), t("validation:password_low"))
+        .regex(RegExp("[A-Z]"), t("validation:password_up"))
+        .regex(RegExp("[0-9]"), t("validation:password_num"))
+        .regex(RegExp("[!@#$%^&*()_+.-]"), t("validation:password_esp")),
+      re_new_password: z.string().nonempty(t("validation:required")),
+    })
+    .refine(
+      ({ new_password, re_new_password }) => new_password === re_new_password,
+      {
+        message: t("validation:password_mat"),
+        path: ["confirmPassword"],
+      }
+    );
   const { uid, token } = useParams();
   const toast = useToast();
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<PasswordData>({
+  } = useForm<ResetPasswordConfirm>({
     resolver: zodResolver(resetPassSchema),
   });
   const navigate = useNavigate();
@@ -60,7 +59,7 @@ const PassResetConfirmPage = () => {
 
   const handleClick = () => setShow(!show);
 
-  const onSubmit = (passwordData: PasswordData) => {
+  const onSubmit = (passwordData: ResetPasswordConfirm) => {
     confirmPass(
       {
         uid: uid,
@@ -70,8 +69,8 @@ const PassResetConfirmPage = () => {
       {
         onSuccess: () => {
           toast({
-            title: "Suceess",
-            description: "Password Resetted",
+            title: t("common:label.success"),
+            description: t("password_reset.success"),
             status: "success",
             position: "top",
             duration: 9000,
@@ -81,8 +80,8 @@ const PassResetConfirmPage = () => {
         },
         onError: () => {
           toast({
-            title: "Error",
-            description: "Update Failed",
+            title: t("common:label.error"),
+            description: t("password_reset.error"),
             status: "error",
             position: "top",
             duration: 9000,
@@ -107,12 +106,12 @@ const PassResetConfirmPage = () => {
         width={"100%"}
         maxW={600}
         as="form"
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit(onSubmit)}
         {...cardStyles}
       >
         <FormControl isInvalid={errors.new_password !== undefined}>
           <FormLabel htmlFor="password" fontWeight={"normal"}>
-            New Password
+            {t("set_password.new_password")}
           </FormLabel>
           <InputGroup>
             <Input
@@ -125,7 +124,9 @@ const PassResetConfirmPage = () => {
               {...inputStyles}
             />
             <InputRightElement width="4.5rem">
-              <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+              <Button onClick={handleClick}>
+                {show ? t("common:button.hide") : t("common:button.show")}
+              </Button>
             </InputRightElement>
           </InputGroup>
           <FormErrorMessage>{errors.new_password?.message}</FormErrorMessage>
@@ -133,7 +134,7 @@ const PassResetConfirmPage = () => {
 
         <FormControl isInvalid={errors.re_new_password !== undefined}>
           <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
-            Confirm New Password
+            {t("set_password.re_new_password")}
           </FormLabel>
           <InputGroup>
             <Input
@@ -146,7 +147,9 @@ const PassResetConfirmPage = () => {
               {...inputStyles}
             />
             <InputRightElement width="4.5rem">
-              <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+              <Button onClick={handleClick}>
+                {show ? t("common:button.hide") : t("common:button.show")}
+              </Button>
             </InputRightElement>
           </InputGroup>
           <FormErrorMessage>{errors.re_new_password?.message}</FormErrorMessage>
@@ -158,7 +161,7 @@ const PassResetConfirmPage = () => {
           variant="solid"
           tabIndex={9}
         >
-          Submit
+          {t("common:button.submit")}
         </Button>
       </VStack>
     </Flex>

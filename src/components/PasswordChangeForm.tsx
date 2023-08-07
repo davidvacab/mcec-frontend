@@ -15,37 +15,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 import useSetPassword from "../hooks/useSetPassword";
 import { inputStyles } from "../theme/theme";
 import SetPassword from "../entities/SetPassword";
-
-const passwordSchema = z
-  .object({
-    current_password: z.string().nonempty("Requerido"),
-    new_password: z
-      .string()
-      .min(8, "Debe ser al menos 8 caracteres")
-      .max(32, "Maximo 32 caracteres")
-      .regex(RegExp("[a-z]"), "Must contain one lowercase letter.")
-      .regex(RegExp("[A-Z]"), "Must contain one uppercase letter.")
-      .regex(RegExp("[0-9]"), "Must contain one number.")
-      .regex(
-        RegExp("[!@#$%^&*()_+.-]"),
-        "Must contain one special character ( !@#$%^&*()_+.- )."
-      ),
-    re_new_password: z.string().nonempty("Requerido"),
-  })
-  .refine(
-    ({ new_password, re_new_password }) => new_password === re_new_password,
-    {
-      message: "Passwords dont match",
-      path: ["confirmPassword"],
-    }
-  );
+import { useTranslation } from "react-i18next";
 
 const PasswordChangeForm = () => {
-  useDocumentTitle("Registracion | MCEC");
+  const { t } = useTranslation("members");
+
+  const passwordSchema = z
+    .object({
+      current_password: z
+        .string()
+        .nonempty(t("validation:required"))
+        .max(32, t("validation:max", { value: 32 })),
+      new_password: z
+        .string()
+        .min(8, t("validation:min", { value: 8 }))
+        .max(32, t("validation:max", { value: 32 }))
+        .regex(RegExp("[a-z]"), t("validation:password_low"))
+        .regex(RegExp("[A-Z]"), t("validation:password_up"))
+        .regex(RegExp("[0-9]"), t("validation:password_num"))
+        .regex(RegExp("[!@#$%^&*()_+.-]"), t("validation:password_esp")),
+      re_new_password: z.string().nonempty(t("validation:required")),
+    })
+    .refine(
+      ({ new_password, re_new_password }) => new_password === re_new_password,
+      {
+        path: ["re_new_password"],
+        message: t("validation:password_mat"),
+      }
+    );
+
   const toast = useToast();
   const {
     handleSubmit,
@@ -67,8 +68,8 @@ const PasswordChangeForm = () => {
     setPassword(setPasswordData, {
       onSuccess: () => {
         toast({
-          title: "Success",
-          description: "Password Changed",
+          title: t("common:label.success"),
+          description: t("set_password.success"),
           status: "success",
           position: "top",
           duration: 9000,
@@ -77,8 +78,8 @@ const PasswordChangeForm = () => {
       },
       onError: () => {
         toast({
-          title: "Error",
-          description: "Update Failed",
+          title: t("common:label.error"),
+          description: t("set_password.error"),
           status: "error",
           position: "top",
           duration: 9000,
@@ -97,14 +98,14 @@ const PasswordChangeForm = () => {
       maxWidth={600}
       mx={"auto"}
       as="form"
-      onSubmit={handleSubmit((data) => onSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <FormControl
         isInvalid={errors.current_password !== undefined}
         isDisabled={!edit}
       >
         <FormLabel htmlFor="current-password" fontWeight={"normal"}>
-          Current Password
+          {t("set_password.current_password")}
         </FormLabel>
         <InputGroup>
           <Input
@@ -130,7 +131,7 @@ const PasswordChangeForm = () => {
         isDisabled={!edit}
       >
         <FormLabel htmlFor="new-password" fontWeight={"normal"}>
-          New Password
+          {t("set_password.new_password")}
         </FormLabel>
         <InputGroup>
           <Input
@@ -144,7 +145,7 @@ const PasswordChangeForm = () => {
           />
           <InputRightElement width="4.5rem">
             <Button onClick={handleClick} isDisabled={!edit}>
-              {show ? "Hide" : "Show"}
+              {show ? t("common:button.hide") : t("common:button.show")}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -156,7 +157,7 @@ const PasswordChangeForm = () => {
         isDisabled={!edit}
       >
         <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
-          Confirm New Password
+          {t("set_password.re_new_password")}
         </FormLabel>
         <InputGroup>
           <Input
@@ -170,7 +171,7 @@ const PasswordChangeForm = () => {
           />
           <InputRightElement width="4.5rem">
             <Button onClick={handleClick} isDisabled={!edit}>
-              {show ? "Hide" : "Show"}
+              {show ? t("common:button.hide") : t("common:button.show")}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -185,7 +186,7 @@ const PasswordChangeForm = () => {
           tabIndex={4}
           onClick={() => setEdit(true)}
         >
-          Editar
+          {t("common:button.edit")}
         </Button>
       ) : (
         <ButtonGroup spacing={5}>
@@ -196,7 +197,7 @@ const PasswordChangeForm = () => {
             variant="solid"
             tabIndex={4}
           >
-            Guardar
+            {t("common:button.save")}
           </Button>
           <Button
             w="7rem"
@@ -209,7 +210,7 @@ const PasswordChangeForm = () => {
               reset();
             }}
           >
-            Cancelar
+            {t("common:button.cancel")}
           </Button>
         </ButtonGroup>
       )}

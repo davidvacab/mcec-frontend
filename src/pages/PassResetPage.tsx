@@ -17,32 +17,35 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { cardStyles, inputStyles } from "../theme/theme";
 import useResetPassword from "../hooks/useResetPassword";
+import { zodI18nMap } from "zod-i18n-map";
+import { useTranslation } from "react-i18next";
 
-const schema = z.object({
-  email: z.string().email("Correo invalido"),
-});
-
-type FormData = z.infer<typeof schema>;
+z.setErrorMap(zodI18nMap);
 
 const PassResetPage = () => {
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("common:page.password_reset")} | MCEC`);
+  const schema = z.object({
+    email: z.string().email(),
+  });
+  type emailData = z.infer<typeof schema>;
   const toast = useToast();
   const navigate = useNavigate();
-  useDocumentTitle("Password Reset | MCEC");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<emailData>({
     resolver: zodResolver(schema),
   });
   const { mutate: requestReset, isLoading, error } = useResetPassword();
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: emailData) => {
     requestReset(data.email, {
       onSettled: () => {
         toast({
-          title: "Request sent",
-          description: "You will recieve an email shortly if an account exists",
+          title: t("common:label.success"),
+          description: t("password_reset.request_des"),
           status: "info",
           position: "top",
           duration: 9000,
@@ -71,22 +74,22 @@ const PassResetPage = () => {
         maxW={"lg"}
         w={"100%"}
         p={{ base: 3, md: 10 }}
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit(onSubmit)}
         {...cardStyles}
       >
-        <Heading>Password Reset</Heading>
-        <FormControl id="username" isInvalid={errors.email !== undefined}>
-          <FormLabel>Email</FormLabel>
+        <Heading>{t("password_reset.heading")}</Heading>
+        <FormControl isInvalid={errors.email !== undefined}>
+          <FormLabel htmlFor="email">{t("member.email")}</FormLabel>
           <Input
-            id="username"
+            id="email"
             {...register("email")}
             {...inputStyles}
-            autoComplete="username"
+            autoComplete="email"
           />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
         <Button type="submit" w="10rem" colorScheme="gold">
-          Request
+          {t("common:button.submit")}
         </Button>
       </VStack>
     </Flex>

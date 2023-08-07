@@ -14,23 +14,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import CountryNames, { CountryNameList } from "../entities/CountryNames";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 import { inputStyles, selectStyles } from "../theme/theme";
 import useChurch, { useChurchUpdate } from "../hooks/useChurch";
 import { useQueryClient } from "@tanstack/react-query";
 import Church from "../entities/Church";
 import { z } from "zod";
-
-export const churchSchema = z.object({
-  minister_name: z.string().nonempty("Requerido"),
-  church_name: z.string().nonempty("Requerido"),
-  city: z.string().nonempty("Requerido"),
-  state: z.string().nonempty("Requerido"),
-  country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
-});
+import { useTranslation } from "react-i18next";
 
 const ChurchForm = () => {
-  useDocumentTitle("Registracion | MCEC");
+  const { t } = useTranslation("members");
+  const churchSchema = z.object({
+    minister_name: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    church_name: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    city: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    state: z
+      .string()
+      .nonempty(t("validation:required"))
+      .max(50, t("validation:max", { value: 50 })),
+    country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
+  });
   const toast = useToast();
   const [edit, setEdit] = useState(false);
   const { data: church, isLoading: getLoading, error: getError } = useChurch();
@@ -56,8 +67,8 @@ const ChurchForm = () => {
         queryClient.setQueryData(["church"], response.data);
         reset(response.data, { keepErrors: false, keepDefaultValues: false });
         toast({
-          title: "Success",
-          description: "Update Successful",
+          title: t("common:label.success"),
+          description: t("member.update_success"),
           status: "success",
           position: "top",
           duration: 9000,
@@ -67,8 +78,8 @@ const ChurchForm = () => {
       onError: () => {
         reset(church, { keepErrors: false });
         toast({
-          title: "Error",
-          description: "Update Failed",
+          title: t("common:label.error"),
+          description: t("member.update_failed"),
           status: "error",
           position: "top",
           duration: 9000,
@@ -83,13 +94,13 @@ const ChurchForm = () => {
       spacing={5}
       w={"100%"}
       as={"form"}
-      onSubmit={handleSubmit((data) => onSubmit(data))}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <FormControl
         isInvalid={errors.minister_name !== undefined}
         isDisabled={!edit}
       >
-        <FormLabel htmlFor="minister">Ministro</FormLabel>
+        <FormLabel htmlFor="minister">{t("member.minister_name")}</FormLabel>
         <Input
           type="text"
           id="minister"
@@ -107,7 +118,7 @@ const ChurchForm = () => {
         isInvalid={errors.church_name !== undefined}
         isDisabled={!edit}
       >
-        <FormLabel htmlFor="church-name">Nombre de Iglesia</FormLabel>
+        <FormLabel htmlFor="church-name">{t("member.church_name")}</FormLabel>
         <Input
           type="text"
           id="church-name"
@@ -120,7 +131,7 @@ const ChurchForm = () => {
       </FormControl>
 
       <FormControl isInvalid={errors.city !== undefined} isDisabled={!edit}>
-        <FormLabel htmlFor="city">Ciudad</FormLabel>
+        <FormLabel htmlFor="city">{t("member.city")}</FormLabel>
         <Input
           type="text"
           id="city"
@@ -133,7 +144,7 @@ const ChurchForm = () => {
       </FormControl>
 
       <FormControl isInvalid={errors.state !== undefined} isDisabled={!edit}>
-        <FormLabel htmlFor="state">State / Province</FormLabel>
+        <FormLabel htmlFor="state">{t("member.state")}</FormLabel>
         <Input
           type="text"
           id="state"
@@ -146,7 +157,7 @@ const ChurchForm = () => {
       </FormControl>
 
       <FormControl isDisabled={!edit}>
-        <FormLabel htmlFor="country">Country / Region</FormLabel>
+        <FormLabel htmlFor="country">{t("member.country")}</FormLabel>
         <Select
           id="country"
           autoComplete="country"
@@ -170,7 +181,7 @@ const ChurchForm = () => {
           tabIndex={4}
           onClick={() => setEdit(true)}
         >
-          Editar
+          {t("common:button.edit")}
         </Button>
       ) : (
         <ButtonGroup spacing={5}>
@@ -181,7 +192,7 @@ const ChurchForm = () => {
             variant="solid"
             tabIndex={4}
           >
-            Guardar
+            {t("common:button.save")}
           </Button>
           <Button
             w="7rem"
@@ -193,7 +204,7 @@ const ChurchForm = () => {
               reset(church, { keepErrors: false });
             }}
           >
-            Cancelar
+            {t("common:button.cancel")}
           </Button>
         </ButtonGroup>
       )}

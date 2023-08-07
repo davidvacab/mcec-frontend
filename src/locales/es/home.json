@@ -1,0 +1,17 @@
+{
+  "label": {
+    "hymnbook": "Repertorio",
+    "signup": "Registrarse",
+    "orfeon": "Orfeones"
+  },
+  "navmenu": {
+    "problem": "Reportar un problema",
+    "logout": "Cerrar Sesión",
+    "logout_des": "Sesión terminada"
+  },
+  "footer": {
+    "about_us": "Acerca de",
+    "contact_us": "Contactanos",
+    "rights": "Todos los derechos reservados."
+  }
+}

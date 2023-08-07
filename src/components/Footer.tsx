@@ -10,6 +10,7 @@ import {
 import { FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Logo = (props: any) => {
   return (
@@ -69,6 +70,7 @@ const SocialButton = ({
 };
 
 const Footer = () => {
+  const { t } = useTranslation("home");
   return (
     <Box>
       <Container
@@ -82,13 +84,13 @@ const Footer = () => {
         <Logo />
         <Stack direction={"row"} spacing={6}>
           <Link to={"/hymns"}>
-            <Button variant={"link"}>Repertorio</Button>
+            <Button variant={"link"}>{t("label.hymnbook")}</Button>
           </Link>
           <Link to={"#"}>
-            <Button variant={"link"}>Acerca de</Button>
+            <Button variant={"link"}>{t("footer.about_us")}</Button>
           </Link>
           <Link to={"#"}>
-            <Button variant={"link"}>Contactanos</Button>
+            <Button variant={"link"}>{t("footer.contact_us")}</Button>
           </Link>
         </Stack>
       </Container>
@@ -103,7 +105,9 @@ const Footer = () => {
           justify={{ base: "center", md: "space-between" }}
           align={{ base: "center", md: "center" }}
         >
-          <Text>© 2023 Orfeones MCEC. All rights reserved</Text>
+          <Text>
+            © 2023 {t("label.orfeon")} MCEC. {t("footer.rights")}
+          </Text>
           <Stack direction={"row"} spacing={6}>
             <SocialButton
               label={"Facebook"}

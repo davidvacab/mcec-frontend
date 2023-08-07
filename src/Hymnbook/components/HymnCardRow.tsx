@@ -19,16 +19,16 @@ import { RiFileMusicFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import HymnListItem from "../entities/HymnListItem";
 import { cardStyles } from "../../theme/theme";
-import useTopics from "../hooks/useTopics";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   hymn: HymnListItem;
 }
 
 const HymnCardRow = ({ hymn }: Props) => {
+  const { t } = useTranslation("hymnbook");
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
-  const topics = useTopics(hymn.topics);
 
   return (
     <Link to={"/hymns/" + hymn.slug}>
@@ -63,11 +63,11 @@ const HymnCardRow = ({ hymn }: Props) => {
                   fontWeight={"extrabold"}
                   textTransform="uppercase"
                 >
-                  {topics.length > 1 ? "Temas:" : "Tema:"}
+                  {t("topic", { count: hymn.topics.length })}
                 </Text>
-                {topics.map((topic) => (
-                  <Text pt="1" fontSize="md" key={topic?.code}>
-                    {topic?.title}
+                {hymn.topics.map((topic) => (
+                  <Text pt="1" fontSize="md" key={topic}>
+                    {t(`topic.${topic}`)}
                   </Text>
                 ))}
               </VStack>

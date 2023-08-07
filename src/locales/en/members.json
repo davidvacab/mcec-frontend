@@ -1,0 +1,76 @@
+{
+  "login": {
+    "forgot-password": "Forgot your password?",
+    "need-account": "Need an account?",
+    "signup": "Sign up",
+    "inv_cred": "Invalid credentials"
+  },
+  "set_password": {
+    "success": "Password changed",
+    "error": "Password change failed",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "re_new_password": "Confirm new password"
+  },
+  "password_reset": {
+    "heading": "Password reset request",
+    "request_des": "You will recieve an email shortly if an account exists"
+  },
+  "acccount_activation": {
+    "title": "Activation",
+    "des": "Activation Successful please go to the home page"
+  },
+  "await_activation": {
+    "title": "Email sent",
+    "des": "An email was send with an activation link",
+    "button": "Resend Email"
+  },
+  "member": {
+    "account": "Account",
+    "local": "Local",
+    "church": "Church",
+    "personal": "Personal",
+    "user": "User",
+    "account_success": "Account created",
+    "account_error": "Something went wrong",
+    "update_failed": "Update failed",
+    "update_success": "Update success",
+    "register": "Sign up",
+    "email_des": "We'll never share your email",
+    "username": "Username",
+    "password": "Password",
+    "re_password": "Confirm password",
+    "email": "Email",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "birthdate": "Birthdate",
+    "phone": "Phone number",
+    "voice": "Voice type",
+    "role": "Role in choir",
+    "picture": "Profile picture",
+    "bio": "Bio",
+    "minister_name": "Name of minister",
+    "church_name": "Local church",
+    "city": "City",
+    "state": "State / Province",
+    "country": "Country",
+    "email_used": "Email already in use",
+    "username_used": "Username already in use"
+  },
+  "member_voice": {
+    "S1": "Soprano 1",
+    "S2": "Soprano 2",
+    "A1": "Alto 1",
+    "A2": "Alto 2",
+    "T1": "Tenor 1",
+    "T2": "Tenor 2",
+    "B1": "Bass 1",
+    "B2": "Bass 2"
+  },
+  "member_role": {
+    "CM": "Choir member",
+    "LD": "Local director",
+    "SD": "State director",
+    "NM": "Non choir member"
+  }
+}

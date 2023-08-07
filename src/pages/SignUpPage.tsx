@@ -35,82 +35,31 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CountryNames, { CountryNameList } from "../entities/CountryNames";
 import MemberRoles, { MemberRoleList } from "../entities/MemberRoles";
-import MemberVoiceTypes, { MemberVoiceTypeList } from "../entities/MemberVoiceTypes";
-import CountryPhoneCodes, { CountryPhoneCodeList } from "../entities/CountryPhoneCodes";
+import MemberVoiceTypes, {
+  MemberVoiceTypeList,
+} from "../entities/MemberVoiceTypes";
+import CountryPhoneCodes, {
+  CountryPhoneCodeList,
+} from "../entities/CountryPhoneCodes";
 import { useNavigate } from "react-router-dom";
 import useMainStore from "../store";
 import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
 import useSignUp from "../hooks/useSignUp";
 import { AxiosError } from "axios";
 import UserSignUp from "../entities/UserSignUp";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
+import { zodI18nMap } from "zod-i18n-map";
 
-const signUpSchema = z
-  .object({
-    first_name: z.string().nonempty("Requerido").max(50),
-    last_name: z.string().nonempty("Requerido").max(50),
-    username: z
-      .string()
-      .nonempty("Requerido")
-      .min(8, "Debe ser al menos 8 letras")
-      .max(32, "Maximo 32 letras")
-      .regex(RegExp("^[a-z0-9]*$"), "Solo letras minusculas y numeros"),
-    email: z.string().email("Correo invalido"),
-    password: z
-      .string()
-      .min(8, "Debe ser al menos 8 caracteres")
-      .max(32, "Maximo 32 caracteres")
-      .regex(RegExp("[a-z]"), "Must contain one lowercase letter.")
-      .regex(RegExp("[A-Z]"), "Must contain one uppercase letter.")
-      .regex(RegExp("[0-9]"), "Must contain one number.")
-      .regex(
-        RegExp("[!@#$%^&*()_+.-]"),
-        "Must contain one special character ( !@#$%^&*()_+.- )."
-      ),
-    re_password: z.string().nonempty("Requerido"),
-    birthdate: z.string().nonempty("Requerido"),
-    phone_area_code: z.enum([
-      CountryPhoneCodes[0],
-      ...CountryPhoneCodes.slice(0),
-    ]),
-    phone_number: z
-      .string()
-      .min(6, "Debe ser al menos 8 numeros")
-      .regex(RegExp("[0-9]{8,10}"), "Numero Invalido"),
-    voice_type: z.enum([
-      MemberVoiceTypes[0],
-      ...MemberVoiceTypes.slice(0),
-    ]),
-    role: z.enum([
-      MemberRoles[0],
-      ...MemberRoles.slice(0),
-    ]),
-    minister_name: z.string().nonempty("Requerido"),
-    church_name: z.string().nonempty("Requerido"),
-    city: z.string().nonempty("Requerido"),
-    state: z.string().nonempty("Requerido"),
-    country: z.enum([
-      CountryNames[0],
-      ...CountryNames.slice(0),
-    ]),
-  })
-  .partial()
-  .refine(({ password, re_password }) => password === re_password, {
-    message: "Passwords dont match",
-    path: ["confirmPassword"],
-  });
+z.setErrorMap(zodI18nMap);
 
 interface FormProps {
   register: UseFormRegister<UserSignUp>;
   errors: FieldErrors<UserSignUp>;
+  t: TFunction;
 }
 
-const steps = [
-  { title: "Perfil", description: "Personal" },
-  { title: "Iglesia", description: "Local" },
-  { title: "Usuario", description: "Cuenta" },
-];
-
-const AccountForm = ({ register, errors }: FormProps) => {
+const AccountForm = ({ register, errors, t }: FormProps) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
@@ -118,13 +67,12 @@ const AccountForm = ({ register, errors }: FormProps) => {
     <VStack spacing={5} width={"100%"}>
       <FormControl isInvalid={errors.username !== undefined}>
         <FormLabel htmlFor="username" fontWeight={"normal"}>
-          Usuario
+          {t("member.username")}
         </FormLabel>
         <Input
           {...register("username")}
           {...inputStyles}
           id="username"
-          placeholder="Usuario"
           autoComplete="username"
           tabIndex={1}
         />
@@ -133,24 +81,23 @@ const AccountForm = ({ register, errors }: FormProps) => {
 
       <FormControl isInvalid={errors.email !== undefined}>
         <FormLabel htmlFor="email" fontWeight={"normal"}>
-          Email address
+          {t("member.email")}
         </FormLabel>
         <Input
           {...register("email")}
           {...inputStyles}
           id="email"
           type="email"
-          placeholder="Correo"
           autoComplete="email"
           tabIndex={2}
         />
-        <FormHelperText>We'll never share your email.</FormHelperText>
+        <FormHelperText>{t("member.email_des")}</FormHelperText>
         <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.password !== undefined}>
         <FormLabel htmlFor="password" fontWeight={"normal"}>
-          Password
+          {t("member.password")}
         </FormLabel>
         <InputGroup>
           <Input
@@ -158,33 +105,35 @@ const AccountForm = ({ register, errors }: FormProps) => {
             {...inputStyles}
             id="password"
             type={show ? "text" : "password"}
-            placeholder="Enter password"
             autoComplete="new-password"
             tabIndex={3}
           />
           <InputRightElement width="4.5rem">
-            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+            <Button onClick={handleClick}>
+              {show ? t("common:button.hide") : t("common:button.show")}
+            </Button>
           </InputRightElement>
         </InputGroup>
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.re_password !== undefined}>
-        <FormLabel htmlFor="confirm-password" fontWeight={"normal"}>
-          Confirm Password
+        <FormLabel htmlFor="re_password" fontWeight={"normal"}>
+          {t("member.re_password")}
         </FormLabel>
         <InputGroup>
           <Input
             {...register("re_password")}
             {...inputStyles}
-            id="confirm-password"
+            id="re_password"
             type={show ? "text" : "password"}
-            placeholder="Confirm password"
             autoComplete="new-password"
             tabIndex={4}
           />
           <InputRightElement width="4.5rem">
-            <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+            <Button onClick={handleClick}>
+              {show ? t("common:button.hide") : t("common:button.show")}
+            </Button>
           </InputRightElement>
         </InputGroup>
         <FormErrorMessage>{errors.re_password?.message}</FormErrorMessage>
@@ -193,44 +142,46 @@ const AccountForm = ({ register, errors }: FormProps) => {
   );
 };
 
-const ProfileForm = ({ register, errors }: FormProps) => {
+const ProfileForm = ({ register, errors, t }: FormProps) => {
   return (
     <VStack spacing={5} w={"100%"}>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"} spacing={5}>
         <FormControl isInvalid={errors.profile?.first_name !== undefined}>
           <FormLabel htmlFor="first-name" fontWeight={"normal"}>
-            Nombre
+            {t("member.first_name")}
           </FormLabel>
           <Input
             {...register("profile.first_name")}
             {...inputStyles}
             id="first-name"
-            placeholder="First name"
             autoComplete="given-name"
             tabIndex={1}
           />
-          <FormErrorMessage>{errors.profile?.first_name?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            {errors.profile?.first_name?.message}
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={errors.profile?.last_name !== undefined}>
           <FormLabel htmlFor="last-name" fontWeight={"normal"}>
-            Apellido(s)
+            {t("member.last_name")}
           </FormLabel>
           <Input
             {...register("profile.last_name")}
             {...inputStyles}
             id="last-name"
-            placeholder="Last name"
             autoComplete="family-name"
             tabIndex={2}
           />
-          <FormErrorMessage>{errors.profile?.last_name?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            {errors.profile?.last_name?.message}
+          </FormErrorMessage>
         </FormControl>
       </Stack>
       <Stack direction={{ base: "column", md: "row" }} w={"100%"}>
         <FormControl isInvalid={errors.profile?.birthdate !== undefined}>
           <FormLabel htmlFor="birthdate" fontWeight={"normal"}>
-            Birthdate
+            {t("member.birthdate")}
           </FormLabel>
           <Input
             {...register("profile.birthdate")}
@@ -245,12 +196,14 @@ const ProfileForm = ({ register, errors }: FormProps) => {
             }}
             tabIndex={3}
           />
-          <FormErrorMessage>{errors.profile?.birthdate?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            {errors.profile?.birthdate?.message}
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={errors.profile?.phone_number !== undefined}>
           <FormLabel htmlFor="phone" fontWeight={"normal"}>
-            Phone
+            {t("member.phone")}
           </FormLabel>
           <InputGroup>
             <InputLeftAddon p={0}>
@@ -260,9 +213,10 @@ const ProfileForm = ({ register, errors }: FormProps) => {
                 id="country-code"
                 autoComplete="on"
                 tabIndex={4}
+                defaultValue="MX"
               >
                 {CountryPhoneCodeList.map((code) => (
-                  <option key={code.code} value={code.dial_code}>
+                  <option key={code.code} value={code.code}>
                     {code.dial_code}
                   </option>
                 ))}
@@ -279,14 +233,17 @@ const ProfileForm = ({ register, errors }: FormProps) => {
               tabIndex={5}
             />
           </InputGroup>
-          <FormErrorMessage>{errors.profile?.phone_number?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            {errors.profile?.phone_number?.message}
+            {errors.profile?.phone_area_code?.message}
+          </FormErrorMessage>
         </FormControl>
       </Stack>
 
       <Stack direction={{ base: "column", md: "row" }} w={"100%"}>
-        <FormControl>
+        <FormControl isInvalid={errors.profile?.voice_type !== undefined}>
           <FormLabel htmlFor="voice" fontWeight={"normal"}>
-            Voice
+            {t("member.voice")}
           </FormLabel>
           <Select
             id="voice"
@@ -297,15 +254,18 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           >
             {MemberVoiceTypeList.map((voice) => (
               <option key={voice.key} value={voice.key}>
-                {voice.value}
+                {t(`member_voice.${voice.key}`)}
               </option>
             ))}
           </Select>
+          <FormErrorMessage>
+            {errors.profile?.voice_type?.message}
+          </FormErrorMessage>
         </FormControl>
 
-        <FormControl>
+        <FormControl isInvalid={errors.profile?.role !== undefined}>
           <FormLabel htmlFor="role" fontWeight={"normal"}>
-            Role
+            {t("member.role")}
           </FormLabel>
           <Select
             id="role"
@@ -316,21 +276,22 @@ const ProfileForm = ({ register, errors }: FormProps) => {
           >
             {MemberRoleList.map((role) => (
               <option key={role.key} value={role.key}>
-                {role.value}
+                {t(`member_role.${role.key}`)}
               </option>
             ))}
           </Select>
+          <FormErrorMessage>{errors.profile?.role?.message}</FormErrorMessage>
         </FormControl>
       </Stack>
     </VStack>
   );
 };
 
-const ChurchForm = ({ register, errors }: FormProps) => {
+const ChurchForm = ({ register, errors, t }: FormProps) => {
   return (
     <VStack spacing={5} w={"100%"}>
       <FormControl isInvalid={errors.church?.minister_name !== undefined}>
-        <FormLabel htmlFor="minister">Ministro</FormLabel>
+        <FormLabel htmlFor="minister">{t("member.minister_name")}</FormLabel>
         <Input
           type="text"
           id="minister"
@@ -339,11 +300,13 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           {...inputStyles}
           tabIndex={1}
         />
-        <FormErrorMessage>{errors.church?.minister_name?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          {errors.church?.minister_name?.message}
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.church?.church_name !== undefined}>
-        <FormLabel htmlFor="church-name">Nombre de Iglesia</FormLabel>
+        <FormLabel htmlFor="church-name">{t("member.church_name")}</FormLabel>
         <Input
           type="text"
           id="church-name"
@@ -352,11 +315,13 @@ const ChurchForm = ({ register, errors }: FormProps) => {
           {...inputStyles}
           tabIndex={2}
         />
-        <FormErrorMessage>{errors.church?.church_name?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          {errors.church?.church_name?.message}
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.church?.city !== undefined}>
-        <FormLabel htmlFor="city">Ciudad</FormLabel>
+        <FormLabel htmlFor="city">{t("member.city")}</FormLabel>
         <Input
           type="text"
           id="city"
@@ -369,7 +334,7 @@ const ChurchForm = ({ register, errors }: FormProps) => {
       </FormControl>
 
       <FormControl isInvalid={errors.church?.state !== undefined}>
-        <FormLabel htmlFor="state">State / Province</FormLabel>
+        <FormLabel htmlFor="state">{t("member.state")}</FormLabel>
         <Input
           type="text"
           id="state"
@@ -381,14 +346,15 @@ const ChurchForm = ({ register, errors }: FormProps) => {
         <FormErrorMessage>{errors.church?.state?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl>
-        <FormLabel htmlFor="country">Country / Region</FormLabel>
+      <FormControl isInvalid={errors.church?.country !== undefined}>
+        <FormLabel htmlFor="country">{t("member.country")}</FormLabel>
         <Select
           id="country"
           autoComplete="country"
           {...register("church.country")}
           {...selectStyles}
           tabIndex={5}
+          defaultValue="mx"
         >
           {CountryNameList.map((country) => (
             <option key={country.alpha3} value={country.alpha2}>
@@ -396,13 +362,79 @@ const ChurchForm = ({ register, errors }: FormProps) => {
             </option>
           ))}
         </Select>
+        <FormErrorMessage>{errors.church?.country?.message}</FormErrorMessage>
       </FormControl>
     </VStack>
   );
 };
 
 const SignUpPage = () => {
-  useDocumentTitle("Registracion | MCEC");
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("common:label.signup")} | MCEC`);
+  const signUpSchema = z
+    .object({
+      profile: z.object({
+        first_name: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        last_name: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        birthdate: z.string().nonempty(t("validation:required")),
+        phone_area_code: z.enum([
+          CountryPhoneCodes[0],
+          ...CountryPhoneCodes.slice(0),
+        ]),
+        phone_number: z
+          .string()
+          .min(6, t("validation:min", { value: 6 }))
+          .max(20, t("validation:max", { value: 20 }))
+          .regex(RegExp("[0-9]{8,10}"), t("validation:phone")),
+        voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
+        role: z.enum([MemberRoles[0], ...MemberRoles.slice(0)]),
+      }),
+      church: z.object({
+        minister_name: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        church_name: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        city: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        state: z
+          .string()
+          .nonempty(t("validation:required"))
+          .max(50, t("validation:max", { value: 50 })),
+        country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
+      }),
+      username: z
+        .string()
+        .min(8, t("validation:min", { value: 8 }))
+        .max(32, t("validation:max", { value: 32 }))
+        .regex(RegExp("^[a-z0-9]*$"), t("validation:username")),
+      email: z.string().email(),
+      password: z
+        .string()
+        .min(8, t("validation:min", { value: 8 }))
+        .max(32, t("validation:max", { value: 32 }))
+        .regex(RegExp("[a-z]"), t("validation:password_low"))
+        .regex(RegExp("[A-Z]"), t("validation:password_up"))
+        .regex(RegExp("[0-9]"), t("validation:password_num"))
+        .regex(RegExp("[!@#$%^&*()_+.-]"), t("validation:password_esp")),
+      re_password: z.string().nonempty(t("validation:required")),
+    })
+    .partial()
+    .refine((data) => data.password === data.re_password, {
+      path: ["re_password"],
+      message: t("validation:password_mat"),
+    });
   const setRegistrationEmail = useMainStore((s) => s.setRegistrationEmail);
   const toast = useToast();
   const {
@@ -416,17 +448,24 @@ const SignUpPage = () => {
   });
   const { activeStep, setActiveStep } = useSteps({
     index: 1,
-    count: steps.length,
+    count: 3,
   });
+
   const navigate = useNavigate();
-  const { mutate: registrate, isLoading } = useSignUp();
+  const { mutate: singUp, isLoading } = useSignUp();
+
+  const steps = [
+    { title: t("common:label.profile"), description: t("member.personal") },
+    { title: t("member.church"), description: t("member.local") },
+    { title: t("member.user"), description: t("member.account") },
+  ];
 
   const onSubmit = (userData: UserSignUp) => {
-    registrate(userData, {
+    singUp(userData, {
       onSuccess: (response) => {
         toast({
-          title: "Suceess",
-          description: "Account Created",
+          title: t("common:label.success"),
+          description: t("member.account_success"),
           status: "success",
           position: "top",
           duration: 9000,
@@ -441,17 +480,24 @@ const SignUpPage = () => {
             if (error.response.data.email)
               setError(
                 "email",
-                { type: "value", message: "Email already in use" },
+                { type: "value", message: t("member.email_used") },
                 { shouldFocus: true }
               );
             if (error.response.data.username)
               setError(
                 "username",
-                { type: "value", message: "Username already in use" },
+                { type: "value", message: t("member.username_used") },
                 { shouldFocus: true }
               );
           } else {
-            console.log(error.response);
+            toast({
+              title: t("common:label.error"),
+              description: t("member.account_error"),
+              status: "error",
+              position: "top",
+              duration: 9000,
+              isClosable: true,
+            });
           }
         }
       },
@@ -461,16 +507,36 @@ const SignUpPage = () => {
   const onNext = async () => {
     if (
       activeStep === 1 &&
-      (await trigger(["profile.first_name", "profile.last_name", "profile.birthdate", "profile.phone_number"], {
-        shouldFocus: true,
-      }))
+      (await trigger(
+        [
+          "profile.first_name",
+          "profile.last_name",
+          "profile.birthdate",
+          "profile.phone_area_code",
+          "profile.phone_number",
+          "profile.voice_type",
+          "profile.role",
+        ],
+        {
+          shouldFocus: true,
+        }
+      ))
     ) {
       setActiveStep(2);
     } else if (
       activeStep === 2 &&
-      (await trigger(["church.minister_name", "church.church_name", "church.city", "church.state"], {
-        shouldFocus: true,
-      }))
+      (await trigger(
+        [
+          "church.minister_name",
+          "church.church_name",
+          "church.city",
+          "church.state",
+          "church.country",
+        ],
+        {
+          shouldFocus: true,
+        }
+      ))
     ) {
       setActiveStep(3);
     }
@@ -492,10 +558,10 @@ const SignUpPage = () => {
         w={"100%"}
         p={6}
         as="form"
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit(onSubmit)}
         {...cardStyles}
       >
-        <Heading>Registracion</Heading>
+        <Heading>{t("common:label.signup")}</Heading>
         <Stepper index={activeStep} width={"100%"} colorScheme="navy">
           {steps.map((step, index) => (
             <Step key={index}>
@@ -517,11 +583,11 @@ const SignUpPage = () => {
           ))}
         </Stepper>
         {activeStep === 1 ? (
-          <ProfileForm register={register} errors={errors} />
+          <ProfileForm register={register} errors={errors} t={t} />
         ) : activeStep === 2 ? (
-          <ChurchForm register={register} errors={errors} />
+          <ChurchForm register={register} errors={errors} t={t} />
         ) : (
-          <AccountForm register={register} errors={errors} />
+          <AccountForm register={register} errors={errors} t={t} />
         )}
         <ButtonGroup w="100%" mt={5} spacing={5}>
           <Button
@@ -533,7 +599,7 @@ const SignUpPage = () => {
             variant="solid"
             w="7rem"
           >
-            Back
+            {t("common:button.back")}
           </Button>
           <Button
             w="7rem"
@@ -543,17 +609,11 @@ const SignUpPage = () => {
             variant="outline"
             tabIndex={8}
           >
-            Next
+            {t("common:button.next")}
           </Button>
           {activeStep === 3 ? (
-            <Button
-              type="submit"
-              w="7rem"
-              colorScheme="gold"
-              variant="solid"
-              tabIndex={9}
-            >
-              Submit
+            <Button type="submit" w="7rem" colorScheme="gold" variant="solid">
+              {t("register")}
             </Button>
           ) : null}
         </ButtonGroup>

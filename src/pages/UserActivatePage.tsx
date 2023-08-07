@@ -2,8 +2,12 @@ import { useParams } from "react-router-dom";
 import Info from "../components/Info";
 import useUserActivate from "../hooks/useUserActivate";
 import { Spinner } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const UserActivatePage = () => {
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("common:page.activate")} | MCEC`);
   const { uid, token } = useParams();
   const { mutate: activate, error, isLoading } = useUserActivate();
 
@@ -15,8 +19,8 @@ const UserActivatePage = () => {
 
   return (
     <Info
-      title="Activation"
-      description="Activation Successful please go to the dashboard to login"
+      title={t("account_activation.title")}
+      description={t("account_activation.des")}
     />
   );
 };

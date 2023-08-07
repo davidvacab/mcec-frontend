@@ -19,6 +19,8 @@ import { cardStyles, tabStyles } from "../theme/theme";
 import PasswordChangeForm from "../components/PasswordChangeForm";
 import ProfileForm from "../components/ProfileForm";
 import ChurchForm from "../components/ChurchForm";
+import { useTranslation } from "react-i18next";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const ProfileFormTemplate = () => {
   return (
@@ -94,14 +96,15 @@ const ProfileFormTemplate = () => {
   );
 };
 
-const tabs = [
-  { title: "Cuenta", form: ProfileFormTemplate },
-  { title: "Contrasena", form: PasswordChangeForm },
-  { title: "Perfil", form: ProfileForm },
-  { title: "Iglesia", form: ChurchForm },
-];
-
 const ProfilePage = () => {
+  const { t } = useTranslation("members");
+  useDocumentTitle(`${t("page.account")} | MCEC`);
+  const tabs = [
+    { title: t("member.account"), form: ProfileFormTemplate },
+    { title: t("member.password"), form: PasswordChangeForm },
+    { title: t("common:label.profile"), form: ProfileForm },
+    { title: t("member.church"), form: ChurchForm },
+  ];
   return (
     <Box minH={"calc(100vh - 20)"} p={5}>
       <Tabs

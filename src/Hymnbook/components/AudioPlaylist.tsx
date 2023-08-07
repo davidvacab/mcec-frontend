@@ -4,8 +4,8 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import NavItem from "../../components/NavItem";
 import Audio from "../entities/Audio";
-import { AudioVoiceTypeList } from "../entities/AudioVoiceTypes";
 import { cardStyles } from "../../theme/theme";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   audios: Audio[];
@@ -13,6 +13,7 @@ interface Props {
 
 const AudioPlaylist = ({ audios }: Props) => {
   const [currentTrack, setTrackIndex] = useState(0);
+  const { t } = useTranslation("hymnbook");
 
   const handleClickNext = () => {
     setTrackIndex((currentTrack) =>
@@ -70,11 +71,7 @@ const AudioPlaylist = ({ audios }: Props) => {
         <AudioPlayer
           header={
             <Heading size={"md"} textAlign={"center"} my={1}>
-              {
-                AudioVoiceTypeList.find(
-                  ({ key }) => key === audios[currentTrack].voice_type
-                )?.value
-              }
+              {t(`audio_voice.${audios[currentTrack].voice_type}`)}
             </Heading>
           }
           src={decodeURI(audios[currentTrack].audio_file)}
@@ -97,10 +94,7 @@ const AudioPlaylist = ({ audios }: Props) => {
                 )
               }
             >
-              {
-                AudioVoiceTypeList.find(({ key }) => key === audio.voice_type)
-                  ?.value
-              }
+              {t(`audio_voice.${audio.voice_type}`)}
             </NavItem>
           ))}
         </VStack>

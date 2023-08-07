@@ -1,15 +1,5 @@
 export const CountryPhoneCodeList = [
   {
-    name: "Mexico",
-    dial_code: "+52",
-    code: "MX",
-  },
-  {
-    name: "United States",
-    dial_code: "+1",
-    code: "US",
-  },
-  {
     name: "Afghanistan",
     dial_code: "+93",
     code: "AF",
@@ -699,7 +689,11 @@ export const CountryPhoneCodeList = [
     dial_code: "+262",
     code: "YT",
   },
-
+  {
+    name: "Mexico",
+    dial_code: "+52",
+    code: "MX",
+  },
   {
     name: "Micronesia, Federated States of Micronesia",
     dial_code: "+691",
@@ -1155,7 +1149,11 @@ export const CountryPhoneCodeList = [
     dial_code: "+44",
     code: "GB",
   },
-
+  {
+    name: "United States",
+    dial_code: "+1",
+    code: "US",
+  },
   {
     name: "Uruguay",
     dial_code: "+598",

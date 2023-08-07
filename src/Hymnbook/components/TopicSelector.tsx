@@ -4,17 +4,20 @@ import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
 import useMainStore from "../../store";
 import { TopicList } from "../entities/Topics";
+import { useTranslation } from "react-i18next";
 
 const TopicSelector = () => {
+  const { t } = useTranslation("hymnbook");
   const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicCode);
   const setSelectedTopicId = useHymnQueryStore((s) => s.setTopicCode);
   const selectedTopic = useTopic(selectedTopicId);
   const closeDrawer = useMainStore((s) => s.closeSideDrawer);
 
-
   return (
     <NavCollapseGroup
-      label={"Tema" + (selectedTopic ? ": " + selectedTopic.title : "s")}
+      label={`${t("topic", {
+        count: 2,
+      })}: ${selectedTopic}`}
     >
       {TopicList.map((topic) => (
         <NavItem

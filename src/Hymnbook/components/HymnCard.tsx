@@ -12,16 +12,16 @@ import dayjs from "dayjs";
 import "dayjs/locale/es";
 import Hymn from "../entities/Hymn";
 import { cardStyles } from "../../theme/theme";
-import useTopics from "../hooks/useTopics";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   hymn: Hymn;
 }
 
 const HymnCard = ({ hymn }: Props) => {
+  const { t } = useTranslation("hymnbook");
   const date = new Date(hymn.release_date);
   const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
-  const topics = useTopics(hymn.topics);
 
   return (
     <Card w={"100%"} h={"100%"} borderRadius={10} {...cardStyles}>
@@ -40,44 +40,80 @@ const HymnCard = ({ hymn }: Props) => {
         <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
           <HStack align={"center"}>
             <Heading size="sm" textTransform="uppercase">
-              {hymn.topics.length > 2 ? "Temas:" : "Tema:"}
+              {t("topic", { count: hymn.topics.length })}
             </Heading>
-            {topics.map((topic) => (
-              <Text pt="1" fontSize="md" key={topic?.code}>
-                {topic?.title}
+            {hymn.topics.map((topic) => (
+              <Text pt="1" fontSize="md" key={topic}>
+                {t(`topic.${topic}`)}
               </Text>
             ))}
           </HStack>
-          {hymn.authors?.length !== 0 && (
+          {hymn.authors.length !== 0 && (
             <HStack>
               <Heading size="xs" textTransform="uppercase">
-                {hymn.authors?.length > 1 ? "Autores:" : "Autor:"}
+                {t("author", { count: hymn.authors.length })}
               </Heading>
-              {hymn.authors.map((author) => (
-                <Text pt="1" fontSize="md" key={author.id}>
-                  {`${author.first_name} ${author.last_name}`}
+              {hymn.authors.map(({ id, first_name, last_name }) => (
+                <Text pt="1" fontSize="md" key={id}>
+                  {`${first_name} ${last_name}`}
                 </Text>
               ))}
             </HStack>
           )}
-          {hymn.arrangers && (
+          {hymn.arrangers.length !== 0 && (
             <HStack>
               <Heading size="xs" textTransform="uppercase">
-                Arreglista:
+                {t("arranger", { count: hymn.arrangers.length })}
               </Heading>
-              <Text pt="1" fontSize="md">
-                {/* {hymn.arrangers.first_name + " " + hymn.arrangers.last_name} */}
-              </Text>
+              {hymn.arrangers.map(({ id, first_name, last_name }) => (
+                <Text pt="1" fontSize="md" key={id}>
+                  {`${first_name} ${last_name}`}
+                </Text>
+              ))}
+            </HStack>
+          )}
+          {hymn.transcribers.length !== 0 && (
+            <HStack>
+              <Heading size="xs" textTransform="uppercase">
+                {t("transcriber", { count: hymn.transcribers.length })}
+              </Heading>
+              {hymn.transcribers.map(({ id, first_name, last_name }) => (
+                <Text pt="1" fontSize="md" key={id}>
+                  {`${first_name} ${last_name}`}
+                </Text>
+              ))}
+            </HStack>
+          )}
+          {hymn.translators.length !== 0 && (
+            <HStack>
+              <Heading size="xs" textTransform="uppercase">
+                {t("translator", { count: hymn.translators.length })}
+              </Heading>
+              {hymn.translators.map(({ id, first_name, last_name }) => (
+                <Text pt="1" fontSize="md" key={id}>
+                  {`${first_name} ${last_name}`}
+                </Text>
+              ))}
             </HStack>
           )}
           <HStack>
             <Heading size="xs" textTransform="uppercase">
-              Publicacion:
+              {t("release_date")}
             </Heading>
             <Text pt="1" fontSize="md">
               {formattedDate}
             </Text>
           </HStack>
+          {hymn.notes && (
+            <HStack>
+              <Heading size="xs" textTransform="uppercase">
+                {t("notes")}
+              </Heading>
+              <Text pt="1" fontSize="md">
+                {hymn.notes}
+              </Text>
+            </HStack>
+          )}
         </Stack>
       </CardBody>
     </Card>
