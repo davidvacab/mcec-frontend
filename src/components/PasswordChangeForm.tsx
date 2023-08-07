@@ -113,13 +113,12 @@ const PasswordChangeForm = () => {
             {...inputStyles}
             id="current-password"
             type={show ? "text" : "password"}
-            placeholder="Enter Current password"
             autoComplete="current-password"
             tabIndex={1}
           />
           <InputRightElement width="4.5rem">
             <Button onClick={handleClick} isDisabled={!edit}>
-              {show ? "Hide" : "Show"}
+              {show ? t("common:button.hide") : t("common:button.show")}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -139,7 +138,6 @@ const PasswordChangeForm = () => {
             {...inputStyles}
             id="new-password"
             type={show ? "text" : "password"}
-            placeholder="Enter New password"
             autoComplete="new-password"
             tabIndex={2}
           />
@@ -165,7 +163,6 @@ const PasswordChangeForm = () => {
             {...inputStyles}
             id="confirm-password"
             type={show ? "text" : "password"}
-            placeholder="Confirm New password"
             autoComplete="new-password"
             tabIndex={3}
           />

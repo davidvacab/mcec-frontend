@@ -98,7 +98,7 @@ const ProfileFormTemplate = () => {
 
 const ProfilePage = () => {
   const { t } = useTranslation("members");
-  useDocumentTitle(`${t("page.account")} | MCEC`);
+  useDocumentTitle(`${t("common:page.account")} | MCEC`);
   const tabs = [
     { title: t("member.account"), form: ProfileFormTemplate },
     { title: t("member.password"), form: PasswordChangeForm },

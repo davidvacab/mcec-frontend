@@ -22,7 +22,7 @@ const SortSelector = () => {
 
   return (
     <NavCollapseGroup
-      label={`${t("order.order")} \n ${sortOrder ? label : t("recent")}`}
+      label={`${t("order.order")} \n ${sortOrder ? label : t("order.recent")}`}
     >
       {sortOrders.map((order) => (
         <NavItem

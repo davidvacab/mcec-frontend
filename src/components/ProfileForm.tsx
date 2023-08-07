@@ -240,7 +240,7 @@ const ProfileForm = () => {
                 tabIndex={4}
               >
                 {CountryPhoneCodeList.map((code) => (
-                  <option key={code.code} value={code.dial_code}>
+                  <option key={code.code} value={code.code}>
                     {code.dial_code}
                   </option>
                 ))}

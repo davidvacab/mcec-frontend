@@ -26,9 +26,9 @@ interface Props {
 }
 
 const HymnCardRow = ({ hymn }: Props) => {
-  const { t } = useTranslation("hymnbook");
+  const { t, i18n } = useTranslation("hymnbook");
   const date = new Date(hymn.release_date);
-  const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
+  const formattedDate = dayjs(date).locale(i18n.language).format("DD/MMMM/YY");
 
   return (
     <Link to={"/hymns/" + hymn.slug}>

@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
+import "dayjs/locale/en";
 import Hymn from "../entities/Hymn";
 import { cardStyles } from "../../theme/theme";
 import { useTranslation } from "react-i18next";
@@ -19,9 +20,9 @@ interface Props {
 }
 
 const HymnCard = ({ hymn }: Props) => {
-  const { t } = useTranslation("hymnbook");
+  const { t, i18n } = useTranslation("hymnbook");
   const date = new Date(hymn.release_date);
-  const formattedDate = dayjs(date).locale("es").format("DD/MMMM/YY");
+  const formattedDate = dayjs(date).locale(i18n.language).format("DD/MMMM/YY");
 
   return (
     <Card w={"100%"} h={"100%"} borderRadius={10} {...cardStyles}>
