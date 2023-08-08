@@ -1,26 +1,17 @@
 import {
-  Heading,
-  Avatar,
   Box,
-  Center,
-  Image,
-  Flex,
-  Text,
-  Stack,
-  Button,
-  useColorModeValue,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs
 } from "@chakra-ui/react";
-import { cardStyles, tabStyles } from "../theme/theme";
+import { useTranslation } from "react-i18next";
+import ChurchForm from "../components/ChurchForm";
 import PasswordChangeForm from "../components/PasswordChangeForm";
 import ProfileForm from "../components/ProfileForm";
-import ChurchForm from "../components/ChurchForm";
-import { useTranslation } from "react-i18next";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { cardStyles, tabStyles } from "../theme/theme";
 
 // const ProfileFormTemplate = () => {
 //   return (
