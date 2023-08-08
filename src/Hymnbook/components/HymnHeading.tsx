@@ -1,16 +1,14 @@
 import { Heading } from "@chakra-ui/react";
-import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
 import { useTranslation } from "react-i18next";
 
 const HymnHeading = () => {
   const { t } = useTranslation("hymnbook");
   const selectedTopicCode = useHymnQueryStore((s) => s.hymnQuery.topicCode);
-  const topic = useTopic(selectedTopicCode);
   const searchText = useHymnQueryStore((s) => s.hymnQuery.searchText);
   const heading = `${searchText || selectedTopicCode ? t("hymns") : ""} ${
-    selectedTopicCode ? t("of") + topic?.title : ""
-  } ${searchText ? t("with_title") + searchText + "'" : ""}`;
+    selectedTopicCode ? `${t("of")} ${t(`topic.${selectedTopicCode}`)}` : ""
+  } ${searchText ? `${t("with_title")} '${searchText}'` : ""}`;
   return (
     <Heading
       as={"h1"}

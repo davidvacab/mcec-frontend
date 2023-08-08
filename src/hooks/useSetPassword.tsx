@@ -3,7 +3,7 @@ import APIClient from "../services/api-client";
 import SetPassword from "../entities/SetPassword";
 import { useAuthHeader } from "react-auth-kit";
 
-const apiClient = new APIClient("/users/set_password/");
+const apiClient = new APIClient("/auth/users/set_password/");
 
 export const useSetPassword = () => {
   const authHeader = useAuthHeader();

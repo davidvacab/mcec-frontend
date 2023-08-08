@@ -613,7 +613,7 @@ const SignUpPage = () => {
           </Button>
           {activeStep === 3 ? (
             <Button type="submit" w="7rem" colorScheme="gold" variant="solid">
-              {t("register")}
+              {t("common:button.submit")}
             </Button>
           ) : null}
         </ButtonGroup>

@@ -28,7 +28,7 @@ const HymnListPage = () => {
           closeDrawer();
         }}
       >
-        Todos los Cantos
+        {t("hymnbook:all_hymns")}
       </NavItem>
       <SortSelector />
       <TopicSelector />

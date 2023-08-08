@@ -1,34 +1,32 @@
 import NavItem from "../../components/NavItem";
 import NavCollapseGroup from "../../components/NavCollapseGroup";
-import useTopic from "../hooks/useTopic";
 import useHymnQueryStore from "../store";
 import useMainStore from "../../store";
-import { TopicList } from "../entities/Topics";
+import TopicCodes from "../entities/Topics";
 import { useTranslation } from "react-i18next";
 
 const TopicSelector = () => {
   const { t } = useTranslation("hymnbook");
-  const selectedTopicId = useHymnQueryStore((s) => s.hymnQuery.topicCode);
-  const setSelectedTopicId = useHymnQueryStore((s) => s.setTopicCode);
-  const selectedTopic = useTopic(selectedTopicId);
+  const selectedTopicCode = useHymnQueryStore((s) => s.hymnQuery.topicCode);
+  const setSelectedTopicCode = useHymnQueryStore((s) => s.setTopicCode);
   const closeDrawer = useMainStore((s) => s.closeSideDrawer);
 
   return (
     <NavCollapseGroup
       label={`${t("topic", {
         count: 2,
-      })}: ${selectedTopic}`}
+      })}: ${selectedTopicCode ? t(`topic.${selectedTopicCode}`) : ""}`}
     >
-      {TopicList.map((topic) => (
+      {TopicCodes.map((code) => (
         <NavItem
-          key={topic.code}
+          key={code}
           onClick={() => {
-            setSelectedTopicId(topic.code);
+            setSelectedTopicCode(code);
             closeDrawer();
           }}
-          selected={selectedTopic?.code === topic.code}
+          selected={selectedTopicCode === code}
         >
-          {topic.title}
+          {t(`topic.${code}`)}
         </NavItem>
       ))}
     </NavCollapseGroup>

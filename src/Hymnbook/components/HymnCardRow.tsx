@@ -77,7 +77,7 @@ const HymnCardRow = ({ hymn }: Props) => {
                   fontWeight={"extrabold"}
                   textTransform="uppercase"
                 >
-                  Publicacion:
+                  {t("release_date")}
                 </Text>
                 <Text pt="1" fontSize="md">
                   {formattedDate}

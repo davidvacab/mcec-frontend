@@ -1,11 +1,9 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import Info from "../components/Info";
 import { useTranslation } from "react-i18next";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const ErrorPage = () => {
   const { t } = useTranslation("common");
-  useDocumentTitle(`${t("label.error")} | MCEC`);
   const error = useRouteError();
   console.log(error);
 

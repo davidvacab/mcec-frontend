@@ -41,7 +41,7 @@ const NavBarMenu = () => {
               <Avatar
                 display={{ base: "none", md: "flex" }}
                 size={"sm"}
-                src={auth()?.profile.profile_picture}
+                src={decodeURI(auth()?.profile.profile_picture)}
               />
 
               <VStack

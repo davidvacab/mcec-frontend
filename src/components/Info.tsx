@@ -98,7 +98,7 @@ const Info = ({
             color="white"
             variant="solid"
           >
-            {t("go_home")}
+            {t("label.go_home")}
           </Button>
         </Link>
         {button2 && (

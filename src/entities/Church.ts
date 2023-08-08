@@ -5,5 +5,5 @@ export default interface Church {
   church_name: string;
   city: string;
   state: string;
-  country: typeof CountryNames;
+  country: (typeof CountryNames)[number];
 }

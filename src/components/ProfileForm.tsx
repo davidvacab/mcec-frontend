@@ -17,10 +17,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import MemberRoles, { MemberRoleList } from "../entities/MemberRoles";
-import MemberVoiceTypes, {
-  MemberVoiceTypeList,
-} from "../entities/MemberVoiceTypes";
+import MemberRoles from "../entities/MemberRoles";
+import MemberVoiceTypes from "../entities/MemberVoiceTypes";
 import CountryPhoneCodes, {
   CountryPhoneCodeList,
 } from "../entities/CountryPhoneCodes";
@@ -54,39 +52,44 @@ const ProfileForm = () => {
       CountryPhoneCodes[0],
       ...CountryPhoneCodes.slice(0),
     ]),
+    voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
     phone_number: z
       .string()
       .min(6, t("validation:min", { value: 6 }))
       .max(20, t("validation:max", { value: 20 }))
       .regex(RegExp("[0-9]{8,10}"), t("validation:phone")),
-    voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
     role: z.enum([MemberRoles[0], ...MemberRoles.slice(0)]),
     bio: z
       .string()
       .max(250, t("validation:max", { value: 250 }))
-      .optional(),
-    profile_picture: z.instanceof(FileList).superRefine((f, ctx) => {
-      if (!ACCEPTED_MIME_TYPES.includes(f[0].type)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `File must be one of [${ACCEPTED_MIME_TYPES.join(
-            ", "
-          )}] but was ${f[0].type}`,
-        });
-      }
-      if (f[0].size > 3 * MB_BYTES) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.too_big,
-          type: "array",
-          message: `The file must not be larger than ${3 * MB_BYTES} bytes: ${
-            f[0].size
-          }`,
-          maximum: 3 * MB_BYTES,
-          inclusive: true,
-        });
-      }
-    }),
+      .optional()
+      .nullable(),
+    profile_picture_file: z
+      .instanceof(FileList)
+      .optional()
+      .superRefine((f, ctx) => {
+        if (f && !ACCEPTED_MIME_TYPES.includes(f[0].type)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `File must be one of [${ACCEPTED_MIME_TYPES.join(
+              ", "
+            )}] but was ${f[0].type}`,
+          });
+        }
+        if (f && f[0].size > 3 * MB_BYTES) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.too_big,
+            type: "array",
+            message: `The file must not be larger than ${3 * MB_BYTES} bytes: ${
+              f[0].size
+            }`,
+            maximum: 3 * MB_BYTES,
+            inclusive: true,
+          });
+        }
+      }),
   });
+
   const toast = useToast();
   const {
     handleSubmit,
@@ -111,22 +114,23 @@ const ProfileForm = () => {
 
   const onSubmit = (profileData: Profile) => {
     setEdit(false);
-    // const form_data = new FormData();
-    // if (profileData.bio) form_data.append("bio", profileData.bio);
-    // form_data.append("birthdate", profileData.birthdate);
-    // form_data.append(
-    //   "profile_picture",
-    //   profileData?.profile_picture[0],
-    //   profileData?.profile_picture[0].name
-    // );
-    // form_data.append(
-    //   "phone",
-    //   `${profileData.phone_area_code} ${profileData.phone_number}`
-    // );
-    // form_data.append("voice", profileData.voice_type);
-    // form_data.append("role", profileData.role);
-
-    update(profileData, {
+    const form_data = new FormData();
+    if (profileData.bio) form_data.append("bio", profileData.bio);
+    form_data.append("birthdate", profileData.birthdate);
+    if (profileData.profile_picture_file)
+      form_data.append(
+        "profile_picture",
+        profileData?.profile_picture_file[0],
+        profileData?.profile_picture_file[0].name
+      );
+    form_data.append("first_name", profileData.first_name);
+    form_data.append("last_name", profileData.last_name);
+    form_data.append("birthdate", profileData.birthdate);
+    form_data.append("phone_area_code", profileData.phone_area_code);
+    form_data.append("phone_number", profileData.phone_number);
+    form_data.append("voice_type", profileData.voice_type);
+    form_data.append("role", profileData.role);
+    update(form_data, {
       onSuccess: (response) => {
         queryClient.setQueryData(["profile"], response.data);
         reset(response.data, { keepErrors: false, keepDefaultValues: false });
@@ -247,7 +251,7 @@ const ProfileForm = () => {
               </Select>
             </InputLeftAddon>
             <Input
-              {...register("phone_number")}
+              {...register("phone_number", { value: profile.phone_number })}
               {...inputStyles}
               type="tel"
               id="phone"
@@ -255,7 +259,6 @@ const ProfileForm = () => {
               placeholder="3333333333"
               autoComplete="tel"
               tabIndex={5}
-              defaultValue={profile.phone_number}
             />
           </InputGroup>
           <FormErrorMessage>{errors.phone_number?.message}</FormErrorMessage>
@@ -270,14 +273,13 @@ const ProfileForm = () => {
           <Select
             id="voice"
             autoComplete="on"
-            {...register("voice_type")}
+            {...register("voice_type", { value: profile.voice_type })}
             {...selectStyles}
             tabIndex={6}
-            defaultValue={profile.voice_type}
           >
-            {MemberVoiceTypeList.map((voice) => (
-              <option key={voice.key} value={voice.key}>
-                {voice.value}
+            {MemberVoiceTypes.map((voice) => (
+              <option key={voice} value={voice}>
+                {t(`member_voice.${voice}`)}
               </option>
             ))}
           </Select>
@@ -291,13 +293,12 @@ const ProfileForm = () => {
             id="role"
             autoComplete="on"
             tabIndex={7}
-            {...register("role")}
+            {...register("role", { value: profile.role })}
             {...selectStyles}
-            defaultValue={profile.role}
           >
-            {MemberRoleList.map((role) => (
-              <option key={role.key} value={role.key}>
-                {role.value}
+            {MemberRoles.map((role) => (
+              <option key={role} value={role}>
+                {t(`member_role.${role}`)}
               </option>
             ))}
           </Select>
@@ -312,16 +313,17 @@ const ProfileForm = () => {
           {t("member.picture")}
         </FormLabel>
         <Input
-          {...register("profile_picture")}
+          {...register("profile_picture_file")}
           {...inputStyles}
           id="image"
           type="file"
           accept="image/*"
-          placeholder="Image"
           autoComplete="off"
           tabIndex={9}
         />
-        <FormErrorMessage>{errors.profile_picture?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          {errors.profile_picture_file?.message}
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={errors.bio !== undefined} isDisabled={!edit}>
@@ -329,13 +331,11 @@ const ProfileForm = () => {
           {t("member.bio")}
         </FormLabel>
         <Textarea
-          {...register("bio")}
+          {...register("bio", { value: profile.bio })}
           {...inputStyles}
           id="bio"
-          placeholder="Bio"
           autoComplete="off"
           tabIndex={9}
-          defaultValue={profile.bio}
         />
         <FormErrorMessage>{errors.bio?.message}</FormErrorMessage>
       </FormControl>

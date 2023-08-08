@@ -41,7 +41,7 @@ const PassResetConfirmPage = () => {
       ({ new_password, re_new_password }) => new_password === re_new_password,
       {
         message: t("validation:password_mat"),
-        path: ["confirmPassword"],
+        path: ["re_new_password"],
       }
     );
   const { uid, token } = useParams();

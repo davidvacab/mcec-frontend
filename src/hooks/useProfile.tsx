@@ -4,7 +4,7 @@ import { useAuthHeader } from "react-auth-kit";
 import APIClient from "../services/api-client";
 import Profile from "../entities/Profile";
 
-const apiClient = new APIClient<Profile, Profile>("/members/profiles/me/");
+const apiClient = new APIClient<Profile, FormData>("/members/profiles/me/");
 
 const useProfile = () => {
   const authHeader = useAuthHeader();
@@ -20,7 +20,7 @@ export const useProfileUpdate = () => {
   const authHeader = useAuthHeader();
   return useMutation({
     mutationKey: ["profileUpdate"],
-    mutationFn: (profile: Profile) =>
+    mutationFn: (profile: FormData) =>
       apiClient.put(profile, {
         headers: { Authorization: authHeader() },
       }),
