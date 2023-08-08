@@ -40,17 +40,17 @@ const Carousel = () => {
     {
       title: "Design Projects 1",
       text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
-      image: "src/assets/cover.jpg",
+      image: "./src/assets/cover.jpg",
     },
     {
       title: "Design Projects 2",
       text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
-      image: "src/assets/coro.jpg",
+      image: "./src/assets/coro.jpg",
     },
     {
       title: "Design Projects 3",
       text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
-      image: "src/assets/coro2.jpg",
+      image: "./src/assets/coro2.jpg",
     },
   ];
 
