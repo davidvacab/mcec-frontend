@@ -1,7 +1,8 @@
 {
   "label": {
     "hymnbook": "Hymnbook",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "orfeon": "Choirs"
   },
   "navmenu": {
     "problem": "Report an issue",
@@ -11,7 +12,6 @@
   "footer": {
     "about_us": "About us",
     "contact_us": "Contact us",
-    "orfeon": "Choirs",
     "rights": "All rights reserved."
   }
 }
