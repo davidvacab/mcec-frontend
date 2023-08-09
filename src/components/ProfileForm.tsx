@@ -15,20 +15,22 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import MemberRoles from "../entities/MemberRoles";
-import MemberVoiceTypes from "../entities/MemberVoiceTypes";
+import { zodI18nMap } from "zod-i18n-map";
 import CountryPhoneCodes, {
   CountryPhoneCodeList,
 } from "../entities/CountryPhoneCodes";
-import { inputStyles, selectStyles } from "../theme/theme";
-import { useState } from "react";
-import useProfile, { useProfileUpdate } from "../hooks/useProfile";
-import { useQueryClient } from "@tanstack/react-query";
+import MemberRoles from "../entities/MemberRoles";
+import MemberVoiceTypes from "../entities/MemberVoiceTypes";
 import Profile from "../entities/Profile";
-import { useTranslation } from "react-i18next";
-import { zodI18nMap } from "zod-i18n-map";
+import useProfile, { useProfileUpdate } from "../hooks/useProfile";
+import { usePersistStore } from "../store";
+import { inputStyles, selectStyles } from "../theme/theme";
+import { useNavigate } from "react-router-dom";
 
 z.setErrorMap(zodI18nMap);
 
@@ -107,10 +109,23 @@ const ProfileForm = () => {
   } = useProfile();
   const { mutate: update, isLoading: updateLoading } = useProfileUpdate();
   const queryClient = useQueryClient();
+  const setProfile = usePersistStore((s) => s.setProfile);
+  const navigate = useNavigate();
 
   if (getLoading || updateLoading) return <Spinner />;
 
-  if (getError || !profile) throw getError;
+  if (getError || !profile) {
+    toast({
+      title: t("label.error"),
+      description: t("label.error"),
+      status: "error",
+      position: "top",
+      duration: 9000,
+      isClosable: true,
+    });
+    navigate("/", { replace: true });
+    return;
+  }
 
   const onSubmit = (profileData: Profile) => {
     setEdit(false);
@@ -134,6 +149,7 @@ const ProfileForm = () => {
       onSuccess: (response) => {
         queryClient.setQueryData(["profile"], response.data);
         reset(response.data, { keepErrors: false, keepDefaultValues: false });
+        setProfile(response.data);
         toast({
           title: t("common:label.success"),
           description: t("member.update_success"),
@@ -245,7 +261,7 @@ const ProfileForm = () => {
               >
                 {CountryPhoneCodeList.map((code) => (
                   <option key={code.code} value={code.code}>
-                    {code.dial_code}
+                    {`${code.code} ${code.dial_code}`}
                   </option>
                 ))}
               </Select>

@@ -65,11 +65,15 @@ const HymnCardRow = ({ hymn }: Props) => {
                 >
                   {t("topic", { count: hymn.topics.length })}
                 </Text>
-                {hymn.topics.map((topic) => (
-                  <Text pt="1" fontSize="md" key={topic}>
-                    {t(`topic.${topic}`)}
-                  </Text>
-                ))}
+                <VStack spacing={0}>
+                  {hymn.topics.map((topic, i) => (
+                    <Text pt="1" fontSize="md" key={topic}>
+                      {`${t(`topic.${topic}`)}${
+                        i + 1 !== hymn.topics.length ? "," : ""
+                      }`}
+                    </Text>
+                  ))}
+                </VStack>
               </VStack>
               <VStack>
                 <Text

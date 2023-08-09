@@ -13,5 +13,25 @@
     "about_us": "Acerca de",
     "contact_us": "Contactanos",
     "rights": "Todos los derechos reservados."
+  },
+  "about_us": {
+    "mcec": "Ministerio de Cultura y Educación Cristiana",
+    "contact_info": "Información de contacto",
+    "history": "Historia",
+    "history_des": ""
+  },
+  "carousel": {
+    "1": {
+      "title": "¡Nueva pagina!",
+      "des": "Nueva pagina oficial del Ministerio de Cultura y Educación Cristiana"
+    },
+    "2": {
+      "title": "Repertorio Oficial en tiempo real",
+      "des": "Ahora puedes tener acceso a cientos de cantos nuevos desde cualquier dispositivo, usa la barra de busqueda o filtra por tema"
+    },
+    "3": {
+      "title": "¡Registrate hoy!",
+      "des": "Crea tu cuenta y obten acceso a todos los cantos"
+    }
   }
 }

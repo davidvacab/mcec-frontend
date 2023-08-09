@@ -4,24 +4,25 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   Heading,
   Input,
-  useToast,
-  Text,
-  HStack,
-  VStack,
   Spinner,
+  Text,
+  VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignIn } from "react-auth-kit";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import useDocumentTitle from "../hooks/useDocumentTitle";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import { cardStyles, inputStyles } from "../theme/theme";
-import useLogin from "../hooks/useLogin";
 import { useTranslation } from "react-i18next";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import LoginCredentials from "../entities/LoginCredentials";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+import useLogin from "../hooks/useLogin";
+import { usePersistStore } from "../store";
+import { cardStyles, inputStyles } from "../theme/theme";
 
 const LoginPage = () => {
   const { t } = useTranslation("members");
@@ -34,6 +35,7 @@ const LoginPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const signIn = useSignIn();
+  const setProfile = usePersistStore((s) => s.setProfile);
   const {
     register,
     handleSubmit,
@@ -50,14 +52,16 @@ const LoginPage = () => {
         if (
           signIn({
             token: response.data.access,
-            expiresIn: 10,
+            expiresIn: 15,
             tokenType: "Bearer",
             authState: response.data.user,
             refreshToken: response.data.refresh,
             refreshTokenExpireIn: 1440,
           })
-        )
+        ) {
+          setProfile(response.data.user.profile);
           navigate(state !== null ? state.from : "/", { replace: true });
+        }
       },
       onError: () => {
         resetField("password");
@@ -117,11 +121,11 @@ const LoginPage = () => {
         <Button type="submit" w="10rem" colorScheme="gold">
           {t("common:label.signin")}
         </Button>
-        <HStack>
+        {/* <HStack>
           <Link to="/password-reset">
             <Button variant={"link"}>{t("login.forgot-password")}</Button>
           </Link>
-        </HStack>
+        </HStack> */}
         <HStack>
           <Text>{t("login.need-account")}</Text>
           <Link to={"/register"}>

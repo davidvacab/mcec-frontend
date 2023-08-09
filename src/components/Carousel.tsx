@@ -10,6 +10,7 @@ import { useState } from "react";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import Slider from "react-slick";
 import { cardOpaqueStyles } from "../theme/theme";
+import { useTranslation } from "react-i18next";
 
 const settings = {
   dots: true,
@@ -27,7 +28,7 @@ const Carousel = () => {
   // As we have used custom buttons, we need a reference variable to
   // change the state
   const [slider, setSlider] = useState<Slider | null>(null);
-
+  const { t } = useTranslation("home");
   // These are the breakpoints which changes the position of the
   // buttons as the screen size changes
   const top = useBreakpointValue({ base: "95%", md: "87%" });
@@ -38,19 +39,19 @@ const Carousel = () => {
   // This can be static or loaded from a server
   const cards = [
     {
-      title: "Design Projects 1",
-      text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
+      title: t("carousel.1.title"),
+      text: t("carousel.1.des"),
       image: "assets/cover.jpg",
     },
     {
-      title: "Design Projects 2",
-      text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
-      image: "assets/coro.jpg",
+      title: t("carousel.2.title"),
+      text: t("carousel.2.des"),
+      image: "assets/cover2.jpg",
     },
     {
-      title: "Design Projects 3",
-      text: "The project board is an exclusive resource for contract work. It's perfect for freelancers, agencies, and moonlighters.",
-      image: "assets/coro2.jpg",
+      title: t("carousel.3.title"),
+      text: t("carousel.3.des"),
+      image: "assets/cover3.jpg",
     },
   ];
 

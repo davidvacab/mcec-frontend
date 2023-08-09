@@ -17,6 +17,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import { useTranslation } from "react-i18next";
+import { usePersistStore } from "../store";
 
 const NavBarMenu = () => {
   const auth = useAuthUser();
@@ -24,6 +25,8 @@ const NavBarMenu = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const { t } = useTranslation("home");
+  const profile = usePersistStore((s) => s.persistElements.profile);
+  const setProfile = usePersistStore((s) => s.setProfile);
 
   return (
     <Flex alignItems={"center"}>
@@ -36,12 +39,12 @@ const NavBarMenu = () => {
           bg={"transparent"}
           transition="all 0.3s"
         >
-          {auth() && (
+          {auth() && profile && (
             <HStack>
               <Avatar
                 display={{ base: "none", md: "flex" }}
                 size={"sm"}
-                src={decodeURI(auth()?.profile.profile_picture)}
+                src={decodeURI(profile.profile_picture)}
               />
 
               <VStack
@@ -50,8 +53,8 @@ const NavBarMenu = () => {
                 spacing="1px"
                 ml="2"
               >
-                <Text fontSize="sm">{auth()?.profile.first_name}</Text>
-                <Text fontSize="sm">{auth()?.profile.last_name}</Text>
+                <Text fontSize="sm">{profile.first_name}</Text>
+                <Text fontSize="sm">{profile.last_name}</Text>
               </VStack>
             </HStack>
           )}
@@ -60,34 +63,35 @@ const NavBarMenu = () => {
           <Link to={"/hymns"}>
             <MenuItem>{t("label.hymnbook")}</MenuItem>
           </Link>
-          {auth() && (
+          {auth() ? (
             <>
               <Link to={"/profile/me"}>
                 <MenuItem>{t("common:label.profile")}</MenuItem>
               </Link>
-              <MenuItem>{t("navmenu.problem")}</MenuItem>
+              {/* <MenuItem>{t("navmenu.problem")}</MenuItem> */}
+              <MenuDivider />
+              <MenuItem
+                onClick={() => {
+                  if (signOut()) {
+                    setProfile(undefined);
+                    toast({
+                      title: t("navmenu.logout"),
+                      description: t("navmenu.logout_des"),
+                      status: "info",
+                      position: "top",
+                      duration: 9000,
+                      isClosable: true,
+                    });
+                    navigate("/");
+                  }
+                }}
+              >
+                {t("navmenu.logout")}
+              </MenuItem>
             </>
-          )}
-          <MenuDivider />
-          {auth() ? (
-            <MenuItem
-              onClick={() => {
-                signOut();
-                toast({
-                  title: t("navmenu.logout"),
-                  description: t("navmenu.logout_des"),
-                  status: "info",
-                  position: "top",
-                  duration: 9000,
-                  isClosable: true,
-                });
-                navigate("/");
-              }}
-            >
-              {t("navmenu.logout")}
-            </MenuItem>
           ) : (
             <>
+              <MenuDivider />
               <Link to={"/login"}>
                 <MenuItem>{t("common:label.signin")}</MenuItem>
               </Link>

@@ -1,4 +1,31 @@
 import { create } from "zustand";
+import Profile from "./entities/Profile";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+interface PersistElements {
+  profile?: Profile;
+}
+
+interface PersistStore {
+  persistElements: PersistElements;
+  setProfile: (profile: Profile | undefined) => void;
+}
+
+export const usePersistStore = create(
+  persist<PersistStore>(
+    (set) => ({
+      persistElements: {},
+      setProfile: (profile) =>
+        set((store) => ({
+          persistElements: { ...store.persistElements, profile: profile },
+        })),
+    }),
+    {
+      name: "profile-storage", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);
 
 interface MainElements {
   isDrawerOpen: boolean;
@@ -9,7 +36,7 @@ interface MainElements {
     title?: string;
     description?: string;
   };
-  locale: string;
+  profile?: Profile;
 }
 
 interface MainStore {
@@ -24,7 +51,7 @@ interface MainStore {
     description: string
   ) => void;
   setRegistrationEmail: (email: string | undefined) => void;
-  setLocale: (locale: string) => void;
+  setProfile: (profile: Profile) => void;
 }
 
 const useMainStore = create<MainStore>((set) => ({
@@ -32,7 +59,6 @@ const useMainStore = create<MainStore>((set) => ({
     isDrawerOpen: false,
     isAlertOpen: false,
     alertElements: { status: "info" },
-    locale: "es",
   },
   openSideDrawer: () =>
     set((store) => ({
@@ -65,9 +91,9 @@ const useMainStore = create<MainStore>((set) => ({
     set((store) => ({
       mainElements: { ...store.mainElements, registrationEmail: email },
     })),
-  setLocale: (locale) =>
+  setProfile: (profile) =>
     set((store) => ({
-      mainElements: { ...store.mainElements, locale: locale },
+      mainElements: { ...store.mainElements, profile: profile },
     })),
 }));
 

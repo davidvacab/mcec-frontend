@@ -20,6 +20,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Church from "../entities/Church";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ChurchForm = () => {
   const { t } = useTranslation("members");
@@ -55,10 +56,22 @@ const ChurchForm = () => {
     resolver: zodResolver(churchSchema),
   });
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   if (getLoading || updateLoading) return <Spinner />;
 
-  if (getError || !church) throw getError;
+  if (getError || !church) {
+    toast({
+      title: t("label.error"),
+      description: t("label.error"),
+      status: "error",
+      position: "top",
+      duration: 9000,
+      isClosable: true,
+    });
+    navigate("/", { replace: true });
+    return;
+  }
 
   const onSubmit = (churchData: Church) => {
     setEdit(false);

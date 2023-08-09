@@ -43,9 +43,11 @@ const HymnCard = ({ hymn }: Props) => {
             <Heading size="sm" textTransform="uppercase">
               {t("topic", { count: hymn.topics.length })}
             </Heading>
-            {hymn.topics.map((topic) => (
+            {hymn.topics.map((topic, i) => (
               <Text pt="1" fontSize="md" key={topic}>
-                {t(`topic.${topic}`)}
+                {`${t(`topic.${topic}`)}${
+                  i + 1 !== hymn.topics.length ? "," : ""
+                }`}
               </Text>
             ))}
           </HStack>
@@ -54,9 +56,11 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 {t("author", { count: hymn.authors.length })}
               </Heading>
-              {hymn.authors.map(({ id, first_name, last_name }) => (
+              {hymn.authors.map(({ id, first_name, last_name }, i) => (
                 <Text pt="1" fontSize="md" key={id}>
-                  {`${first_name} ${last_name}`}
+                  {`${first_name} ${last_name}${
+                    i + 1 !== hymn.authors.length ? "," : ""
+                  }`}
                 </Text>
               ))}
             </HStack>
@@ -66,9 +70,11 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 {t("arranger", { count: hymn.arrangers.length })}
               </Heading>
-              {hymn.arrangers.map(({ id, first_name, last_name }) => (
+              {hymn.arrangers.map(({ id, first_name, last_name }, i) => (
                 <Text pt="1" fontSize="md" key={id}>
-                  {`${first_name} ${last_name}`}
+                  {`${first_name} ${last_name}${
+                    i + 1 !== hymn.arrangers.length ? "," : ""
+                  }`}
                 </Text>
               ))}
             </HStack>
@@ -78,9 +84,11 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 {t("transcriber", { count: hymn.transcribers.length })}
               </Heading>
-              {hymn.transcribers.map(({ id, first_name, last_name }) => (
+              {hymn.transcribers.map(({ id, first_name, last_name }, i) => (
                 <Text pt="1" fontSize="md" key={id}>
-                  {`${first_name} ${last_name}`}
+                  {`${first_name} ${last_name}${
+                    i + 1 !== hymn.transcribers.length ? "," : ""
+                  }`}
                 </Text>
               ))}
             </HStack>
@@ -90,9 +98,11 @@ const HymnCard = ({ hymn }: Props) => {
               <Heading size="xs" textTransform="uppercase">
                 {t("translator", { count: hymn.translators.length })}
               </Heading>
-              {hymn.translators.map(({ id, first_name, last_name }) => (
+              {hymn.translators.map(({ id, first_name, last_name }, i) => (
                 <Text pt="1" fontSize="md" key={id}>
-                  {`${first_name} ${last_name}`}
+                  {`${first_name} ${last_name}${
+                    i + 1 !== hymn.translators.length ? "," : ""
+                  }`}
                 </Text>
               ))}
             </HStack>

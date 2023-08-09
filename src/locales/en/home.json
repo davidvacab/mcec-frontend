@@ -13,5 +13,25 @@
     "about_us": "About us",
     "contact_us": "Contact us",
     "rights": "All rights reserved."
+  },
+  "about_us": {
+    "mcec": "Ministry of Culture and Christian Education",
+    "contact_info": "Contact info",
+    "history": "History",
+    "history_des": ""
+  },
+  "carousel": {
+    "1": {
+      "title": "New website!",
+      "des": "New official website for the Ministry of Culture and Christian Education"
+    },
+    "2": {
+      "title": "Official Hymnbook in real time",
+      "des": "Now you can have access to hundreds of hymns from any device, use the search bar or filter by tipic"
+    },
+    "3": {
+      "title": "Sign up today!",
+      "des": "Create your account and gain access to all the hymns"
+    }
   }
 }

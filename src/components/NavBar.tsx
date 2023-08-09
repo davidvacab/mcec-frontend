@@ -32,7 +32,7 @@ const NavBar = () => {
         />
       )}
       <Link to={"/"}>
-        <Heading size={"xl"}>MCEC</Heading>
+        <Heading fontWeight={"black"} size={"xl"}>MCEC</Heading>
       </Link>
       <HStack spacing={{ base: "2", md: "6" }}>
         <LanguageModeButton />

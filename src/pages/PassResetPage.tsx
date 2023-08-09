@@ -38,7 +38,7 @@ const PassResetPage = () => {
   } = useForm<emailData>({
     resolver: zodResolver(schema),
   });
-  const { mutate: requestReset, isLoading, error } = useResetPassword();
+  const { mutate: requestReset, isLoading } = useResetPassword();
 
   const onSubmit = (data: emailData) => {
     requestReset(data.email, {
@@ -57,8 +57,6 @@ const PassResetPage = () => {
   };
 
   if (isLoading) return <Spinner />;
-
-  if (error) throw error;
 
   return (
     <Flex

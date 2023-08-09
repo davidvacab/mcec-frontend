@@ -1,21 +1,20 @@
-import { useState } from "react";
 import {
   Box,
-  ButtonGroup,
   Button,
-  Heading,
+  ButtonGroup,
   Flex,
   FormControl,
-  FormLabel,
-  Input,
-  Select,
-  InputGroup,
-  FormHelperText,
-  InputRightElement,
-  Stack,
-  VStack,
-  InputLeftAddon,
   FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputRightElement,
+  Select,
+  Spinner,
+  Stack,
   Step,
   StepDescription,
   StepIcon,
@@ -25,31 +24,31 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
+  VStack,
   useSteps,
-  Spinner,
+  useToast,
 } from "@chakra-ui/react";
-import { useToast } from "@chakra-ui/react";
-import { z } from "zod";
-import { FieldErrors, useForm, UseFormRegister } from "react-hook-form";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { TFunction } from "i18next";
+import { useState } from "react";
+import { FieldErrors, UseFormRegister, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { zodI18nMap } from "zod-i18n-map";
 import CountryNames, { CountryNameList } from "../entities/CountryNames";
+import CountryPhoneCodes, {
+  CountryPhoneCodeList,
+} from "../entities/CountryPhoneCodes";
 import MemberRoles, { MemberRoleList } from "../entities/MemberRoles";
 import MemberVoiceTypes, {
   MemberVoiceTypeList,
 } from "../entities/MemberVoiceTypes";
-import CountryPhoneCodes, {
-  CountryPhoneCodeList,
-} from "../entities/CountryPhoneCodes";
-import { useNavigate } from "react-router-dom";
-import useMainStore from "../store";
-import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
-import useSignUp from "../hooks/useSignUp";
-import { AxiosError } from "axios";
 import UserSignUp from "../entities/UserSignUp";
-import { useTranslation } from "react-i18next";
-import { TFunction } from "i18next";
-import { zodI18nMap } from "zod-i18n-map";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+import useSignUp from "../hooks/useSignUp";
+import { cardStyles, inputStyles, selectStyles } from "../theme/theme";
 
 z.setErrorMap(zodI18nMap);
 
@@ -217,7 +216,7 @@ const ProfileForm = ({ register, errors, t }: FormProps) => {
               >
                 {CountryPhoneCodeList.map((code) => (
                   <option key={code.code} value={code.code}>
-                    {code.dial_code}
+                    {`${code.code} ${code.dial_code}`}
                   </option>
                 ))}
               </Select>
@@ -358,7 +357,7 @@ const ChurchForm = ({ register, errors, t }: FormProps) => {
         >
           {CountryNameList.map((country) => (
             <option key={country.alpha3} value={country.alpha2}>
-              {country.name}
+              {`${country.alpha2.toUpperCase()} - ${country.name}`}
             </option>
           ))}
         </Select>
@@ -435,7 +434,7 @@ const SignUpPage = () => {
       path: ["re_password"],
       message: t("validation:password_mat"),
     });
-  const setRegistrationEmail = useMainStore((s) => s.setRegistrationEmail);
+  //const setRegistrationEmail = useMainStore((s) => s.setRegistrationEmail);
   const toast = useToast();
   const {
     handleSubmit,
@@ -462,7 +461,7 @@ const SignUpPage = () => {
 
   const onSubmit = (userData: UserSignUp) => {
     singUp(userData, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         toast({
           title: t("common:label.success"),
           description: t("member.account_success"),
@@ -471,8 +470,9 @@ const SignUpPage = () => {
           duration: 9000,
           isClosable: true,
         });
-        setRegistrationEmail(response.data.email);
-        navigate("/activate-account");
+        //setRegistrationEmail(response.data.email);
+        //navigate("/activate-account");
+        navigate("/", { replace: true });
       },
       onError: (error) => {
         if (error instanceof AxiosError) {
@@ -498,6 +498,7 @@ const SignUpPage = () => {
               duration: 9000,
               isClosable: true,
             });
+            navigate("/");
           }
         }
       },

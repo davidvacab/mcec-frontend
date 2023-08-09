@@ -1,5 +1,10 @@
 export const CountryPhoneCodeList = [
   {
+    name: "United Arab Emirates",
+    dial_code: "+971",
+    code: "AE",
+  },
+  {
     name: "Afghanistan",
     dial_code: "+93",
     code: "AF",
@@ -174,11 +179,7 @@ export const CountryPhoneCodeList = [
     dial_code: "+257",
     code: "BI",
   },
-  {
-    name: "Cambodia",
-    dial_code: "+855",
-    code: "KH",
-  },
+
   {
     name: "Cameroon",
     dial_code: "+237",
@@ -358,6 +359,11 @@ export const CountryPhoneCodeList = [
     name: "Finland",
     dial_code: "+358",
     code: "FI",
+  },
+  {
+    name: "Micronesia, Federated States of Micronesia",
+    dial_code: "+691",
+    code: "FM",
   },
   {
     name: "France",
@@ -580,6 +586,11 @@ export const CountryPhoneCodeList = [
     code: "KG",
   },
   {
+    name: "Cambodia",
+    dial_code: "+855",
+    code: "KH",
+  },
+  {
     name: "Laos",
     dial_code: "+856",
     code: "LA",
@@ -693,11 +704,6 @@ export const CountryPhoneCodeList = [
     name: "Mexico",
     dial_code: "+52",
     code: "MX",
-  },
-  {
-    name: "Micronesia, Federated States of Micronesia",
-    dial_code: "+691",
-    code: "FM",
   },
   {
     name: "Moldova",
@@ -1139,11 +1145,7 @@ export const CountryPhoneCodeList = [
     dial_code: "+380",
     code: "UA",
   },
-  {
-    name: "United Arab Emirates",
-    dial_code: "+971",
-    code: "AE",
-  },
+
   {
     name: "United Kingdom",
     dial_code: "+44",
