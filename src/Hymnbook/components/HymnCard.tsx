@@ -39,7 +39,7 @@ const HymnCard = ({ hymn }: Props) => {
       </CardHeader>
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4" justifyContent={"right"}>
-          <HStack align={"center"}>
+          <HStack align={"center"} spacing={1}>
             <Heading size="sm" textTransform="uppercase">
               {t("topic", { count: hymn.topics.length })}
             </Heading>
@@ -52,7 +52,7 @@ const HymnCard = ({ hymn }: Props) => {
             ))}
           </HStack>
           {hymn.authors.length !== 0 && (
-            <HStack>
+            <HStack spacing={1}>
               <Heading size="xs" textTransform="uppercase">
                 {t("author", { count: hymn.authors.length })}
               </Heading>
@@ -66,7 +66,7 @@ const HymnCard = ({ hymn }: Props) => {
             </HStack>
           )}
           {hymn.arrangers.length !== 0 && (
-            <HStack>
+            <HStack spacing={1}>
               <Heading size="xs" textTransform="uppercase">
                 {t("arranger", { count: hymn.arrangers.length })}
               </Heading>
@@ -80,7 +80,7 @@ const HymnCard = ({ hymn }: Props) => {
             </HStack>
           )}
           {hymn.transcribers.length !== 0 && (
-            <HStack>
+            <HStack spacing={1}>
               <Heading size="xs" textTransform="uppercase">
                 {t("transcriber", { count: hymn.transcribers.length })}
               </Heading>
@@ -94,7 +94,7 @@ const HymnCard = ({ hymn }: Props) => {
             </HStack>
           )}
           {hymn.translators.length !== 0 && (
-            <HStack>
+            <HStack spacing={1}>
               <Heading size="xs" textTransform="uppercase">
                 {t("translator", { count: hymn.translators.length })}
               </Heading>
