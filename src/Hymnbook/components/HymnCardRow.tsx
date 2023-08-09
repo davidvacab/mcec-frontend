@@ -69,7 +69,7 @@ const HymnCardRow = ({ hymn }: Props) => {
                   {hymn.topics.map((topic, i) => (
                     <Text pt="1" fontSize="md" key={topic}>
                       {`${t(`topic.${topic}`)}${
-                        i + 1 !== hymn.topics.length ? "," : ""
+                        i + 1 !== hymn.topics.length ? ", " : ""
                       }`}
                     </Text>
                   ))}
