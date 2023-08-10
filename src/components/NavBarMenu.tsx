@@ -27,7 +27,7 @@ const NavBarMenu = () => {
   const { t } = useTranslation("home");
   const profile = usePersistStore((s) => s.persistElements.profile);
   const setProfile = usePersistStore((s) => s.setProfile);
-  if (profile === undefined) setProfile(auth()?.profile);
+  if (profile && auth()) setProfile(auth()?.profile);
 
   return (
     <Flex alignItems={"center"}>
