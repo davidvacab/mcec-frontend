@@ -17,6 +17,9 @@
   "page": "Pagina",
   "search": "Buscar cantos",
   "all_hymns": "Todos los cantos",
+  "download": "Decargar",
+  "audio_one": "Audio",
+  "audio_other": "Audios",
   "order": {
     "order": "Orden:",
     "recent": "Anadido Recientemente",
@@ -41,7 +44,7 @@
     "I0": "Solista",
     "I1": "Solista 1",
     "I2": "Solista 2",
-    "EV": "SATB"
+    "EV": "Ensamble"
   },
   "topic": {
     "ADO": "Adoración",

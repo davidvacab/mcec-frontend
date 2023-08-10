@@ -17,6 +17,9 @@
   "page": "Page",
   "search": "Search hymns",
   "all_hymns": "All hymns",
+  "download": "Download",
+  "audio_one": "Audio",
+  "audio_other": "Audios",
   "order": {
     "order": "Order:",
     "recent": "Recently added",
@@ -41,7 +44,7 @@
     "I0": "Solo",
     "I1": "Solo 1",
     "I2": "Solo 2",
-    "EV": "SATB"
+    "EV": "Ensemble"
   },
   "topic": {
     "ADO": "Worship",

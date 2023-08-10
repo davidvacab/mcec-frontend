@@ -210,10 +210,11 @@ const ProfileForm = ({ register, errors, t }: FormProps) => {
                 autoComplete="on"
                 tabIndex={4}
                 defaultValue="MX"
+                maxW={20}
               >
                 {CountryList.map((country) => (
                   <option key={country.code} value={country.code}>
-                    {`${country.code} - ${country.phone}`}
+                    {`${country.code} ${country.phone}`}
                   </option>
                 ))}
               </Select>

@@ -7,8 +7,8 @@ export interface FetchResponse<T> {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "https://mcec-backend-4755c92403d9.herokuapp.com",
-  //baseURL: "http://localhost:8000",
+  //baseURL: "https://mcec-backend-4755c92403d9.herokuapp.com",
+  baseURL: "http://localhost:8000",
 });
 
 class APIClient<TResponse = unknown, TRequest = unknown> {
