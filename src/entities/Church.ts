@@ -1,9 +1,9 @@
-import CountryNames from "./CountryNames";
+import CountryCodes from "./Countries";
 
 export default interface Church {
   minister_name: string;
   church_name: string;
   city: string;
   state: string;
-  country: (typeof CountryNames)[number];
+  country: (typeof CountryCodes)[number];
 }

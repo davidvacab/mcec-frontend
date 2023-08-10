@@ -21,9 +21,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodI18nMap } from "zod-i18n-map";
-import CountryPhoneCodes, {
-  CountryPhoneCodeList,
-} from "../entities/CountryPhoneCodes";
+import CountryCodes, { CountryList } from "../entities/Countries";
 import MemberRoles from "../entities/MemberRoles";
 import MemberVoiceTypes from "../entities/MemberVoiceTypes";
 import Profile from "../entities/Profile";
@@ -50,10 +48,7 @@ const ProfileForm = () => {
       .nonempty(t("validation:required"))
       .max(50, t("validation:max", { value: 50 })),
     birthdate: z.string().nonempty(t("validation:required")),
-    phone_area_code: z.enum([
-      CountryPhoneCodes[0],
-      ...CountryPhoneCodes.slice(0),
-    ]),
+    phone_area_code: z.enum([CountryCodes[0], ...CountryCodes.slice(0)]),
     voice_type: z.enum([MemberVoiceTypes[0], ...MemberVoiceTypes.slice(0)]),
     phone_number: z
       .string()
@@ -259,9 +254,9 @@ const ProfileForm = () => {
                 autoComplete="on"
                 tabIndex={4}
               >
-                {CountryPhoneCodeList.map((code) => (
-                  <option key={code.code} value={code.code}>
-                    {`${code.code} ${code.dial_code}`}
+                {CountryList.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {`${country.code} - ${country.phone}`}
                   </option>
                 ))}
               </Select>

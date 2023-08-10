@@ -37,10 +37,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodI18nMap } from "zod-i18n-map";
-import CountryNames, { CountryNameList } from "../entities/CountryNames";
-import CountryPhoneCodes, {
-  CountryPhoneCodeList,
-} from "../entities/CountryPhoneCodes";
+import CountryCodes, { CountryList } from "../entities/Countries";
 import MemberRoles, { MemberRoleList } from "../entities/MemberRoles";
 import MemberVoiceTypes, {
   MemberVoiceTypeList,
@@ -214,9 +211,9 @@ const ProfileForm = ({ register, errors, t }: FormProps) => {
                 tabIndex={4}
                 defaultValue="MX"
               >
-                {CountryPhoneCodeList.map((code) => (
-                  <option key={code.code} value={code.code}>
-                    {`${code.code} ${code.dial_code}`}
+                {CountryList.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {`${country.code} - ${country.phone}`}
                   </option>
                 ))}
               </Select>
@@ -355,9 +352,9 @@ const ChurchForm = ({ register, errors, t }: FormProps) => {
           tabIndex={5}
           defaultValue="mx"
         >
-          {CountryNameList.map((country) => (
-            <option key={country.alpha3} value={country.alpha2}>
-              {`${country.alpha2.toUpperCase()} - ${country.name}`}
+          {CountryList.map((country) => (
+            <option key={country.code} value={country.code}>
+              {`${country.code} - ${country.native}`}
             </option>
           ))}
         </Select>
@@ -382,10 +379,7 @@ const SignUpPage = () => {
           .nonempty(t("validation:required"))
           .max(50, t("validation:max", { value: 50 })),
         birthdate: z.string().nonempty(t("validation:required")),
-        phone_area_code: z.enum([
-          CountryPhoneCodes[0],
-          ...CountryPhoneCodes.slice(0),
-        ]),
+        phone_area_code: z.enum([CountryCodes[0], ...CountryCodes.slice(0)]),
         phone_number: z
           .string()
           .min(6, t("validation:min", { value: 6 }))
@@ -411,7 +405,7 @@ const SignUpPage = () => {
           .string()
           .nonempty(t("validation:required"))
           .max(50, t("validation:max", { value: 50 })),
-        country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
+        country: z.enum([CountryCodes[0], ...CountryCodes.slice(0)]),
       }),
       username: z
         .string()

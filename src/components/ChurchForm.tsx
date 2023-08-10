@@ -13,7 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import CountryNames, { CountryNameList } from "../entities/CountryNames";
+import CountryCodes, { CountryList } from "../entities/Countries";
 import { inputStyles, selectStyles } from "../theme/theme";
 import useChurch, { useChurchUpdate } from "../hooks/useChurch";
 import { useQueryClient } from "@tanstack/react-query";
@@ -41,7 +41,7 @@ const ChurchForm = () => {
       .string()
       .nonempty(t("validation:required"))
       .max(50, t("validation:max", { value: 50 })),
-    country: z.enum([CountryNames[0], ...CountryNames.slice(0)]),
+    country: z.enum([CountryCodes[0], ...CountryCodes.slice(0)]),
   });
   const toast = useToast();
   const [edit, setEdit] = useState(false);
@@ -178,9 +178,9 @@ const ChurchForm = () => {
           {...selectStyles}
           tabIndex={5}
         >
-          {CountryNameList.map((country) => (
-            <option key={country.alpha3} value={country.alpha2}>
-              {country.name}
+          {CountryList.map((country) => (
+            <option key={country.code} value={country.code}>
+              {`${country.code} - ${country.native}`}
             </option>
           ))}
         </Select>
